@@ -1,0 +1,57 @@
+#map1{
+    margin: 0 auto;
+    width: 80%;
+    min-height: 600px;
+    max-width: 100%;
+}
+
+h4{
+ color:blueviolet;
+ font-family: Verdana, Geneva, Tahoma, sans-serif;
+ text-align: center;   
+}
+
+select{
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.banner2{
+    /*width: 70%;*/
+    width: 12vw;
+    height: auto;
+}
+.prueba{
+    text-align: center;
+}
+
+
+#menu {
+    font-family: Arial;
+    font-size: 12.5px;
+    text-align: center;
+    z-index: 998;
+    position: fixed;
+    width: 100%;
+    left: 0px; /*A la derecha deje un espacio de 0px*/
+    right: 0px; /*A la izquierda deje un espacio de 0px*/
+    bottom: 0px; /*Abajo deje un espacio de 0px*/
+}
+
+    #menu ul li {
+        display: inline-block;
+        text-decoration: none;
+        color: #FFF;
+        padding: 0.6%;
+        cursor: pointer;
+        background-color:darkgrey;
+        opacity: 0.6;
+        width: 11%;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        #menu ul li:hover {
+            background-color:darkslategray;
+            cursor: pointer;
+        }
