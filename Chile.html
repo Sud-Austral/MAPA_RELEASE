@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<link>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <!-- Link viene de la documentación -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+        crossorigin="" />
+    <!-- Link del CSS -->
+    <link rel="stylesheet" type="text/css" href="chile.css">
+    <link rel="stylesheet" type="text/css" href="Leaflet-MiniMap-master\dist\control.MinMap.main.css">
+
+    <!--Jquery, necesario para la lectura de los datos.-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+</head>
+
+<body>
+    <h4>Comunas Chile</h4>
+
+
+    <div id="mapid">
+        <div id="menu">
+            <ul>
+                <li class="op1">MAPA CLARO</li>
+                <li class="op2">MAPA OSCURO</li>
+                <li class="op3">MAPA SATELITAL</li>
+            </ul>
+        </div>
+    </div>
+    <!-- div que contiene el mapa -->
+    <div id="map1"></div>
+
+    <!-- Link viene de la documentación -->
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+    <!-- Link del Js -->
+    <script>
+    function getData(urlData) {
+        let rawData;
+        $.get({
+            url: urlData,
+            success: function (data, status) {
+                rawData = data;
+            }, async: false
+        });
+        return JSON.parse(rawData);
+    }
+
+    const cuerposagua = getData("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/CUERPOS/cuerpos_agua_09201.geojson");
+    const chile = getData("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/Chile/Comunas_Chile_2020_GCS.json");
+    
+    //chile.features= chile.features.filter (x=>x.properties.CUT_COM == "09201")
+    let comunas_filtro = ["09101","09102","09103","09104","09201","09202","09203","09204","10301","10302","10303","10304"];
+    chile.features = chile.features.filter(x => comunas_filtro.indexOf(x.properties.CUT_COM)> -1);
+    </script>
+
+    <script src="Chile.js"></script>
+
+
+
+</body>
+</html>
