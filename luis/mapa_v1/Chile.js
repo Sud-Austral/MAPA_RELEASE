@@ -107,22 +107,31 @@ var chileJS = L.geoJson(chile,{
 
 var cuerposaguaJS2 = L.geoJson(cuerposagua,{
     onEachFeature: onEachFeature
-}).addTo(map);
+}) //.addTo(map);
 
 // Aquí se agregan las capas al menu
 var overlayMapsRegiones = {            
-   "Cuerpos de agua": cuerposaguaJS2,
+   //"Cuerpos de agua": cuerposaguaJS2,
    "Comunas 09": chileJS
 };
 
         
         
 var capas_base = {"Mapa claro":base, "Mapa Oscuro":base2, "Mapa Satelital":base3}
+//capasData.overlayMaps
 
-var capaRegiones2 = L.control.layers(capas_base, overlayMapsRegiones, {
+var capaRegiones3 = L.control.layers(null, overlayMapsRegiones, {
     position: 'topright', // 'topleft', 'bottomleft', 'bottomright'
     collapsed: false // true
 }).addTo(map);
+
+//var capaRegiones2 = L.control.layers(capas_base, overlayMapsRegiones, {
+var capaRegiones2 = L.control.layers(capas_base, capasData.overlayMaps, {
+    position: 'topright', // 'topleft', 'bottomleft', 'bottomright'
+    collapsed: false // true
+}).addTo(map);
+
+
 
 
  // Para centrar en el objeto que uno quiera. Las 4
