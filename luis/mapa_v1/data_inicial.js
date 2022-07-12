@@ -18,7 +18,7 @@ class CAPAS_AGUA{
             ["Estación Glaciar",
             `${urlGitHub}AGUAS_V2/estacion_glaciar/${cod_com}.json`],
             ["Acuífero",
-            `${urlGitHub}AGUAS_V2/acuifero/${cod_com}.json`],
+            `${urlGitHub}AGUAS_V2/acuifero/${cod_com}.json`,EstiloAcuifero],
             ["Junta de Vigilancia",
             `${urlGitHub}AGUAS_V2/junta_vigilancia/${cod_com}.json`],
             ["Calidad de Agua",
@@ -84,7 +84,13 @@ class CAPAS_AGUA{
         this.overlayMaps = {};
         this.capas = this.capas_ref.map(x => //function(x){
             {
-                let shape_capa = new SHAPE_CAPA(x[0],x[1]);
+                let shape_capa;
+                try {
+                    shape_capa = new SHAPE_CAPA(x[0],x[1],x[2]);
+                } catch (error) {
+                    shape_capa = new SHAPE_CAPA(x[0],x[1]);
+                }
+                
                 //Pausa
                 if(shape_capa.data){
                     this.overlayMaps[shape_capa.nombreCSS] = shape_capa.shape;

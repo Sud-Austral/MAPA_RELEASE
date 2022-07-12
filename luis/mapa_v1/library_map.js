@@ -83,14 +83,31 @@ function onEachFeature2(feature, layer){
         click: zoomToFeature,
     })
 }
+let colores = [ '#E59866','#D35400','#A04000','#6E2C00'] //,'#884EA0']
+let contadorColores = 0
+function EstiloAcuifero(feature){
+    console.log(feature.geometry.type)    
+    if(feature.geometry.type == "Polygon"){
+        contadorColores++;
+        return {"color":colores[contadorColores%4], "fillOpacity":1}
+    }
+    if(feature.geometry.type == "MultiPolygon"){
+        contadorColores++;
+        return {"color":colores[contadorColores%4],"fillOpacity":1}
+    }
+    else{
+        return {"color":"black"}
+    }
+    //console.log(feature)
 
+}
 
 class SHAPE_CAPA {
-    constructor(nombre, url) {
+    constructor(nombre, url, funcionEstilo) {
       this.nombre = nombre;
       this.url = url;
       this.data = getData(url);
-      this.shape = L.geoJson(this.data,{onEachFeature: onEachFeature2}) //.addTo(map);  
+      this.shape = L.geoJson(this.data,{style:funcionEstilo,onEachFeature: onEachFeature2}) //.addTo(map);  
       this.nombreCSS = `<span class="letrasControl"> ${this.nombre} </span>`  
     }
 }
