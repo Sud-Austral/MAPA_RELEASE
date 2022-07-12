@@ -97,13 +97,6 @@ class CAPAS_AGUA{
 }
 
 let capasData = new CAPAS_AGUA(codigo_comuna);
- /*
-    "44 Vegas protegidas": getShape("https://raw.githubusercontent.com/lmonsalve22/DATA_MAPA_PUBLIC_V2/main/AGUAS/RESTRICCION/vegas_protegidas_I_II_XV_sep2010.json",
-        map,
-        true,
-        "CUT_COM",
-        9201)
-*/
 
 
 

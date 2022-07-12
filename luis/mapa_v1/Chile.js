@@ -106,12 +106,13 @@ var cuerposaguaJS2 = L.geoJson(cuerposagua,{
     onEachFeature: onEachFeature
 }) //.addTo(map);
 
+let nombreComuna = chile["features"][0]["properties"]["COMUNA"]; 
 // Aquí se agregan las capas al menu
 var overlayMapsRegiones = {            
    //"Cuerpos de agua": cuerposaguaJS2,
-   "Comunas 09": chileJS
+   //nombreComuna : chileJS
 };
-
+overlayMapsRegiones[nombreComuna] = chileJS;
         
         
 //var capas_base = {"Mapa claro <span id='titulo'>Grayscale</span>":base, "Mapa Oscuro":base2, "Mapa Satelital":base3}
