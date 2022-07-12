@@ -90,7 +90,8 @@ class SHAPE_CAPA {
       this.nombre = nombre;
       this.url = url;
       this.data = getData(url);
-      this.shape = L.geoJson(this.data,{onEachFeature: onEachFeature2})    
+      this.shape = L.geoJson(this.data,{onEachFeature: onEachFeature2}) //.addTo(map);  
+      this.nombreCSS = `<span class="letrasControl"> ${this.nombre} </span>`  
     }
 }
 

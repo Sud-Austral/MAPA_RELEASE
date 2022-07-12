@@ -114,20 +114,20 @@ var overlayMapsRegiones = {
 };
 overlayMapsRegiones[nombreComuna] = chileJS;
         
-        
-//var capas_base = {"Mapa claro <span id='titulo'>Grayscale</span>":base, "Mapa Oscuro":base2, "Mapa Satelital":base3}
-var capas_base = {"Mapa claro":base, "Mapa Oscuro":base2, "Mapa Satelital":base3}
+       
+var capas_base = {"Mapa claro <span id='titulo'>Grayscale</span>":base, "Mapa Oscuro":base2, "Mapa Satelital":base3}
+//var capas_base = {'<span class="letrasControl"> Mapa claro </span>':base, "Mapa Oscuro":base2, "Mapa Satelital":base3}
 //capasData.overlayMaps
 
 var capaRegiones3 = L.control.layers(null, overlayMapsRegiones, {
-    position: 'topright', // 'topleft', 'bottomleft', 'bottomright'
-    collapsed: false // true
+    position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
+    collapsed: true // true
 }).addTo(map);
 
 //var capaRegiones2 = L.control.layers(capas_base, overlayMapsRegiones, {
 var capaRegiones2 = L.control.layers(capas_base, capasData.overlayMaps, {
     position: 'topright', // 'topleft', 'bottomleft', 'bottomright'
-    collapsed: false // true
+    collapsed:  true
 }).addTo(map);
 
 
