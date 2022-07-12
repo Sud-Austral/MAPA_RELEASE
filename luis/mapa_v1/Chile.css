@@ -166,3 +166,7 @@ html, body, #mapid {
     background-color: #004365;
     cursor: pointer;
 }
+
+#titulo{
+    color: red;
+}

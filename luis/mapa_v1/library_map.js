@@ -1,14 +1,17 @@
+const customOptions =
+        {
+            'className': 'custom'
+        }
+
 //Esta funcion toma una url publica y devuelve un objeto con los datos geograficos
 function getData(urlData) {
     let rawData;
     $.get({
-        url: urlData,
-        /*
-        error: function(xhr, statusText){
-            console.log(xhr);
-            console.log("Error: "+statusText);
-        },
-        */
+        url: urlData,        
+        //error: function(xhr, statusText){
+        error: function(){    
+            console.log(urlData);
+        },        
         success: function (data, status) {
             rawData = data;
         },        
@@ -33,11 +36,61 @@ function getComuna(){
     return codigo_comuna;
 }
 //
+function getStringHTML3(feature, nombreCapa) {
+    let htmlString = "<b><center> " + nombreCapa + "</b> : "  + feature.properties[nombreCapa] + " </center>";
+    return htmlString;
+}
+
+function highlightFeature(e){
+    var layer = e.target;
+    layer.setStyle({
+        weight: 5,
+        color: "#666",
+        dashArray: '',
+        fillOpacity: 0.7
+    });
+    info.update(layer.feature.properties)
+}
+function resetHighlight(e){
+//    console.log("this",this);
+    //console.log("e",e.sourceTarget._eventParents["45"]);
+    let keysparent = Object.keys(e.sourceTarget._eventParents);
+    console.log(keysparent)
+    e.sourceTarget._eventParents[keysparent].resetStyle(e.target)
+    //chileJS.resetStyle(e.target);
+    info.update();
+}
+function zoomToFeature(e){
+    map.fitBounds(e.target.getBounds());
+}
+
+function onEachFeature2(feature, layer){
+    try {
+        let htmlString = Object.keys(feature.properties).map(element => getStringHTML3(feature, element)).toString();
+        htmlString = htmlString.replaceAll(",", "")
+        htmlString = htmlString + 
+        "</div><center><img class='banner2' src='https://raw.githubusercontent.com/Sud-Austral/mapa_glaciares/main/img/logo_DataIntelligence_normal.png' alt='Data Intelligence'/></center>";
+        //console.log(lista)
+        layer.bindPopup("<div class='parrafo_popup'>" + htmlString + "</div>", customOptions);
+
+    } catch (e) {
+        console.error(e);
+        //layer.bindPopup("Sin Información", customOptions);
+    }
+    layer.on({
+        mouseover: highlightFeature,
+        mouseout: resetHighlight,
+        click: zoomToFeature,
+    })
+}
+
+
 class SHAPE_CAPA {
     constructor(nombre, url) {
       this.nombre = nombre;
       this.url = url;
       this.data = getData(url);
-      this.shape = L.geoJson(this.data)    
+      this.shape = L.geoJson(this.data,{onEachFeature: onEachFeature2})    
     }
 }
+

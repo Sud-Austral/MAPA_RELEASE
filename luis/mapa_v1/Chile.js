@@ -3,10 +3,7 @@ const cuerposagua = getData("https://raw.githubusercontent.com/Sud-Austral/DATA_
 
 
 //PopUp automatico
-const customOptions =
-        {
-            'className': 'custom'
-        }
+
 function getStringHTML2(feature, nombreCapa) {
     let htmlString = "<b><center> " + nombreCapa + "</b> : "  + feature.properties[nombreCapa] + " </center>";
     return htmlString;
@@ -117,6 +114,7 @@ var overlayMapsRegiones = {
 
         
         
+//var capas_base = {"Mapa claro <span id='titulo'>Grayscale</span>":base, "Mapa Oscuro":base2, "Mapa Satelital":base3}
 var capas_base = {"Mapa claro":base, "Mapa Oscuro":base2, "Mapa Satelital":base3}
 //capasData.overlayMaps
 
@@ -139,3 +137,16 @@ var capaRegiones2 = L.control.layers(capas_base, capasData.overlayMaps, {
  let zoom = map.getZoom();
  let zoomMin = 10
  map.setZoom(zoom > zoomMin ? zoomMin : zoom);
+
+ //Promise.all([fetch(capasData.capas_ref[0][1]),fetch('https://jsonplaceholder.typicode.com/users')]).then(function(x){console.log(x.json())});
+ // Get a JSON object from each of the responsesreturnPromise.all(responses.map(function(response)return response.json();));).then(function(data)// Log the data to the console// You would do something with both sets of data hereconsole.log(data);).catch(function(error)// if there's an error, log itconsole.log(error););
+ /*
+ $("#titulo").parent().css( "background", "skyblue" );
+ $("#titulo").parent().parent().css( "background", "black" );
+ $("#titulo").parent().parent().parent().css( "background", "blue" );
+ $("#titulo").parent().parent().parent().parent().css( "background", "yellow" );
+ $("#titulo").parent().parent().parent().parent().parent().css( "background", "green" );
+ $("#titulo").parent().parent().parent().parent().parent().parent().css( "background", "red");
+ $("#titulo").parent().parent().parent().parent().parent().parent().parent().css( "background", "purple");
+ $("#titulo").parent().parent().parent().parent().parent().parent().parent().parent().css( "background", "red");
+ */
