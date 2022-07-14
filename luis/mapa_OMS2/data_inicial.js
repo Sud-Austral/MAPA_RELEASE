@@ -43,7 +43,28 @@ class CAPAS_AGUA{
 }
 
 let capasData = new CAPAS_AGUA(codigo_comuna);
+var urlGitHub = "https://raw.githubusercontent.com/Sud-Austral/mapa_insumos/main/OSM/";
+let data_capas = getData(`${urlGitHub}OSM_poligonos_8_capas/${codigo_comuna}.json`);
+let codigo8capas = data_capas["features"].map(x => x["properties"]["Clase_sp"]);
+const dataArr = new Set(codigo8capas);
 
+let codigo8capasUnique = [...dataArr];
+codigo8capasUnique = codigo8capasUnique;
+
+
+codigo8capasUnique.sort().forEach(x => {
+        let data_filtrado = Object.assign({} , data_capas);//data_capas;
+        data_filtrado["features"] = data_filtrado["features"].filter(y =>
+                y["properties"]["Clase_sp"] == x
+            );
+        console.log("Codigo",x,"Cantidad",data_filtrado["features"].length)
+        if(data_filtrado["features"].length > 0){
+            let shape_8capas = L.geoJson(data_filtrado);
+            capasData["overlayMaps"][`${x}`] = shape_8capas;
+        }
+        //console.log("Codigo",x,"Cantidad",data_filtrado["features"].length)
+        
+    });
 
 
 // Construye la url a partir del CUT_COM
