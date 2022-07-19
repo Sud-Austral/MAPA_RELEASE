@@ -127,10 +127,10 @@ var capaRegiones3 = L.control.layers(null, overlayMapsRegiones, {
 
 var capaRegiones2 = L.control.layers(capas_base, capasData.overlayMaps, {
     position: 'topright', // 'topleft', 'bottomleft', 'bottomright'
-    collapsed:  true
+    collapsed:  false
 }).addTo(map);
 
-capaRegiones2.addOverlay(chileJS,"au")
+//capaRegiones2.addOverlay(chileJS,"au")
 /*
 //var capaRegiones2 = L.control.layers(capas_base, overlayMapsRegiones, {
 var capaRegiones2 = L.control.layers(capas_base, capasData.overlayMaps, {
