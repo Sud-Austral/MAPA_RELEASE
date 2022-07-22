@@ -82,7 +82,7 @@ codigo6capasUnique.sort().forEach(x => {
 
 
 // Construye la url a partir del CUT_COM
-let urlBase = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/chile_comunas/${codigo_comuna}.json`;
+let urlBase = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/chile_comunas/${getComuna2()}.json`;
 //console.log(urlBase)
 //Se lee la comuna deseada
 //const chile = getData("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/Chile/Comunas_Chile_2020_GCS.json");

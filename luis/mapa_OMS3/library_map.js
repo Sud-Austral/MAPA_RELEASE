@@ -38,6 +38,18 @@ function getComuna(){
     codigo_comuna = parseInt(codigo_comuna);
     return `${codigo_comuna}`;
 }
+
+function getComuna2(){
+    const valores = window.location.search;
+    //Creamos la instancia
+    const urlParams = new URLSearchParams(valores);
+    //Accedemos a los valores
+    let codigo_comuna = urlParams.get('CUT_COM');
+    codigo_comuna = codigo_comuna?codigo_comuna:"13101";
+    codigo_comuna = codigo_comuna.length == 5? codigo_comuna:  `0${codigo_comuna}`;
+    //codigo_comuna = parseInt(codigo_comuna);
+    return `${codigo_comuna}`;
+}
 //
 function getStringHTML3(feature, nombreCapa) {
     let htmlString = "<b><center> " + nombreCapa + "</b> : "  + feature.properties[nombreCapa] + " </center>";
