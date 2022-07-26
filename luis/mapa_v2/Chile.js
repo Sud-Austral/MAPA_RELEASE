@@ -37,10 +37,10 @@ function style(feature){
     return{
         fillColor: getColor(feature.properties.SUPERFICIE),
         weight: 2,
-        Opacity: 0.3,
-        color: 'white',
+        Opacity: 1,
+        color: 'red',
         dashArray: '3',
-        fillOpacity: 0.7
+        fillOpacity: 0.2
     }
 }
 
@@ -52,7 +52,7 @@ function highlightFeature(e){
         weight: 5,
         color: "#666",
         dashArray: '',
-        fillOpacity: 0.7
+        fillOpacity: 0.1
     });
 
     info.update(layer.feature.properties)

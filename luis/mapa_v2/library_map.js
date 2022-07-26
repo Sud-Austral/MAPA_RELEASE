@@ -49,7 +49,7 @@ function highlightFeature(e){
         weight: 5,
         color: "#666",
         dashArray: '',
-        fillOpacity: 0.7
+        fillOpacity: 0.2
     });
     info.update(layer.feature.properties)
 }
