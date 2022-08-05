@@ -77,8 +77,8 @@ class CAPAS_AGUA{
             `${urlGitHub}AGUAS_V2/declaraciones_de_agotamiento/${cod_com}.json`],
             ["Acuiferos Protegidos I_II_XV",
             `${urlGitHub}AGUAS_V2/acuiferos_protegidos_I_II_XV/${cod_com}.json`],
-            //["Acuiferos Protegidos I_II_XV",
-            //`${urlGitHub}AGUAS_V2/acuiferos_protegidos_I_II_XV/${cod_com}.json`],
+            ["Acuiferos Protegidos I_II_XV",
+            `${urlGitHub}AGUAS_V2/acuiferos_protegidos_I_II_XV/${cod_com}.json`],
             ["Vegas protegidas",
             `${urlGitHub}AGUAS_V2/vegas_protegidas_I_II_XV_sep2010/${cod_com}.json`],
         ]
@@ -88,9 +88,9 @@ class CAPAS_AGUA{
             {
                 let shape_capa;
                 try {
-                    shape_capa = new SHAPE_CAPA(x[0],x[1],x[2]);
+                    shape_capa = new SHAPE_CAPA2(x[0],x[1],x[2]);
                 } catch (error) {
-                    shape_capa = new SHAPE_CAPA(x[0],x[1]);
+                    shape_capa = new SHAPE_CAPA2(x[0],x[1]);
                 }
                 //Pausa
                 if(shape_capa.data){
