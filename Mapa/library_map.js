@@ -95,7 +95,7 @@ function onEachFeature3(feature, layer){
 }
 /*  Iconos para los POINTS */
 var iconoUno = L.icon({
-    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/iconos/alfiler6.png',
+    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/alfiler6.png',
     //shadowUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/59/Coat_of_arms_of_Los_Lagos_Region%2C_Chile.svg',
 
     iconSize: [25, 31], // size of the icon
@@ -105,19 +105,19 @@ var iconoUno = L.icon({
     //popupAnchor: [-3, -76] // point from which the popup should open relative to the iconAnchor
 });
 var iconoDos = L.icon({
-    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/iconos/Solido1.png',
+    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/Solido1.png',
     iconSize: [25, 31], // size of the icon
 });
 var iconoTres = L.icon({
-    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/iconos/centroB1.png',
+    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/centroB1.png',
     iconSize: [25, 31], // size of the icon
 });
 var iconoCuatro = L.icon({
-    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/iconos/centroN7.png',
+    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/centroN7.png',
     iconSize: [25, 31], // size of the icon
 });
 var iconoCinco = L.icon({
-    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/iconos/borde3.png',
+    iconUrl: 'https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/borde3.png',
     iconSize: [25, 31], // size of the icon
 });
 
