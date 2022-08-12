@@ -173,6 +173,7 @@ class SHAPE_CAPA2 {
 
 
 $(window).ready(function() {
+    $(".loader").fadeOut("slow");
     //let capasData = new CAPAS_AGUA(codigo_comuna);
     /*
     var capaRegiones2 = L.control.layers(capas_base, capasData.overlayMaps, {
@@ -180,10 +181,11 @@ $(window).ready(function() {
         collapsed:  true
     }).addTo(map);
     */
-    $(".loader").fadeOut("slow");
+    //$(".loader").fadeOut("slow");
     let detalle = new MAPAGLOBAL(comunaBase);   
     
     $("#comunaID").parent().parent().parent().parent().parent().parent().css( "background", "black");
+    
 });
 
 //funcion para mostrar la simbologia (rango de color)

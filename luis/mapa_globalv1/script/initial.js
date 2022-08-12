@@ -72,6 +72,7 @@ class MAPAGLOBAL{
         }).filter( capa =>
             capa["data"] != null
         );
+        //console.log("capaData",this.dataGlobalNivel1)
         this.n = 0;
         this.dataGlobalNivel1.forEach(capa =>{
             let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
@@ -106,15 +107,30 @@ class MAPAGLOBAL{
                         console.log("default")    
                     }
                     if(dataGlobalCapas[0]["Variable"] == "random"){
-                        console.log(capaUnica,"random") 
+                        /*
                         estiloDinamico = (feature) => {
                             this.n++;
                             return {"color": "#" + coloresDB[this.n%coloresDB.length]}
-                        }    
+                        }*/
+                       let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnica)[0]["Propiedad"];
+                       //console.log(nameProperties);
+                       let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
+                       //console.log(capaUnica,capa["data"]["features"]);
+                       //console.log(propertiesUniques);
+                       let jsonColoresRandom = {};
+                       
+                       propertiesUniques.forEach(x =>{
+                        this.n++;
+                        jsonColoresRandom[x] = "#" + coloresDB[this.n%coloresDB.length]
+                        });
+                       estiloDinamico = (feature) => {
+                        let descripcionCapa = feature.properties[nameProperties];
+                        return {"color":jsonColoresRandom[descripcionCapa]}
+                       }
                     }
                 }
                 else{
-                    console.log("Mira aka",capaUnica)
+                    //console.log("Mira aka",capaUnica)
                     //console.log(dataGlobal)
                     //console.log(dataGlobal.filter(x => x["descripcion_capa"] == capaUnica))
                     let jsonColores = {};
@@ -125,8 +141,9 @@ class MAPAGLOBAL{
                     });
                     //console.log(jsonColores)
                     estiloDinamico = (feature) =>{
-                        console.log(feature.properties)
+                        //console.log(feature.properties)
                         let valuePropertie = feature.properties[descripcionCapa];
+                        //console.log(valuePropertie)
                         return {"color":jsonColores[valuePropertie]}
                     }
                     //console.log(capaUnica)
