@@ -182,7 +182,7 @@ $(window).ready(function() {
     }).addTo(map);
     */
     //$(".loader").fadeOut("slow");
-    let detalle = new MAPAGLOBAL(comunaBase);   
+    //let detalle = new MAPAGLOBAL(comunaBase);   
     
     $("#comunaID").parent().parent().parent().parent().parent().parent().css( "background", "black");
     
