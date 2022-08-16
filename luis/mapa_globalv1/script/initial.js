@@ -1,7 +1,7 @@
 //Mapa de Leaflet
 let map = L.map("mapid").setView([-33.458725187656356, -70.66008634501547],10);
 //"Capa":"datos_de_pozos"
-//dataGlobal = dataGlobal.filter(x => x["Capa"] == "datos_de_pozos");
+dataGlobal = dataGlobal.filter(x => x["Capa"] == "red_hidrica");
 //https://github                .com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/solido1.png
 //https://raw.githubusercontent .com/Sud-Austral/DATA_MAPA_PUBLIC_V2    /main/AGUAS/Iconos/Solido1.png
 
