@@ -1,6 +1,7 @@
 //Mapa de Leaflet
 let map = L.map("mapid").setView([-33.458725187656356, -70.66008634501547],10);
-//dataGlobal = dataGlobal.filter(x => x["descripcion_capa"] == "Derechos Agua: Uso");
+//"Capa":"datos_de_pozos"
+//dataGlobal = dataGlobal.filter(x => x["Capa"] == "datos_de_pozos");
 //https://github                .com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/solido1.png
 //https://raw.githubusercontent .com/Sud-Austral/DATA_MAPA_PUBLIC_V2    /main/AGUAS/Iconos/Solido1.png
 
@@ -9,14 +10,14 @@ iconosDB = iconosDB.map( x =>
     .replaceAll("/DATA_MAPA_PUBLIC_V2/raw","/DATA_MAPA_PUBLIC_V2"));
 
 function getIcon(url){
-    /*
+    
     if(!url){
-        console.log("url",url);
+        url = "https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/icono_svg.svg";
     }
-    */
+    
     let myIcon = L.icon({
         iconUrl: url,
-        iconSize:     [25, 25] // width and height of the image in pixels
+        iconSize:  [40,40]   //[25, 25] // width and height of the image in pixels
         });
     return myIcon;
 }
@@ -125,22 +126,30 @@ class MAPAGLOBAL{
             dataGlobalDescripCapaUnique.sort(x => x["posición_capa"]).forEach(capaUnica =>{
                 let estiloDinamico = null;
                 let dataGlobalCapas = dataGlobalNivel2.filter(x => x["descripcion_capa"] == capaUnica);
+                
                 if(tipoGeometria == "Point"){
-                    let setIcon = (feature, latlng) => {
+                    let setIcon; 
+                    /*
+                    = (feature, latlng) =>{
+                        let myIcon = L.Icon.Default;
+                        return L.marker(latlng, { icon: myIcon });
+                    }
+                    /*
+                    = (feature, latlng) => {
                         let urlImage = "https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/icono_svg.svg";
                         let myIcon =  getIcon(urlImage);
                         return L.marker(latlng, { icon: myIcon });
                     }
-                    
+                    */
                     if(dataGlobalCapas.length == 1){
                         if(dataGlobalCapas[0]["Variable"] == "default"){
                             console.log("punto default")    
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
-                            console.log("punto random")
                             let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnica)[0]["Propiedad"];
                             let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
                             let jsonIconosRandom = {}; 
+
                             propertiesUniques.forEach(x =>{
                                 this.ContadorIconos++;
                                 jsonIconosRandom[x] = getIcon(iconosDB[this.ContadorIconos%iconosDB.length]);
@@ -154,7 +163,7 @@ class MAPAGLOBAL{
                         }
                     }
                     else{
-                        console.log("aki")
+                        //console.log("aki")
                         let jsonColores = {};
                         let descripcionCapa;
                         dataGlobal.filter(x => x["descripcion_capa"] == capaUnica).forEach( x =>{
@@ -163,7 +172,7 @@ class MAPAGLOBAL{
                             jsonColores[x.Variable] = x.url_icono
                         });   
                         //jsonColores[null] = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png";
-                        console.log(capaUnica,jsonColores)  
+                        //console.log(capaUnica,jsonColores)  
                         //console.log("datos",capa["data"])  
                         //console.log("filtro",dataGlobal.filter(x => x["descripcion_capa"] == capaUnica))                 
                         setIcon = (feature, latlng) =>{
@@ -179,10 +188,13 @@ class MAPAGLOBAL{
                         }
                         funciontest = setIcon; 
                     }  
+                    /*
                     var markers = L.markerClusterGroup();
                     let shapeAux = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
                     markers.addLayer(shapeAux);                 
                     this.jsonTotalCapas[capaUnica] = markers;
+                    */
+                    this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
                 }
                 else{
                     if(dataGlobalCapas.length == 1){
@@ -190,6 +202,7 @@ class MAPAGLOBAL{
                             console.log("poligono default")    
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
+                            //let paletaNombre = dataGlobalCapas[0]["Paleta"]; 
                             let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnica)[0]["Propiedad"];
                             let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
                             let jsonColoresRandom = {};                            
