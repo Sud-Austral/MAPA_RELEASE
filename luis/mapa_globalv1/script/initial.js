@@ -127,7 +127,8 @@ class MAPAGLOBAL{
                 let dataGlobalCapas = dataGlobalNivel2.filter(x => x["descripcion_capa"] == capaUnica);
                 if(tipoGeometria == "Point"){
                     let setIcon = (feature, latlng) => {
-                        let myIcon =  getIcon("https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/icono/gotaazules08.png");
+                        let urlImage = "https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/icono_svg.svg";
+                        let myIcon =  getIcon(urlImage);
                         return L.marker(latlng, { icon: myIcon });
                     }
                     
@@ -177,8 +178,11 @@ class MAPAGLOBAL{
                             }
                         }
                         funciontest = setIcon; 
-                    }                    
-                    this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
+                    }  
+                    var markers = L.markerClusterGroup();
+                    let shapeAux = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
+                    markers.addLayer(shapeAux);                 
+                    this.jsonTotalCapas[capaUnica] = markers;
                 }
                 else{
                     if(dataGlobalCapas.length == 1){
