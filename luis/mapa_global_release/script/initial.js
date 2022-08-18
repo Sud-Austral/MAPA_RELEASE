@@ -98,9 +98,10 @@ class LEGENDMAP{
         let nombre = this.Nombre;
         let dicAux = this.dictIcono;
         let dicAux2 = this.dictColor;
-        //console.log("SetLEgenda")
-        //console.log(nombre);
-        //console.log(dicAux)
+        console.log("SetLEgenda")
+        console.log(nombre);
+        console.log(dicAux)
+        console.log(dicAux2)
         this.legend.onAdd = function () {
             var div = L.DomUtil.create('div', 'legend');
             let htmlString = "";
@@ -295,7 +296,7 @@ class MAPAGLOBAL{
                         //console.log(dataGlobal.filter(x => x["descripcion_capa"] == capaUnica))
                         let jsonColores = {};
                         let descripcionCapa;
-                        dataGlobal.filter(x => x["descripcion_capa"] == capaUnica).forEach( x =>{
+                        dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName).forEach( x =>{
                             descripcionCapa = x["Propiedad"];
                             x.Variable = x.Variable?x.Variable:""; 
                             jsonColores[x.Variable] = x.Color
