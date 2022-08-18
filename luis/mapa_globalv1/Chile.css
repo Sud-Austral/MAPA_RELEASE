@@ -210,3 +210,28 @@ html, body, #mapid {
     opacity: .8;
 }
 
+.legendCustom{
+    max-height: 300px;
+    overflow: auto;
+}
+
+.legendCustom::-webkit-scrollbar {
+        width: 8px;
+      }
+      
+      /* Track */
+.legendCustom::-webkit-scrollbar-track {
+        background: #f1f1f1; 
+      }
+       
+      /* Handle */
+.legendCustom::-webkit-scrollbar-thumb {
+        background: #888; 
+      }
+      
+      /* Handle on hover */
+.legendCustom::-webkit-scrollbar-thumb:hover {
+        background: #555; 
+      }
+
+
