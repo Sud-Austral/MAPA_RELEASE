@@ -1,5 +1,10 @@
 //Mapa de Leaflet
-let map = L.map("mapid").setView([-33.458725187656356, -70.66008634501547],10);
+let map = L.map("mapid",{
+    minZoom: 0,
+    maxZoom: 18,
+    zoomSnap: 0,
+    zoomDelta: 0.25
+}).setView([-33.458725187656356, -70.66008634501547],10);
 function slideToggleLegend(idLegenda) {
     //alert( "clicked " +idLegenda);
     $( "#" + idLegenda ).slideToggle( "slow", function() {
@@ -8,7 +13,7 @@ function slideToggleLegend(idLegenda) {
   }
 //"Capa":"datos_de_pozos"
 //"idcapa":26
-//dataGlobal = dataGlobal.filter(x => x["idcapa"] == 8);
+//dataGlobal = dataGlobal.filter(x => x["idcapa"] == 10);
 //https://github                .com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/solido1.png
 //https://raw.githubusercontent .com/Sud-Austral/DATA_MAPA_PUBLIC_V2    /main/AGUAS/Iconos/Solido1.png
 
@@ -285,14 +290,15 @@ class MAPAGLOBAL{
                         //console.log("json",jsonColores)
                         this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda))
                     }  
-                    
+                    /*
                     var markers = L.markerClusterGroup();
                     let shapeAux = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
                     markers.addLayer(shapeAux);                 
                     this.jsonTotalCapas[capaUnica] = markers;                    
-                    /*
-                    this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
                     */
+                    console.log(capaUnicaName,capa["data"]["features"].length)
+                    this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
+                    
                 }
                 else{
                     if(dataGlobalCapas.length == 1){

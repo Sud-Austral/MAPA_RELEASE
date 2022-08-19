@@ -266,6 +266,7 @@ Custom scrollbar leyenda
     border-style: outset;
     margin-left: auto;
     display: block;
+    background-color: #e1dede;
   }
 
   br{margin-bottom:3px;}
