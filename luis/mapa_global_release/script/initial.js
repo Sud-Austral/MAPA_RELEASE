@@ -1,7 +1,14 @@
 //Mapa de Leaflet
 let map = L.map("mapid").setView([-33.458725187656356, -70.66008634501547],10);
+function slideToggleLegend(idLegenda) {
+    //alert( "clicked " +idLegenda);
+    $( "#" + idLegenda ).slideToggle( "slow", function() {
+        // Animation complete.
+    });
+  }
 //"Capa":"datos_de_pozos"
-//dataGlobal = dataGlobal.filter(x => x["Capa"] == "red_hidrica");
+//"idcapa":26
+//dataGlobal = dataGlobal.filter(x => x["idcapa"] == 8);
 //https://github                .com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/solido1.png
 //https://raw.githubusercontent .com/Sud-Austral/DATA_MAPA_PUBLIC_V2    /main/AGUAS/Iconos/Solido1.png
 
@@ -20,7 +27,7 @@ function getIcon(url){
     url = url?url:"https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/default.png";
     let myIcon = L.icon({
         iconUrl: url,
-        iconSize:  [40,40]   //[25, 25] // width and height of the image in pixels
+        iconSize:  [25,25]   //[25, 25] // width and height of the image in pixels
         });
     return myIcon;
 }
@@ -86,29 +93,39 @@ class COMUNABASE{
 }
 
 class LEGENDMAP{
-    constructor(idName, Nombre,dictIcono,dictColor){
+
+    iconDefault = "https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/default.png";
+
+    constructor(idName, Nombre,dictIcono,dictColor,titulo){
         this.Nombre = Nombre;
         this.idName = idName;
         this.legend = L.control({ position: 'bottomleft' });
         this.dictIcono = dictIcono;
         this.dictColor = dictColor;
+        this.titulo = titulo;
     }
 
     setLegenda(){
+        let titulo = this.titulo;
         let nombre = this.Nombre;
         let dicAux = this.dictIcono;
         let dicAux2 = this.dictColor;
+        let idName = this.idName;
         console.log("SetLEgenda")
         console.log(nombre);
-        console.log(dicAux)
-        console.log(dicAux2)
+        console.log(1,dicAux)
+        console.log(2,dicAux2)
         this.legend.onAdd = function () {
             var div = L.DomUtil.create('div', 'legend');
             let htmlString = "";
+            //console.log(dicAux)
             if(dicAux){
                 Object.keys(dicAux).forEach(x => {
                     try {
-                        let htmlAux = `<span><img src="${dicAux[x]['options']['iconUrl']}" alt="Girl in a jacket" width="20" height="20"> ${x}</span><br>`
+                        //let url = dicAux[x]?dicAux[x]['options']['iconUrl']:iconDefault;
+                        let url = dicAux[x]?dicAux[x]['options']?dicAux[x]['options']['iconUrl']:dicAux[x]:iconDefault;
+                        x = x != ""?x:"Sin Información";
+                        let htmlAux = `<span><img src="${url}" alt="Girl in a jacket" width="20" height="20"> ${x}</span><br>`
                         htmlString = htmlString + htmlAux;    
                     } catch (error) {
                         console.log("Error en Diccionario Icono setLegenda");
@@ -118,19 +135,22 @@ class LEGENDMAP{
             if(dicAux2){
                 Object.keys(dicAux2).forEach(x => {
                     try {
+                        let color = dicAux2[x];
+                        x = x != ""?x:"Sin Información";
                         //let htmlAux = `<span><img src="${dicAux2[x]['options']['iconUrl']}" alt="Girl in a jacket" width="20" height="20"> ${x}</span><br>`
-                        let htmlAux = `<span class="desc1" style='background: ${dicAux2[x]};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span> ${x} <br>`;
+                        let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${color};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span>  ${x} </span></div></div>`;
                         htmlString = htmlString + htmlAux;  
                     } catch (error) {
                         console.log("Error en Diccionario Color setLegenda");
                     }                    
                 });
             }
+            let htmlMinimize = `<i id="clickme" class="gg-minimize-alt"> </i>`;
             div.innerHTML +=
-            '<div class="legendCustom">' +
-            `<p class="titleLegend"><b> Propiedades de ${nombre}</b></p>`+
+            '<div class="legendCustom">' + 
+            `<div class="contenedor"><div class="principal2"> <p class="titleLegend principal"><b>${titulo}</b></p></div><div onclick="slideToggleLegend('${idName}_slide')" class="sidebar2">${htmlMinimize}</div></div> `+
             //'<span class="desc1" style="background: #e82c2c;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'+
-            `${htmlString}` +
+            `<div id="${idName}_slide"> ${htmlString}</div>` +
             '</div>';
             return div;
         };
@@ -138,6 +158,12 @@ class LEGENDMAP{
             let check = $(`#${this.idName}`).parent().parent().parent().find("input").prop("checked");
             check?this.legend.addTo(map):this.legend.remove();
         });
+        /*
+        $("#clickme").on( "click", function() {
+                alert("Hola");
+
+        */
+        
     }
 }
 
@@ -186,6 +212,8 @@ class MAPAGLOBAL{
                 capaUnica = `<span id='${capaUnicaID}'>${capaUnica}</span>`;
                 let estiloDinamico = null;
                 let dataGlobalCapas = dataGlobalNivel2.filter(x => x["descripcion_capa"] == capaUnicaName);
+                let tituloLeyenda = dataGlobalCapas[0]["titulo_leyenda"];
+                
                 //console.log(capaUnicaName,"***********",tipoGeometria,"***********",dataGlobalCapas[0]["Variable"])                
                 if(tipoGeometria == "Point"){
                     let setIcon;                     
@@ -229,7 +257,7 @@ class MAPAGLOBAL{
                                 return L.marker(latlng, { icon: myIcon });
                             }
                             
-                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom))
+                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda))
                         }
                     }
                     else{
@@ -255,7 +283,7 @@ class MAPAGLOBAL{
                             }
                         }
                         //console.log("json",jsonColores)
-                        this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores))
+                        this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda))
                     }  
                     
                     var markers = L.markerClusterGroup();
@@ -287,7 +315,7 @@ class MAPAGLOBAL{
                                 let descripcionCapa = feature.properties[nameProperties];
                                 return {"color":jsonColoresRandom[descripcionCapa]}
                             }
-                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom))
+                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
                         }
                     }
                     else{
@@ -306,7 +334,7 @@ class MAPAGLOBAL{
                             let valuePropertie = feature.properties[descripcionCapa];
                             return {"color":jsonColores[valuePropertie]}
                         }
-                        this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores));
+                        this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores,tituloLeyenda));
                         }
                         this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
                 }
@@ -395,3 +423,5 @@ else{
 bandera = !bandera;
 });
 */
+
+

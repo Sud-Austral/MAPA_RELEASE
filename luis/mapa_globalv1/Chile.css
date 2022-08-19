@@ -209,9 +209,11 @@ html, body, #mapid {
     background: url('Gear-0.6s-200px.svg') 50% 50% no-repeat rgb(249,249,249);
     opacity: .8;
 }
-
+/*
+Custom scrollbar leyenda
+*/
 .legendCustom{
-    max-height: 300px;
+    max-height: 130px;
     overflow: auto;
 }
 
@@ -233,5 +235,95 @@ html, body, #mapid {
 .legendCustom::-webkit-scrollbar-thumb:hover {
         background: #555; 
       }
+/*
 
+*/
+
+.contenedor {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+    padding: 0;
+  }
+  .principal {
+    /*
+    width: 85%;*/
+    margin-left: 0.8rem;
+  }
+
+  .principal {
+    /*
+    width: 85%;*/
+    margin-left: 0.8rem;
+    margin-right: 4rem;
+  }
+  .sidebar {
+    width: 2rem;
+  }
+
+  .sidebar2 {
+    border-style: outset;
+    margin-left: auto;
+    display: block;
+  }
+
+  br{margin-bottom:3px;}
+
+
+/*
+Minimizar
+
+     
+    
+*/
+  .gg-minimize-alt {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: rotate(-45deg) scale(var(--ggs,0.85));
+    width: 26px;
+    height: 2px;
+    border-left: 10px solid;
+    border-right: 10px solid;
+    margin-top: 0.9rem;
+}
+.gg-minimize-alt::after,
+.gg-minimize-alt::before {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    border-top: 2px solid;
+    top: -2px
+}
+.gg-minimize-alt::before {
+    border-right: 2px solid;
+    left: -5px;
+    transform: rotate(45deg)
+}
+.gg-minimize-alt::after {
+    border-left: 2px solid;
+    right: -5px;
+    transform: rotate(-45deg)
+}
+
+.bordeMinize{
+    border-style: outset;
+    
+}
+
+
+.gg-math-minus {
+    box-sizing: border-box;
+    position: relative;
+    display: block;
+    transform: scale(var(--ggs,1));
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 10px
+}
 
