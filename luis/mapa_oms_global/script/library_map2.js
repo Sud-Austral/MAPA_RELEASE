@@ -10,10 +10,10 @@ function getData(urlData) {
         success: data => rawData = data,        
         async: false
     });
-    //return rawData? JSON.parse(rawData):null;
+      
     let dataJson = rawData? JSON.parse(rawData): null;
     return dataJson?dataJson["features"].length > 0?dataJson:null:null;
-    
+
 }
 //Esta funcion recibe el parametro CUT_COM de la url y devuelve el codigo
 function getComuna(){
