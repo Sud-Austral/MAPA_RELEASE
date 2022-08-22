@@ -214,8 +214,8 @@ class MAPAGLOBAL{
             
             let dataGlobalDescripCapaUnique2 = dataGlobalNivel2.filter(x => x["popup_0_1"] == 1);
             //console.log("aka2",dataGlobalDescripCapaUnique2);
-            //let dataGlobalDescripCapaUnique = [...new Set(dataGlobalNivel2
-            let dataGlobalDescripCapaUnique = [...new Set(dataGlobalDescripCapaUnique2
+            let dataGlobalDescripCapaUnique = [...new Set(dataGlobalNivel2
+            //let dataGlobalDescripCapaUnique = [...new Set(dataGlobalDescripCapaUnique2
                                     .filter(x => x.popup_0_1 != null)
                                     .sort((x,y) => {return x["posición_capa"] - y["posición_capa"]})
                                     
@@ -333,14 +333,14 @@ class MAPAGLOBAL{
                         //console.log("json",jsonColores)
                         this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda))
                     }  
-                    
+                    /*
                     var markers = L.markerClusterGroup();
                     let shapeAux = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
                     markers.addLayer(shapeAux);                 
                     this.jsonTotalCapas[capaUnica] = markers;                    
-                    
+                    */
                     //console.log(capaUnicaName,capa["data"]["features"].length)
-                    //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
+                    this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
                     
                 }
                 else{
