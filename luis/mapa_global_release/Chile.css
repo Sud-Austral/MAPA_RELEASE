@@ -328,3 +328,28 @@ Minimizar
     border-radius: 10px
 }
 
+@media print{
+    @page{
+            size: landscape;
+            -webkit-transform: rotate(-90deg) scale(2,2); 
+            -moz-transform:rotate(-90deg) scale(2,2);
+            filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+            height:100vh;
+            page-break-before: avoid;
+            zoom: 50%;
+    }
+    /*
+    body {
+        page-break-before: avoid;
+        width:200%;
+        height:50%;
+        -webkit-transform: rotate(-90deg) scale(.68,.68); 
+        -moz-transform:rotate(-90deg) scale(.58,.58);
+        zoom: 50% ;
+        size: landscape;  
+        filter:progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+    }
+    */
+}
+
+

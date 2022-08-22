@@ -94,6 +94,7 @@ class COMUNABASE{
         let zoom = map.getZoom();
         let zoomMin = 10
         map.setZoom(zoom > zoomMin ? zoomMin : zoom);
+        
     }
 }
 
@@ -116,10 +117,10 @@ class LEGENDMAP{
         let dicAux = this.dictIcono;
         let dicAux2 = this.dictColor;
         let idName = this.idName;
-        console.log("SetLEgenda")
-        console.log(nombre);
-        console.log(1,dicAux)
-        console.log(2,dicAux2)
+        //console.log("SetLEgenda")
+        //console.log(nombre);
+        //console.log(1,dicAux)
+        //console.log(2,dicAux2)
         this.legend.onAdd = function () {
             var div = L.DomUtil.create('div', 'legend');
             let htmlString = "";
@@ -237,24 +238,34 @@ class MAPAGLOBAL{
                    
                     if(dataGlobalCapas.length == 1){                        
                         if(dataGlobalCapas[0]["Variable"] == "default"){
-                            console.log("punto default")  
-                            console.log(dataGlobalCapas)
+                            //console.log("punto default")  
+                            //console.log(dataGlobalCapas)
                             this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName));  
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
                             
                             //let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnica)[0]["Propiedad"];
                             //capaUnicaName
-                            let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0]["Propiedad"];
-                            
-                            
+                            //console.log("polygono",dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName))
+                            let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];
+                            let nameProperties = objReferencia["Propiedad"];
+                            let paletaReferencia = objReferencia["Color"];                             
+                            let iconoDBReferencia = dataIcono.filter(x => x["Paleta"] == paletaReferencia);
                             let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
                             let jsonIconosRandom = {}; 
-
+                            let contadorIcono = 0;
+                            //console.log("2",capaUnicaName,paletaReferencia);  
                             propertiesUniques.forEach(x =>{
-                                this.ContadorIconos++;
-                                jsonIconosRandom[x] = getIcon(iconosDB[this.ContadorIconos%iconosDB.length]);
-                            });                          
+                                //this.ContadorIconos++;Link
+                                //jsonIconosRandom[x] = getIcon(iconosDB[this.ContadorIconos%iconosDB.length]);
+                                try {
+                                    jsonIconosRandom[x] = getIcon(iconoDBReferencia[contadorIcono%iconoDBReferencia.length]["Link"])
+                                    contadorIcono++;
+                                } catch (error) {
+                                    jsonIconosRandom[x] = getIcon(dataIcono[contadorIcono]["Link"])                                    
+                                }     
+                            });   
+                               
                             setIcon = (feature, latlng) => {
                                 
                                 let descripcionCapa = feature.properties[nameProperties];
@@ -290,14 +301,14 @@ class MAPAGLOBAL{
                         //console.log("json",jsonColores)
                         this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda))
                     }  
-                    /*
+                    
                     var markers = L.markerClusterGroup();
                     let shapeAux = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
                     markers.addLayer(shapeAux);                 
                     this.jsonTotalCapas[capaUnica] = markers;                    
-                    */
-                    console.log(capaUnicaName,capa["data"]["features"].length)
-                    this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
+                    
+                    //console.log(capaUnicaName,capa["data"]["features"].length)
+                    //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
                     
                 }
                 else{
@@ -310,13 +321,26 @@ class MAPAGLOBAL{
                             //let paletaNombre = dataGlobalCapas[0]["Paleta"]; 
                             //let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnica)[0]["Propiedad"];
                             //capaUnicaName
-                            let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0]["Propiedad"];
+                            //let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0]["Propiedad"];
+                            let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];
+                            let nameProperties = objReferencia["Propiedad"];
+                            let paletaReferencia = objReferencia["Color"];
+                            let colorDBReferencia = dataColor.filter(x => x["Paleta"] == paletaReferencia);
+                            //console.log(colorDBReferencia);
+
                             let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
-                            let jsonColoresRandom = {};                            
+                            let jsonColoresRandom = {}; 
+                            let contadorColor = 0;                           
                             propertiesUniques.forEach(x =>{
-                                this.ContadorColores++;
-                                jsonColoresRandom[x] = "#" + coloresDB[this.ContadorColores%coloresDB.length]
-                                });
+                                //this.ContadorColores++;
+                                //jsonColoresRandom[x] = "#" + coloresDB[this.ContadorColores%coloresDB.length]
+                                try {
+                                    jsonColoresRandom[x] = colorDBReferencia[contadorColor%colorDBReferencia.length]["Color"];
+                                    contadorColor++;
+                                } catch (error) {
+                                    jsonColoresRandom[x] = dataColor[contadorColor]["Color"];
+                                }                                
+                            });
                             estiloDinamico = (feature) => {
                                 let descripcionCapa = feature.properties[nameProperties];
                                 return {"color":jsonColoresRandom[descripcionCapa]}
@@ -349,8 +373,7 @@ class MAPAGLOBAL{
         this.controlTotalCapas = L.control.layers(comunaBase.mapasBases, this.jsonTotalCapas, {
             position: 'topright',
             collapsed:  true
-        }).addTo(map);  
-        //detalle.legendas.forEach(x =>{
+        }).addTo(map);
         this.legendas.forEach(x => x.setLegenda());      
     }
 }
@@ -359,7 +382,32 @@ class MAPAGLOBAL{
 let comunaBase = new COMUNABASE();
 let detalle = new MAPAGLOBAL(comunaBase); 
 
-let bandera = true;
+
+//let bandera = true;
+
+let base = comunaBase["mapasBases"]["Mapa claro"];
+        let base2 = comunaBase["mapasBases"]["Mapa Oscuro"]; 
+        let base3 = comunaBase["mapasBases"]["Mapa Satelital"];
+
+
+        $(document).ready(function() {
+            $('.op1').on('click', function(){
+                base2.remove();
+                base3.remove();
+                base.addTo(map);
+            });
+            $('.op2').on('click', function(){
+                base.remove();
+                base3.remove();
+                base2.addTo(map);
+            });
+            $('.op3').on('click', function(){
+                base.remove();
+                base2.remove();
+                base3.remove();
+                base3.addTo(map);
+            });
+        });
 
 
 /*
@@ -429,5 +477,8 @@ else{
 bandera = !bandera;
 });
 */
+
+
+
 
 
