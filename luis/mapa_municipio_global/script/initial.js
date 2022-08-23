@@ -189,7 +189,7 @@ class MAPAGLOBAL{
         //https:// github.com                 /Sud-Austral/mapa_insumos/tree/main/comunas_capas/shapes_por_comuna/APR_SSC_COM_CGS/?CUT_COM=00000.json
         //https:// raw.githubusercontent.com  /Sud-Austral/mapa_insumos     /main/comunas_capas/shapes_por_comuna/APR_SSC_COM_CGS/13101.json
         dataCapaGlobal = dataCapaGlobal.map(capa => {
-            console.log(capa)
+            //console.log(capa)
             capa["url"] = capa["url"]
                 .replaceAll("github.com","raw.githubusercontent.com")
                 .replaceAll("tree","");
@@ -254,25 +254,16 @@ class MAPAGLOBAL{
                 
                 //console.log(capaUnicaName,"***********",tipoGeometria,"***********",dataGlobalCapas[0]["Variable"])                
                 if(tipoGeometria == "Point"){
-                    let setIcon;                     
-                    /*
-                    = (feature, latlng) =>{
-                        let myIcon = L.Icon.Default;
-                        return L.marker(latlng, { icon: myIcon });
-                    }
-                    /*
-                    = (feature, latlng) => {
-                        let urlImage = "https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/icono_svg.svg";
-                        let myIcon =  getIcon(urlImage);
-                        return L.marker(latlng, { icon: myIcon });
-                    }
-                    */
-                   
+                    let setIcon;                   
                     if(dataGlobalCapas.length == 1){                        
                         if(dataGlobalCapas[0]["Variable"] == "default"){
-                            //console.log("punto default")  
-                            //console.log(dataGlobalCapas)
-                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName));  
+                            let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
+                            let jsonIconosRandom = {}; 
+                            jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
+                            setIcon = (feature,latlng) => {
+                                return L.marker(latlng, { icon: jsonIconosRandom[objReferencia["Propiedad"]] });
+                            }
+                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda));  
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
                             
@@ -284,6 +275,7 @@ class MAPAGLOBAL{
                             let paletaReferencia = objReferencia["Color"];                             
                             let iconoDBReferencia = dataIcono.filter(x => x["Paleta"] == paletaReferencia);
                             let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
+                            
                             let jsonIconosRandom = {}; 
                             let contadorIcono = 0;
                             //console.log("2",capaUnicaName,paletaReferencia);  
@@ -297,9 +289,8 @@ class MAPAGLOBAL{
                                     jsonIconosRandom[x] = getIcon(dataIcono[contadorIcono]["Link"])                                    
                                 }     
                             });   
-                            console.log("aka",capaUnicaName,jsonIconosRandom);
-                            setIcon = (feature, latlng) => {
-                                
+                            //console.log("aka",capaUnicaName,jsonIconosRandom);
+                            setIcon = (feature, latlng) => {                                
                                 let descripcionCapa = feature.properties[nameProperties];
                                 let myIcon = jsonIconosRandom[descripcionCapa];
                                 return L.marker(latlng, { icon: myIcon });
@@ -346,8 +337,16 @@ class MAPAGLOBAL{
                 else{
                     if(dataGlobalCapas.length == 1){
                         if(dataGlobalCapas[0]["Variable"] == "default"){
-                            console.log("poligono default");
-                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName))    
+                            
+                            let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
+                            let jsonIconosRandom = {}; 
+                            //jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
+                            jsonIconosRandom[objReferencia["Propiedad"]] = objReferencia["Color"];
+                            estiloDinamico = () => {
+                                return {"color":jsonIconosRandom[objReferencia["Propiedad"]]}
+                            }
+                            console.log(capaUnicaName);
+                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom,tituloLeyenda))    
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
                             //let paletaNombre = dataGlobalCapas[0]["Paleta"]; 
