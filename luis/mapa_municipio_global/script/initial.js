@@ -405,6 +405,22 @@ class MAPAGLOBAL{
             position: 'topright',
             collapsed:  true
         }).addTo(map);
+        $('.op1').on('click', function(){
+            comunaBase["mapasBases"]["Mapa Oscuro"].remove();
+            comunaBase["mapasBases"]["Mapa Satelital"].remove();
+            comunaBase["mapasBases"]["Mapa claro"].addTo(map);
+        });
+        $('.op2').on('click', function(){
+            comunaBase["mapasBases"]["Mapa claro"].remove();
+            comunaBase["mapasBases"]["Mapa Satelital"].remove();
+            comunaBase["mapasBases"]["Mapa Oscuro"].addTo(map);
+        });
+        $('.op3').on('click', function(){
+            comunaBase["mapasBases"]["Mapa claro"].remove();
+            comunaBase["mapasBases"]["Mapa Oscuro"].remove();
+            comunaBase["mapasBases"]["Mapa Satelital"].remove();
+            comunaBase["mapasBases"]["Mapa Satelital"].addTo(map);
+        });
         this.legendas.forEach(x => x.setLegenda());      
     }
 }
@@ -420,25 +436,27 @@ let base = comunaBase["mapasBases"]["Mapa claro"];
         let base2 = comunaBase["mapasBases"]["Mapa Oscuro"]; 
         let base3 = comunaBase["mapasBases"]["Mapa Satelital"];
 
-
+        
+        /*
         $(document).ready(function() {
             $('.op1').on('click', function(){
-                base2.remove();
-                base3.remove();
-                base.addTo(map);
+                comunaBase["mapasBases"]["Mapa Oscuro"].remove();
+                comunaBase["mapasBases"]["Mapa Satelital"].remove();
+                comunaBase["mapasBases"]["Mapa claro"].addTo(map);
             });
             $('.op2').on('click', function(){
-                base.remove();
-                base3.remove();
-                base2.addTo(map);
+                comunaBase["mapasBases"]["Mapa claro"].remove();
+                comunaBase["mapasBases"]["Mapa Satelital"].remove();
+                comunaBase["mapasBases"]["Mapa Oscuro"].addTo(map);
             });
             $('.op3').on('click', function(){
-                base.remove();
-                base2.remove();
-                base3.remove();
-                base3.addTo(map);
+                comunaBase["mapasBases"]["Mapa claro"].remove();
+                comunaBase["mapasBases"]["Mapa Oscuro"].remove();
+                comunaBase["mapasBases"]["Mapa Satelital"].remove();
+                comunaBase["mapasBases"]["Mapa Satelital"].addTo(map);
             });
         });
+        */
 
 
 /*
