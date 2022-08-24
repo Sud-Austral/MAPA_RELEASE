@@ -51,7 +51,15 @@ function getMapaBase(){
         maxZoom: 18,    
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        id: 'mapbox/streets-v11',
+        //id: 'mapbox/streets-v11',
+        id:"mapbox/light-v10",
+        /*
+        mapbox/light-v10
+        mapbox/dark-v10
+        mapbox/satellite-streets-v11
+        mapbox/navigation-day-v1
+        mapbox/navigation-night-v1
+        */
         tileSize: 512,
         zoomOffset: -1
     });
