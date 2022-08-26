@@ -5,6 +5,7 @@ let map = L.map("mapid",{
     zoomSnap: 0,
     zoomDelta: 0.25
 }).setView([-33.458725187656356, -70.66008634501547],10);
+
 function slideToggleLegend(idLegenda) {
     //alert( "clicked " +idLegenda);
     $( "#" + idLegenda ).slideToggle( "slow", function() {
@@ -51,8 +52,7 @@ function getMapaBase(){
         maxZoom: 18,    
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        //id: 'mapbox/streets-v11',
-        id:"mapbox/light-v10",
+        id: 'mapbox/streets-v11',
         /*
         mapbox/light-v10
         mapbox/dark-v10
@@ -110,8 +110,7 @@ class COMUNABASE{
         map.fitBounds(this.shapeBaseComuna.getBounds());
         let zoom = map.getZoom();
         let zoomMin = 10
-        map.setZoom(zoom > zoomMin ? zoomMin : zoom);
-        
+        map.setZoom(zoom > zoomMin ? zoomMin : zoom);     
     }
 }
 
@@ -134,10 +133,6 @@ class LEGENDMAP{
         let dicAux = this.dictIcono;
         let dicAux2 = this.dictColor;
         let idName = this.idName;
-        //console.log("SetLEgenda")
-        //console.log(nombre);
-        //console.log(1,dicAux)
-        //console.log(2,dicAux2)
         this.legend.onAdd = function () {
             var div = L.DomUtil.create('div', 'legend');
             let htmlString = "";
@@ -180,13 +175,7 @@ class LEGENDMAP{
         $(`#${this.idName}`).parent().parent().parent().find("input").change(() => {
             let check = $(`#${this.idName}`).parent().parent().parent().find("input").prop("checked");
             check?this.legend.addTo(map):this.legend.remove();
-        });
-        /*
-        $("#clickme").on( "click", function() {
-                alert("Hola");
-
-        */
-        
+        });        
     }
 }
 
@@ -203,16 +192,14 @@ class MAPAGLOBAL{
                 .replaceAll("tree","");
             return capa;
         });
-        
         this.dataGlobalNivel1 = dataCapaGlobal.map(capa => {
             capa["urlData"] = `${capa.url.split("?")[0]}${comunaBase.codigo_comuna}.json`;
-            console.log(capa["urlData"]);
             capa["data"] = getData(capa["urlData"]);
             return capa;
         }).filter( capa =>
             capa["data"] != null
         );
-        //console.log(dataGlobalNivel1.map(x => x["url"]));
+        
         //
         this.legendas = []
         this.ContadorColores = 0;
@@ -220,8 +207,7 @@ class MAPAGLOBAL{
         this.dataGlobalNivel1.forEach(capa =>{
             let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
                 capaGlobal.idcapa == capa.idcapa
-            );
-            
+            );            
             let dataGlobalDescripCapaUnique2 = dataGlobalNivel2.filter(x => x["popup_0_1"] == 1);
             //console.log("aka2",dataGlobalDescripCapaUnique2);
             let dataGlobalDescripCapaUnique = [...new Set(dataGlobalNivel2
@@ -355,7 +341,6 @@ class MAPAGLOBAL{
                             estiloDinamico = () => {
                                 return {"color":jsonIconosRandom[objReferencia["Propiedad"]]}
                             }
-                            console.log(capaUnicaName);
                             this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom,tituloLeyenda))    
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
@@ -443,99 +428,10 @@ let detalle = new MAPAGLOBAL(comunaBase);
 //let bandera = true;
 
 let base = comunaBase["mapasBases"]["Mapa claro"];
-        let base2 = comunaBase["mapasBases"]["Mapa Oscuro"]; 
-        let base3 = comunaBase["mapasBases"]["Mapa Satelital"];
-
-        
-        /*
-        $(document).ready(function() {
-            $('.op1').on('click', function(){
-                comunaBase["mapasBases"]["Mapa Oscuro"].remove();
-                comunaBase["mapasBases"]["Mapa Satelital"].remove();
-                comunaBase["mapasBases"]["Mapa claro"].addTo(map);
-            });
-            $('.op2').on('click', function(){
-                comunaBase["mapasBases"]["Mapa claro"].remove();
-                comunaBase["mapasBases"]["Mapa Satelital"].remove();
-                comunaBase["mapasBases"]["Mapa Oscuro"].addTo(map);
-            });
-            $('.op3').on('click', function(){
-                comunaBase["mapasBases"]["Mapa claro"].remove();
-                comunaBase["mapasBases"]["Mapa Oscuro"].remove();
-                comunaBase["mapasBases"]["Mapa Satelital"].remove();
-                comunaBase["mapasBases"]["Mapa Satelital"].addTo(map);
-            });
-        });
-        */
+let base2 = comunaBase["mapasBases"]["Mapa Oscuro"]; 
+let base3 = comunaBase["mapasBases"]["Mapa Satelital"];
 
 
-/*
-detalle.legendas.forEach(x =>{
-    console.log(x);
-    //x.setLegenda()
-    $(x.idName).parent().parent().click(() => {
-        console.log("Hola mundo")
-    //console.log($("#AcuiferosTipodeLimitacion").parent().parent().html())
-        if(bandera){
-            x.legend.addTo(map);
-        }
-        else{
-            x.legend.remove();
-        }
-        bandera = !bandera;
-    });
-});
-
-/*
-var legend = L.control({ position: 'bottomleft' });
-
-legend.onAdd = function () {
-    var div = L.DomUtil.create('div', 'legend');
-
-    if(typeVar == 1){
-        div.innerHTML +=
-        '<div>' +
-        '<p class="titleLegend"><b> Hola wena wena</b></p>' +
-        '<span class="desc1" style="background: #e82c2c;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'+
-        '</div>';
-
-        return div;
-    };
-}
-
-//legend.addTo(map);
-
-var legend2 = L.control({ position: 'bottomleft' });
-
-legend2.onAdd = function () {
-    var div = L.DomUtil.create('div', 'legend');
-
-    if(typeVar == 1){
-        div.innerHTML +=
-        '<div>' +
-        '<p class="titleLegend"><b> Hola wena wena</b></p>' +
-        '<span class="desc1" style="background: #e82c2c;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'+
-        '</div>';
-
-        return div;
-    };
-}
-
-//legend2.addTo(map);
-
-
-$("#AcuiferosTipodeLimitacion").parent().parent().click(() => {
-console.log("Hola mundo")
-console.log($("#AcuiferosTipodeLimitacion").parent().parent().html())
-if(bandera){
-    legend.addTo(map);
-}
-else{
-    legend.remove();
-}
-bandera = !bandera;
-});
-*/
 
 
 
