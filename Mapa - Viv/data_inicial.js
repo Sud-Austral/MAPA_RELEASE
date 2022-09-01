@@ -6,6 +6,19 @@ let map = L.map("mapid",{
 	zoomDelta: 0.25
 }).setView([-33.458725187656356, -70.66008634501547],13);
 
+var options = {
+    position: 'topright',
+    lengthUnit: {
+      factor: null,    //  from km to nm
+      display: 'Km',
+      decimal: 2,
+      label: 'Distancia'
+    }
+  };
+
+L.control.ruler(options).addTo(map);
+
+
 class CAPAS_AGUA{
     constructor(cod_com){
         cod_com = cod_com? cod_com:codigo_comuna;
