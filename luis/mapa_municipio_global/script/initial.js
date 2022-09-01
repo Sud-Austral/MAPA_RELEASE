@@ -237,8 +237,7 @@ class MAPAGLOBAL{
             dataGlobalNivel2.forEach(x => diccionarioNombrePropiedadPopup[x.Propiedad] = x["descripcion_pop-up"]);
             //console.log("aka2",dataGlobalPropiedadesUnique);
             
-            function onEachFeatureCustom(feature, layer){
-                
+            function onEachFeatureCustom(feature, layer){               
                 
 
                 let htmlString = dataGlobalPropiedadesUnique.map(element => getStringHTML4(feature, element,diccionarioNombrePropiedadPopup[element])).toString();
@@ -269,11 +268,16 @@ class MAPAGLOBAL{
                         if(dataGlobalCapas[0]["Variable"] == "default"){
                             let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
                             let jsonIconosRandom = {}; 
+                            let jsonIconosRandom2 = {};
                             jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
+                            //jsonIconosRandom["Nada"] = "Hola"
                             setIcon = (feature,latlng) => {
                                 return L.marker(latlng, { icon: jsonIconosRandom[objReferencia["Propiedad"]] });
                             }
-                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda));  
+                            jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
+                            console.log("Aka 50",jsonIconosRandom);
+                            //descripcion_pop-up
+                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom2,null,tituloLeyenda));  
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
                             
@@ -350,13 +354,15 @@ class MAPAGLOBAL{
                             
                             let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
                             let jsonIconosRandom = {}; 
+                            let jsonIconosRandom2 = {}; 
                             //jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
                             jsonIconosRandom[objReferencia["Propiedad"]] = objReferencia["Color"];
+
                             estiloDinamico = () => {
                                 return {"color":jsonIconosRandom[objReferencia["Propiedad"]]}
                             }
-                            console.log(capaUnicaName);
-                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom,tituloLeyenda))    
+                            jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
+                            this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda))    
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
                             //let paletaNombre = dataGlobalCapas[0]["Paleta"]; 
