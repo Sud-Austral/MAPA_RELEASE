@@ -190,6 +190,9 @@ class LEGENDMAP{
     }
 }
 
+let dataColorDB = [{"Nro":1,"Color":"#FF7D41","Paleta":"rojos"},{"Nro":2,"Color":"#8B0026","Paleta":"rojos"},{"Nro":3,"Color":"#FFAA43","Paleta":"rojos"},{"Nro":4,"Color":"#ED3552","Paleta":"rojos"},{"Nro":5,"Color":"#FFD3C9","Paleta":"rojos"},{"Nro":6,"Color":"#F60000","Paleta":"rojos"},{"Nro":7,"Color":"#DE52A7","Paleta":"rojos"},{"Nro":8,"Color":"#C10825","Paleta":"rojos"},{"Nro":9,"Color":"#FF920D","Paleta":"rojos"},{"Nro":10,"Color":"#ED3552","Paleta":"rojos"},{"Nro":11,"Color":"#FF4F4F","Paleta":"rojos"},{"Nro":12,"Color":"#EC6394","Paleta":"rojos"},{"Nro":13,"Color":"#A547FD","Paleta":"rojos"},{"Nro":14,"Color":"#ED3552","Paleta":"rojos"},{"Nro":15,"Color":"#FF7D41","Paleta":"rojos"},{"Nro":16,"Color":"#FFAA43","Paleta":"rojos"},{"Nro":17,"Color":"#7B0B1D","Paleta":"rojos"},{"Nro":18,"Color":"#FF788D","Paleta":"rojos"},{"Nro":19,"Color":"#FF643F","Paleta":"rojos"},{"Nro":20,"Color":"#A03B14","Paleta":"rojos"},{"Nro":21,"Color":"#F4B084","Paleta":"rojos"},{"Nro":22,"Color":"#FFB7AB","Paleta":"rojos"},{"Nro":23,"Color":"#FF3300","Paleta":"rojos"},{"Nro":24,"Color":"#C27E89","Paleta":"rojos"},{"Nro":25,"Color":"#C10825","Paleta":"rojos"},{"Nro":26,"Color":"#FC4E2A","Paleta":"rojos"},{"Nro":27,"Color":"#FF6019","Paleta":"rojos"},{"Nro":28,"Color":"#FFABAB","Paleta":"rojos"},{"Nro":29,"Color":"#D81E00","Paleta":"rojos"},{"Nro":30,"Color":"#E67E00","Paleta":"rojos"},{"Nro":31,"Color":"#CEAACD","Paleta":"rojos"},{"Nro":32,"Color":"#F8CBAD","Paleta":"rojos"},{"Nro":33,"Color":"#CFAFE7","Paleta":"rojos"},{"Nro":34,"Color":"#FF7D41","Paleta":"rojos"},{"Nro":35,"Color":"#FF788D","Paleta":"rojos"},{"Nro":36,"Color":"#A469D1","Paleta":"rojos"},{"Nro":37,"Color":"#FC4E2A","Paleta":"rojos"},{"Nro":38,"Color":"#FCE4D6","Paleta":"rojos"},{"Nro":39,"Color":"#FD8D3C","Paleta":"rojos"},{"Nro":40,"Color":"#FFA48F","Paleta":"rojos"}].reverse();
+    
+
 class MAPAGLOBAL{
     constructor(comunaBase){          
         //let comunaBase = new COMUNABASE();    
@@ -197,9 +200,34 @@ class MAPAGLOBAL{
         
         //console.log(JSON.parse(rawData))
         let data =  JSON.parse(rawData)
-        //console.log(L.geoJson(data));
+        let dataProperties = data["features"].map(x => x["properties"]).filter(x => x["chl_general_2020"]);
+        let maxProperties =  Math.max(...dataProperties.map(x => x["chl_general_2020"]));
+        let minProperties =  Math.min(...dataProperties.map(x => x["chl_general_2020"]));
+        let rango = maxProperties - minProperties;
+        let avance = rango / 100;
+
+        function getIndiceColor(numero){
+            if(!numero){
+                return "#FFFFFF"
+            }
+            for (let index = 0; index < 100; index++) {
+                if(minProperties + (index + 1) * avance >= numero){
+                    console.log(`rgba(${index}%, 0%, ${100-index}%)`);
+                    //return dataColorDB[index]["Color"];
+
+                    //return `rgba(0, 0, 255, ${index/100})`;
+                    return `rgba(${index}%, 0%, ${100-index}%)`;
+                    //return `rgba(100%, 0%, 100%)`;
+                }      
+            }
+        }
+        function estiloDB2(feature){
+            return {"weight": 0.5,"color": getIndiceColor(feature["properties"]["chl_general_2020"])}
+        } 
+         
+        console.log(getIndiceColor(200));
         //this.jsonTotalCapas["Ejemplo"] = L.geoJson(JSON.parse(rawData)); 
-        this.jsonTotalCapas["Ejemplo"] = L.geoJson(data, {onEachFeature: onEachFeature2});  
+        this.jsonTotalCapas["Ejemplo"] = L.geoJson(data, {style:estiloDB2,onEachFeature: onEachFeature2});  
         this.controlTotalCapas = L.control.layers(comunaBase.mapasBases, this.jsonTotalCapas, {
             position: 'topright',
             collapsed:  true
