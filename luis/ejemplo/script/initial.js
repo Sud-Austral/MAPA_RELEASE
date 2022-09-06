@@ -213,6 +213,8 @@ class MAPAGLOBAL{
             for (let index = 0; index < 100; index++) {
                 if(minProperties + (index + 1) * avance >= numero){
                     console.log(`rgba(${index}%, 0%, ${100-index}%)`);
+
+                    
                     //return dataColorDB[index]["Color"];
 
                     //return `rgba(0, 0, 255, ${index/100})`;
@@ -222,7 +224,7 @@ class MAPAGLOBAL{
             }
         }
         function estiloDB2(feature){
-            return {"weight": 0.5,"color": getIndiceColor(feature["properties"]["chl_general_2020"])}
+            return {"opacity": 1,"fillOpacity": 1,"weight": 1,"color": getIndiceColor(feature["properties"]["chl_general_2020"])}
         } 
          
         console.log(getIndiceColor(200));
