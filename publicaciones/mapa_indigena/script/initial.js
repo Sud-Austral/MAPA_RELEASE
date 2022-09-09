@@ -331,14 +331,17 @@ class MAPAGLOBAL{
                     
                 }
                 else{
+                    
                     if(dataGlobalCapas.length == 1){
                         if(dataGlobalCapas[0]["Variable"] == "default"){
-                            
+                            console.log(capaUnicaName)
                             let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
                             let jsonIconosRandom = {}; 
                             let jsonIconosRandom2 = {}; 
                             //jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
                             jsonIconosRandom[objReferencia["Propiedad"]] = objReferencia["Color"];
+
+                            console.log(objReferencia)
                             estiloDinamico = () => {
                                 return {"color":jsonIconosRandom[objReferencia["Propiedad"]]}
                             }
@@ -401,7 +404,11 @@ class MAPAGLOBAL{
                 }
             });
         });        
-        this.controlTotalCapas = L.control.layers(comunaBase.mapasBases, this.jsonTotalCapas, {
+        this.controlTotalCapas1 = L.control.layers(comunaBase.mapasBases, null, {
+            position: 'topright',
+            collapsed:  true
+        }).addTo(map);
+        this.controlTotalCapas2 = L.control.layers(null, this.jsonTotalCapas, {
             position: 'topright',
             collapsed:  true
         }).addTo(map);
@@ -436,6 +443,9 @@ let base = comunaBase["mapasBases"]["Mapa claro"];
 let base2 = comunaBase["mapasBases"]["Mapa Oscuro"]; 
 let base3 = comunaBase["mapasBases"]["Mapa Satelital"];
 
+
+//$(
+console.log($(".leaflet-control-layers-toggle").eq(1).css("background-color","black"))//.css("background-color","black") //[0]//].css("background-color","black")
 
 
 
