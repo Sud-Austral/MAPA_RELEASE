@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Base</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!--Jquery, necesario para la lectura de los datos.-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
+        integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
+        crossorigin=""></script>
+    <!-- Link viene de la documentación -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
+        integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
+        crossorigin="" />
+    <!-- Link del CSS -->
+    <link rel="stylesheet" type="text/css" href="style/base.css">
+    <!-- Agrupación de puntos -->
+    <link rel="stylesheet" type="text/css" href="dist/MarkerCluster.css">
+    <link rel="stylesheet" type="text/css" href="dist/MarkerCluster.Default.css">
+    <script src="dist/leaflet.markercluster-src.js"></script>
+    <script src="dist/leaflet-providers.js"></script>
+</head>
+<body>
+    <div class="loader">
+    </div>
+    <div id="mapid" class="landscape">
+        <div id="menu">
+            <ul>
+                <li class="op1">MAPA CLARO</li>
+                <li class="op2">MAPA OSCURO</li>
+                <li class="op3">MAPA SATELITAL</li>
+                <li onclick="print(window)">Imprimir</li>
+            </ul>
+            
+        </div>
+    </div>
+
+
+
+<!--
+    <script src="data/dataGlobal3.json"></script>
+<script src="data/dataCapa3.json"></script>
+-->
+<script src="data/dataIcono1.json?101"></script>
+<script src="data/dataColor1.json?101"></script>
+
+
+<script src="data/colores.js"></script>
+<script src="data/iconos.js"></script>
+<script src="data2.json"></script>
+
+<script src="script/library_map.js?102"></script>
+<script src="script/library_map2.js?102"></script>
+<script src="script/initial.js?102"></script>
+<!--
+<script src="library_map.js"></script>
+<script src="data_inicial.js" ></script>
+<script src="Chile.js"></script>
+-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+
+
+
+
+</body>
+</html>
