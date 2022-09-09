@@ -7,8 +7,7 @@ const getDB = (urlData) =>{
     });
     return rawData;
 }
-console.log("hola")
+
 let dataCapaGlobal  = getDB("db/dataCapa1.json");
 let dataGlobal      = getDB("db/dataGlobal1.json");
-console.log(dataGlobal,dataCapaGlobal)
 
