@@ -1,19 +1,31 @@
-const customOptions = {
-    'className': 'custom'
-}
+const customOptions =
+        {
+            'className': 'custom'
+        }
 
 //Esta funcion toma una url publica y devuelve un objeto con los datos geograficos
+
 function getData(urlData) {
     let rawData;
     $.get({
-        url: urlData,
-        success: data => rawData = data,        
+        url: urlData,        
+        //error: function(xhr, statusText){
+        error: function(){    
+            console.log(urlData);
+        },        
+        success: function (data, status) {
+            rawData = data;
+        },        
         async: false
     });
-      
-    let dataJson = rawData? JSON.parse(rawData): null;
-    return dataJson?dataJson["features"].length > 0?dataJson:null:null;
+    if(rawData){
+        return JSON.parse(rawData);
+    }
+    else{
+        return null;
+    }    
 }
+
 //Esta funcion recibe el parametro CUT_COM de la url y devuelve el codigo
 function getComuna(){
     const valores = window.location.search;
@@ -24,11 +36,6 @@ function getComuna(){
     codigo_comuna = codigo_comuna?codigo_comuna:"13101"; 
     codigo_comuna = codigo_comuna.length == 5? codigo_comuna:  `0${codigo_comuna}`;
     return codigo_comuna;
-}
-
-function getStringHTML2(feature, nombreCapa) {
-    let htmlString = "<b><center> " + nombreCapa + "</b> : "  + feature.properties[nombreCapa] + " </center>";
-    return htmlString;
 }
 //
 function getStringHTML3(feature, nombreCapa) {
@@ -170,59 +177,5 @@ class SHAPE_CAPA2 {
       //this.shape = L.geoJson(this.data,{style:estiloDB,onEachFeature: onEachFeature2})   
       this.nombreCSS = `<span class="letrasControl"> ${this.nombre} </span>`  
     }
-}
-
-
-
-$(window).ready(function() {
-    $(".loader").fadeOut("slow");
-    //let capasData = new CAPAS_AGUA(codigo_comuna);
-    /*
-    var capaRegiones2 = L.control.layers(capas_base, capasData.overlayMaps, {
-        position: 'topright', // 'topleft', 'bottomleft', 'bottomright'
-        collapsed:  true
-    }).addTo(map);
-    */
-    //$(".loader").fadeOut("slow");
-    //let detalle = new MAPAGLOBAL(comunaBase);   
-    
-    $("#comunaID").parent().parent().parent().parent().parent().parent().css( "background", "black");
-    
-});
-
-//funcion para mostrar la simbologia (rango de color)
-function style(feature){
-    //console.log(feature.properties.SUPERFICIE);
-    return{
-        fillColor: '#884EA0',
-        weight: 2,
-        Opacity: 1,
-        color: 'red',
-        dashArray: '3',
-        fillOpacity: 0.2
-    }
-}
-//PopUp automatico
-
-
-
-function onEachFeature(feature, layer){
-    try {
-        let htmlString = Object.keys(feature.properties).map(element => getStringHTML2(feature, element)).toString();
-        htmlString = htmlString.replaceAll(",", "")
-        htmlString = htmlString + 
-        "</div><center><img class='banner2' src='https://raw.githubusercontent.com/Sud-Austral/mapa_glaciares/main/img/logo_DataIntelligence_normal.png' alt='Data Intelligence'/></center>";
-        //console.log(lista)
-        layer.bindPopup("<div class='parrafo_popup'>" + htmlString + "</div>", customOptions);
-    } catch (e) {
-        console.error(error);
-        //layer.bindPopup("Sin Información", customOptions);
-
-    }
-    layer.on({
-        mouseover: highlightFeature,
-        mouseout: resetHighlight,
-        click: zoomToFeature,
-    })
 }
 

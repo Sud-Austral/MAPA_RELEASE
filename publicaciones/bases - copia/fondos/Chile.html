@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Base</title>
+    <title>Mapa 1</title>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <!--Jquery, necesario para la lectura de los datos.-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
@@ -13,21 +12,40 @@
     <script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js"
         integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ=="
         crossorigin=""></script>
+
+
     <!-- Link viene de la documentación -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css"
         integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ=="
         crossorigin="" />
     <!-- Link del CSS -->
-    <link rel="stylesheet" type="text/css" href="style/base.css">
+    <link rel="stylesheet" type="text/css" href="Chile.css?101">
+
+
     <!-- Agrupación de puntos -->
     <link rel="stylesheet" type="text/css" href="dist/MarkerCluster.css">
     <link rel="stylesheet" type="text/css" href="dist/MarkerCluster.Default.css">
     <script src="dist/leaflet.markercluster-src.js"></script>
     <script src="dist/leaflet-providers.js"></script>
-</head>
+
+
+    </head>
 <body>
     <div class="loader">
     </div>
+    <!--
+    <i id="clickme" style="margin-top: 5%;" class="gg-minimize-alt"> </i>
+
+    <h1 id="book">Hola</h1>
+    <script>
+        $( "#clickme" ).click(function() {
+            $( "#book" ).slideToggle( "slow", function() {
+                // Animation complete.
+            });
+            });
+    </script>
+    -->
+    
     <div id="mapid" class="landscape">
         <div id="menu">
             <ul>
@@ -39,13 +57,28 @@
             
         </div>
     </div>
+    <!--
+    <div class="form-check">
+        <input type="checkbox" class="form-check-input" id="exampleCheck1">
+        <label class="form-check-label" for="exampleCheck1">Check me out</label>
+      </div>
+    -->
+    <!-- div que contiene el mapa 
+    <div id="map1"></div>-->
 
-
-
-<!--
-    <script src="data/dataGlobal3.json"></script>
-<script src="data/dataCapa3.json"></script>
+    <!-- Link viene de la documentación -->
+    <!--Funcionalidades
+    
+    
+    
+    
 -->
+<!--
+<script src="data/dataGlobal.json"></script>
+<script src="data/dataCapa.json"></script>
+-->
+
+
 <script src="data/dataIcono1.json?101"></script>
 <script src="data/dataColor1.json?101"></script>
 
@@ -54,7 +87,6 @@
 <script src="data/iconos.js"></script>
 <script src="data2.json"></script>
 
-<script src="script/library_map.js?102"></script>
 <script src="script/library_map2.js?102"></script>
 <script src="script/initial.js?102"></script>
 <!--
