@@ -26,7 +26,7 @@ const removeAccents = (str) => {
     return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
     .replaceAll(" ","")
     .replaceAll(":","")
-    .replace(/[^a-zA-Z ]/g, "");
+    .replace(/[^a-zA-Z0-9 ]/g, "");
     } 
 
 function getIcon(url){
