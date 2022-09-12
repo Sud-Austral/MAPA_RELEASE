@@ -348,6 +348,7 @@ class MAPAGLOBAL{
                             //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom,tituloLeyenda))    
                         }
                         if(dataGlobalCapas[0]["Variable"] == "random"){
+                            console.log(capaUnica)
                             //let paletaNombre = dataGlobalCapas[0]["Paleta"]; 
                             //let nameProperties = dataGlobal.filter(x => x["descripcion_capa"] == capaUnica)[0]["Propiedad"];
                             //capaUnicaName
@@ -356,6 +357,7 @@ class MAPAGLOBAL{
                             let nameProperties = objReferencia["Propiedad"];
                             let paletaReferencia = objReferencia["Color"];
                             let colorDBReferencia = dataColor.filter(x => x["Paleta"] == paletaReferencia);
+                            console.log(dataColor)
                             //console.log(colorDBReferencia);
 
                             let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
@@ -371,11 +373,12 @@ class MAPAGLOBAL{
                                     jsonColoresRandom[x] = dataColor[contadorColor]["Color"];
                                 }                                
                             });
+                            
                             estiloDinamico = (feature) => {
                                 let descripcionCapa = feature.properties[nameProperties];
                                 return {"color":jsonColoresRandom[descripcionCapa]}
                             }
-
+                            console.log(jsonColoresRandom)
                             this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
                         }
                     }
