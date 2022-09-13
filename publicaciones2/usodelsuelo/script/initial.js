@@ -407,7 +407,11 @@ class MAPAGLOBAL{
                 }
             });
         });        
-        this.controlTotalCapas = L.control.layers(comunaBase.mapasBases, this.jsonTotalCapas, {
+        this.controlTotalCapas1 = L.control.layers(comunaBase.mapasBases, null, {
+            position: 'topright',
+            collapsed:  true
+        }).addTo(map);
+        this.controlTotalCapas2 = L.control.layers(null, this.jsonTotalCapas, {
             position: 'topright',
             collapsed:  true
         }).addTo(map);
@@ -441,6 +445,8 @@ let detalle = new MAPAGLOBAL(comunaBase);
 let base = comunaBase["mapasBases"]["Mapa claro"];
 let base2 = comunaBase["mapasBases"]["Mapa Oscuro"]; 
 let base3 = comunaBase["mapasBases"]["Mapa Satelital"];
+
+//console.log($(".leaflet-control-layers-toggle").eq(1).css("background-color","#FFA07A"))//.css("background-color","black") //[0]//].css("background-color","black")
 
 
 
