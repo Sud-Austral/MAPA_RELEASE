@@ -12,19 +12,21 @@ def main():
         print(j["nombre"])
         #copy_tree(fr"{os.getcwd()}/luis/bases/main", fr"{os.getcwd()}/publicaciones2/{j['nombre']}")
         copy_tree("luis/bases/main",f"publicaciones2/{j['nombre']}")
-        """
         ref1 = pd.read_excel(j["excel"], sheet_name="BASE Global")
+        ref2 = pd.read_excel(j["excel"], sheet_name="Capas")
+        """
+        
 
         with open(fr"publicaciones2/{j['nombre']}/db", 'w', encoding='utf-8') as file:
             ref1.to_json(file,orient="records",force_ascii=False)
 
-        ref2 = pd.read_excel(j["excel"], sheet_name="Capas")
+        
 
 
         with open(fr"publicaciones2/{j['nombre']}/db", 'w', encoding='utf-8') as file:
             ref2.to_json(file,orient="records",force_ascii=False)
         """
-
+        return
 
 if __name__ == '__main__':
     print("Comenzo...")
