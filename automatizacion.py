@@ -11,7 +11,8 @@ def main():
     for i,j in df.iterrows():
         print(j["nombre"])
         #copy_tree(fr"{os.getcwd()}/luis/bases/main", fr"{os.getcwd()}/publicaciones2/{j['nombre']}")
-        copy_tree("hola","hola2")
+        copy_tree("luis/bases","hola2")
+        """
         ref1 = pd.read_excel(j["excel"], sheet_name="BASE Global")
 
         with open(fr"publicaciones2/{j['nombre']}/db", 'w', encoding='utf-8') as file:
@@ -22,7 +23,7 @@ def main():
 
         with open(fr"publicaciones2/{j['nombre']}/db", 'w', encoding='utf-8') as file:
             ref2.to_json(file,orient="records",force_ascii=False)
-
+        """
 
 
 if __name__ == '__main__':
