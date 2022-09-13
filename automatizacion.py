@@ -21,6 +21,13 @@ def main():
         with open(f"publicaciones2/{j['nombre']}/db/dataCapa1.json", 'w', encoding='utf-8') as file:
             ref2.to_json(file,orient="records",force_ascii=False)
 
+        f = open (f"publicaciones2/{j['nombre']}/Index.html",'r')
+        contenido = f.read()
+        f.close()
+
+        with open(f"publicaciones2/{j['nombre']}/Index.html", 'w', encoding='utf-8') as file:
+            file.write(contenido.replace("*TITULO_PAGINA*",j["titulo"]))
+
         print(j["nombre"])
         """
         
