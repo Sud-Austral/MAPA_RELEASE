@@ -11,7 +11,7 @@ def main():
     for i,j in df.iterrows():
         print(j["nombre"])
         #copy_tree(fr"{os.getcwd()}/luis/bases/main", fr"{os.getcwd()}/publicaciones2/{j['nombre']}")
-        copy_tree("luis/bases","hola2")
+        copy_tree("luis/bases/main","hola2")
         """
         ref1 = pd.read_excel(j["excel"], sheet_name="BASE Global")
 
