@@ -15,10 +15,10 @@ def main():
         ref1 = pd.read_excel(j["excel"], sheet_name="BASE Global")
         ref2 = pd.read_excel(j["excel"], sheet_name="Capas")
 
-        with open(f"publicaciones2/{j['nombre']}/db", 'w', encoding='utf-8') as file:
+        with open(f"publicaciones2/{j['nombre']}/db/dataGlobal1.json", 'w', encoding='utf-8') as file:
             ref1.to_json(file,orient="records",force_ascii=False)
 
-        with open(f"publicaciones2/{j['nombre']}/db", 'w', encoding='utf-8') as file:
+        with open(f"publicaciones2/{j['nombre']}/db/dataCapa1.json", 'w', encoding='utf-8') as file:
             ref2.to_json(file,orient="records",force_ascii=False)
 
         print(j["nombre"])
