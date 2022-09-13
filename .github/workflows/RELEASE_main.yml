@@ -4,7 +4,7 @@ name: RELEASE_main
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ gh-pages, main ]
+    branches: [ main ]
   #schedule:
   #  - cron:  '0 * * * 1'
   #  - cron:  '50 17 * * *'
