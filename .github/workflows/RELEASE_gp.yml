@@ -1,10 +1,10 @@
-name: RELEASE
+name: RELEASE_gp
 
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: [ gh-pages, main ]
+    branches: [ gh-pages ]
   #schedule:
   #  - cron:  '0 * * * 1'
   #  - cron:  '50 17 * * *'
@@ -50,8 +50,6 @@ jobs:
         DEPLOY_TOKEN: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
         USER: ${{ secrets.GH_PAGES_USER }}
         FILTER:  'is%3Apublic%20org%3Adp6'
-
-        
 
   #github-pages:
   #  runs-on: ubuntu-latest

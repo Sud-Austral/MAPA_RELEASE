@@ -333,14 +333,20 @@ class MAPAGLOBAL{
                 else{
                     if(dataGlobalCapas.length == 1){
                         if(dataGlobalCapas[0]["Variable"] == "default"){
-                            
+                            /*
+                            color: "#00008c",
+                            opacity: 0.6,
+                            fillColor: '#333333',
+                            fillOpacity: 0
+                            */
                             let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
                             let jsonIconosRandom = {}; 
                             let jsonIconosRandom2 = {}; 
                             //jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
                             jsonIconosRandom[objReferencia["Propiedad"]] = objReferencia["Color"];
                             estiloDinamico = () => {
-                                return {"color":jsonIconosRandom[objReferencia["Propiedad"]]}
+                                return {"fillOpacity":0.5,"color":jsonIconosRandom[objReferencia["Propiedad"]]}
+                                //return {"color":"#000000","fillOpacity":0.5}
                             }
                             jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
                             this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda))    
@@ -373,7 +379,7 @@ class MAPAGLOBAL{
                             });
                             estiloDinamico = (feature) => {
                                 let descripcionCapa = feature.properties[nameProperties];
-                                return {"color":jsonColoresRandom[descripcionCapa]}
+                                return {"fillOpacity":0.5,"color":jsonColoresRandom[descripcionCapa]}
                             }
 
                             this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
@@ -393,7 +399,7 @@ class MAPAGLOBAL{
                         //console.log(jsonColores)
                         estiloDinamico = (feature) =>{
                             let valuePropertie = feature.properties[descripcionCapa];
-                            return {"color":jsonColores[valuePropertie]}
+                            return {"fillOpacity":0.5,"color":jsonColores[valuePropertie]}
                         }
                         this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores,tituloLeyenda));
                         }
@@ -401,7 +407,11 @@ class MAPAGLOBAL{
                 }
             });
         });        
-        this.controlTotalCapas = L.control.layers(comunaBase.mapasBases, this.jsonTotalCapas, {
+        this.controlTotalCapas1 = L.control.layers(comunaBase.mapasBases, null, {
+            position: 'topright',
+            collapsed:  true
+        }).addTo(map);
+        this.controlTotalCapas2 = L.control.layers(null, this.jsonTotalCapas, {
             position: 'topright',
             collapsed:  true
         }).addTo(map);
@@ -435,6 +445,8 @@ let detalle = new MAPAGLOBAL(comunaBase);
 let base = comunaBase["mapasBases"]["Mapa claro"];
 let base2 = comunaBase["mapasBases"]["Mapa Oscuro"]; 
 let base3 = comunaBase["mapasBases"]["Mapa Satelital"];
+
+//console.log($(".leaflet-control-layers-toggle").eq(1).css("background-color","#FFA07A"))//.css("background-color","black") //[0]//].css("background-color","black")
 
 
 
