@@ -189,7 +189,12 @@ class MAPAGLOBAL{
         });
         this.dataGlobalNivel1 = dataCapaGlobal.map(capa => {
             capa["urlData"] = `${capa.url.split("?")[0]}${comunaBase.codigo_comuna}.json`;
-            capa["data"] = getData(capa["urlData"]);
+            try {
+                capa["data"] = getData(capa["urlData"]);
+            } catch (error) {
+                console.log("Revisa " + capa["urlData"]);
+                capa["data"] = null;
+            }            
             return capa;
         }).filter( capa =>
             capa["data"] != null
