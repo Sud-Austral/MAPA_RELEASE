@@ -51,17 +51,25 @@ jobs:
         USER: ${{ secrets.GH_PAGES_USER }}
         FILTER:  'is%3Apublic%20org%3Adp6'
 
-  updateBranch:
-    name: Update staging branch
+  update-branch:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@master
-    - uses: Embraser01/update-git-branch-action@v1.0.0
-      if: github.ref == 'refs/heads/master'
-      with:
-        branch: gh-pages
-        force: 1 # To push-force to the branch
-        githubToken: ${{ secrets.PAT_TOKEN }} 
+      - uses: lcdsmao/update-branch@v3
+        with:
+          # Or use personal access token
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # One of MERGE, SQUASH, REBASE (default: MERGE)
+          autoMergeMethod: SQUASH
+          # Ignore pull requests without these labels
+          requiredLabels: auto-merge
+          # Required at least 2 approves (default: 0)
+          requiredApprovals: 2
+          # Required approvals from all requested reviewers
+          allRequestedReviewersMustApprove: true
+          # Required these status checks success
+          requiredStatusChecks: |
+            build_pr
+            WIP
 
   #github-pages:
   #  runs-on: ubuntu-latest
