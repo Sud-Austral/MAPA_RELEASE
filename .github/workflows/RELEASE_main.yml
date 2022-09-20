@@ -51,6 +51,19 @@ jobs:
         USER: ${{ secrets.GH_PAGES_USER }}
         FILTER:  'is%3Apublic%20org%3Adp6'
 
+  sync-branch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Merge development -> staging
+        uses: devmasx/merge-branch@master
+        with:
+          type: now
+          from_branch: main
+          target_branch: gh-pages
+          github_token: ${{ github.token }}
+
   #github-pages:
   #  runs-on: ubuntu-latest
   #  name: Update Github Pages Initiatives
