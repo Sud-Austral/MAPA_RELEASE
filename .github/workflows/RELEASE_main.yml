@@ -44,12 +44,7 @@ jobs:
         commit_author: DataIntelligence BOT <lmonsalve22@gmail.com>
         push_options: '--force'
     
-    - name: Jekyll update github pages without new commit
-      uses: DP6/jekyll-update-pages-action@v1.0.1
-      with:
-        DEPLOY_TOKEN: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
-        USER: ${{ secrets.GH_PAGES_USER }}
-        FILTER:  'is%3Apublic%20org%3Adp6'
+    
 
   sync-branch:
     runs-on: ubuntu-latest
@@ -63,6 +58,13 @@ jobs:
           from_branch: main
           target_branch: gh-pages
           github_token: ${{ github.token }}
+
+      - name: Jekyll update github pages without new commit
+        uses: DP6/jekyll-update-pages-action@v1.0.1
+        with:
+          DEPLOY_TOKEN: ${{ secrets.GH_PAGES_DEPLOY_TOKEN }}
+          USER: ${{ secrets.GH_PAGES_USER }}
+          FILTER:  'is%3Apublic%20org%3Adp6'
 
   #github-pages:
   #  runs-on: ubuntu-latest
