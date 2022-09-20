@@ -52,14 +52,12 @@ jobs:
         FILTER:  'is%3Apublic%20org%3Adp6'
 
     - uses: actions/checkout@master
-
-      - name: Merge main -> gh-pages
-        uses: devmasx/merge-branch@master
-        with:
-          type: now
-          from_branch: main
-          target_branch: gh-pages
-          github_token: ${{ github.token }}
+      uses: devmasx/merge-branch@master
+      with:
+        type: now
+        from_branch: main
+        target_branch: gh-pages
+        github_token: ${{ github.token }}
 
   #github-pages:
   #  runs-on: ubuntu-latest
