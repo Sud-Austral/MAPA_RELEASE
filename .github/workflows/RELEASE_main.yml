@@ -51,13 +51,17 @@ jobs:
         USER: ${{ secrets.GH_PAGES_USER }}
         FILTER:  'is%3Apublic%20org%3Adp6'
 
-    - name: Merge 
-      uses: actions/checkout@master
+  updateBranch:
+    name: Update staging branch
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: Embraser01/update-git-branch-action@v1.0.0
+      if: github.ref == 'refs/heads/main'
       with:
-        type: now
-        from_branch: main
-        target_branch: gh-pages
-        github_token: ${{ github.token }}
+        branch: gh-pages
+        force: 1 # To push-force to the branch
+        githubToken: ${{ secrets.PAT_TOKEN }} 
 
   #github-pages:
   #  runs-on: ubuntu-latest
