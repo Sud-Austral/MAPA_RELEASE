@@ -7,7 +7,8 @@ function getData(urlData) {
     let rawData;
     $.get({
         url: urlData,
-        success: data => rawData = data,        
+        success: data => rawData = data, 
+        error: () => console.log("No File in " + urlData),       
         async: false
     });
       

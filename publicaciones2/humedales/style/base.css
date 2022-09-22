@@ -149,6 +149,7 @@ Custom scrollbar leyenda
 .legendCustom{
     max-height: 130px;
     overflow: auto;
+    max-width: 300px;
 }
 
 .legendCustom::-webkit-scrollbar {
