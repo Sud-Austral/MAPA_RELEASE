@@ -41,7 +41,34 @@ function getMapaBase(){
     return objetos;
 }
 
+const removeAccents = (str) => {
+    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .replaceAll(" ","")
+    .replaceAll(":","")
+    .replace(/[^a-zA-Z0-9 ]/g, "");
+} 
 
+iconosDB = iconosDB.map( x =>{
+    x.replaceAll("https://github","https://raw.githubusercontent")
+    .replaceAll("/DATA_MAPA_PUBLIC_V2/raw","/DATA_MAPA_PUBLIC_V2")});
+
+function getIcon(url){
+    url = url?url:"https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/default.png";
+    let myIcon;
+    if(url.split(".")[1] == "svg"){
+        myIcon = L.icon({
+            iconUrl: url,
+            iconSize:  [50,50]   //[25, 25] // width and height of the image in pixels
+            });
+    }
+    else{
+        myIcon = L.icon({
+            iconUrl: url,
+            iconSize:  [25,25]   //[25, 25] // width and height of the image in pixels
+            });
+    }
+    return myIcon;
+}
 
 /*
 this.controlTotalCapas2 = L.control.layers(null, this.jsonTotalCapas, {

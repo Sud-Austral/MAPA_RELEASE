@@ -8,13 +8,20 @@
 ////////////////////////////////////////////
 */
 
+
+
 class UTIL {
+
+    
     //static longDescription;
     //static description = 'I square the triple of any number you provide';
     static setCapa(url,name,controlGlobalCapa) {
         $.get({
             url: url,
-            error: () => console.log("No File in " + url),
+            error: () => {console.log("No File in " + url);
+            var today2 = new Date();
+            var now2 = today2.toLocaleString();
+            console.log("final",name,now2);},
             success: () => console.log("Conected...")
         })
         .done(
@@ -23,7 +30,10 @@ class UTIL {
                     let final = JSON.parse(data);
                     let capa = L.geoJson(final);//.addTo(map);
                     controlGlobalCapa.setCapa(capa,name)
-                }               
+                    var today2 = new Date();
+                    var now2 = today2.toLocaleString();
+                    console.log("inicio",name,now2);
+                }          
             }
         )
     }
@@ -46,14 +56,182 @@ class UTIL {
                 if(!data){
                     return null;
                 }
-                console.log("Bien")
+                capa.data = JSON.parse(data);
                 let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
                     capaGlobal.idcapa == capa.idcapa
                 );
-                console.log(capa.Capa,capa.idcapa,dataGlobalNivel2)
-                capa.jsonData = JSON.parse(data);
-                capa.geojson = L.geoJson(capa.jsonData);//.addTo(map);
-                controlGlobalCapa.setCapa(capa.geojson,capa.Capa)             
+                let dataGlobalDescripCapaUnique = [...new Set(dataGlobalNivel2
+                                            .filter(x => x.popup_0_1 != null)
+                                            .sort((x,y) => {return x["posición_capa"] - y["posición_capa"]})
+                                            .map(x => x.descripcion_capa)
+                                            .filter(x => x)
+                                            )];
+                let dataGlobalPropiedadesUnique = [... new Set(dataGlobalNivel2.sort( x=> x.posicion_popup).map(x => x.Propiedad))]
+                let diccionarioNombrePropiedadPopup = {}
+                dataGlobalNivel2.forEach(x => diccionarioNombrePropiedadPopup[x.Propiedad] = x["descripcion_pop-up"]);
+                let onEachFeatureCustom = (feature, layer) =>{
+                    let htmlString = dataGlobalPropiedadesUnique.map(element => getStringHTML4(feature, element,diccionarioNombrePropiedadPopup[element])).toString();
+                    htmlString = htmlString.replaceAll(",", "")
+                    htmlString = htmlString + 
+                    "</div><center><img class='banner2' src='https://raw.githubusercontent.com/Sud-Austral/mapa_glaciares/main/img/logo_DataIntelligence_normal.png' alt='Data Intelligence'/></center>";
+                    layer.bindPopup("<div class='parrafo_popup'>" + htmlString + "</div>", customOptions);                
+                    layer.on({
+                        mouseover: highlightFeature,
+                        mouseout: resetHighlight,
+                        click: zoomToFeature,
+                    })
+                }
+                let tipoGeometria = capa["data"]["features"][0]["geometry"]["type"];
+                ///////////////////////////////////////////////////
+                ///////////////////////////////////////////////////
+                ///////////////////////////////////////////////////
+                dataGlobalDescripCapaUnique.sort(x => x["posición_capa"]).forEach(capaUnica =>{
+                    let capaUnicaID = removeAccents(capaUnica);
+                    let capaUnicaName = capaUnica;
+                    capaUnica = `<span id='${capaUnicaID}'>${capaUnica}</span>`;
+                    let estiloDinamico = null;
+                    let dataGlobalCapas = dataGlobalNivel2.filter(x => x["descripcion_capa"] == capaUnicaName);
+                    let tituloLeyenda = dataGlobalCapas[0]["titulo_leyenda"];
+                    let legend = null;
+                    
+                    if(tipoGeometria == "Point"){
+                        let setIcon;                   
+                        if(dataGlobalCapas.length == 1){                        
+                            if(dataGlobalCapas[0]["Variable"] == "default"){
+                                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
+                                let jsonIconosRandom = {};
+                                let jsonIconosRandom2 = {}; 
+                                jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
+                                setIcon = (feature,latlng) => {
+                                    return L.marker(latlng, { icon: jsonIconosRandom[objReferencia["Propiedad"]] });
+                                }
+                                jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
+                                //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom2,null,tituloLeyenda));  
+                                legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom2,null,tituloLeyenda);  
+                            }
+                            if(dataGlobalCapas[0]["Variable"] == "random"){
+                                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];
+                                let nameProperties = objReferencia["Propiedad"];
+                                let paletaReferencia = objReferencia["Color"];                             
+                                let iconoDBReferencia = dataIcono.filter(x => x["Paleta"] == paletaReferencia);
+                                let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
+                                
+                                let jsonIconosRandom = {}; 
+                                let contadorIcono = 0;
+                                propertiesUniques.forEach(x =>{
+                                    try {
+                                        jsonIconosRandom[x] = getIcon(iconoDBReferencia[contadorIcono%iconoDBReferencia.length]["Link"])
+                                        contadorIcono++;
+                                    } catch (error) {
+                                        jsonIconosRandom[x] = getIcon(dataIcono[contadorIcono]["Link"])                                    
+                                    }     
+                                }); 
+                                setIcon = (feature, latlng) => {                                
+                                    let descripcionCapa = feature.properties[nameProperties];
+                                    let myIcon = jsonIconosRandom[descripcionCapa];
+                                    return L.marker(latlng, { icon: myIcon });
+                                }                                
+                                //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda))
+                                legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda);
+                            }
+                        }
+                        else{
+                            let jsonColores = {};
+                            let descripcionCapa;
+                            dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName).forEach( x =>{
+                                descripcionCapa = x["Propiedad"];
+                                x.Variable = x.Variable?x.Variable:"";
+                                jsonColores[x.Variable] = x.url_icono
+                            });   
+                            setIcon = (feature, latlng) =>{
+                                let valorCapa = feature.properties[descripcionCapa];
+                                let myIcon;
+                                try {
+                                    myIcon = getIcon(jsonColores[valorCapa]); 
+                                    return L.marker(latlng, { icon: myIcon });   
+                                } catch (error) {
+                                    myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
+                                    return L.marker(latlng, { icon: myIcon });
+                                }
+                            }
+                            //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda))
+                            legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda);
+                        }
+                        
+                        this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
+                        controlGlobalCapa.setCapa(this.jsonTotalCapas[capaUnica],capaUnica)       
+                    }
+                    else{
+                        if(dataGlobalCapas.length == 1){
+                            if(dataGlobalCapas[0]["Variable"] == "default"){
+                                /* color: "#00008c",
+                                opacity: 0.6,
+                                fillColor: '#333333',
+                                fillOpacity: 0 */
+                                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
+                                let jsonIconosRandom = {}; 
+                                let jsonIconosRandom2 = {}; 
+                                //jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
+                                jsonIconosRandom[objReferencia["Propiedad"]] = objReferencia["Color"];
+                                estiloDinamico = () => {
+                                    return {"fillOpacity":0.5,"color":jsonIconosRandom[objReferencia["Propiedad"]]}
+                                }
+                                jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
+                                //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda))    
+                                legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
+                            }
+                            if(dataGlobalCapas[0]["Variable"] == "random"){
+                                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];
+                                let nameProperties = objReferencia["Propiedad"];
+                                let paletaReferencia = objReferencia["Color"];
+                                let colorDBReferencia = dataColor.filter(x => x["Paleta"] == paletaReferencia);
+                                let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
+                                let jsonColoresRandom = {}; 
+                                let contadorColor = 0;                           
+                                propertiesUniques.forEach(x =>{
+                                    try {
+                                        jsonColoresRandom[x] = colorDBReferencia[contadorColor%colorDBReferencia.length]["Color"];
+                                        contadorColor++;
+                                    } catch (error) {
+                                        jsonColoresRandom[x] = dataColor[contadorColor]["Color"];
+                                    }                                
+                                });
+                                estiloDinamico = (feature) => {
+                                    let descripcionCapa = feature.properties[nameProperties];
+                                    return {"fillOpacity":0.5,"color":jsonColoresRandom[descripcionCapa]}
+                                }    
+                                //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
+                                legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda);
+                            }
+                        }
+                        else{
+                            let jsonColores = {};
+                            let descripcionCapa;
+                            dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName).forEach( x =>{
+                                descripcionCapa = x["Propiedad"];
+                                x.Variable = x.Variable?x.Variable:""; 
+                                jsonColores[x.Variable] = x.Color
+                            });
+                            estiloDinamico = (feature) =>{
+                                let valuePropertie = feature.properties[descripcionCapa];
+                                return {"fillOpacity":0.5,"color":jsonColores[valuePropertie]}
+                            }
+                            //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores,tituloLeyenda));
+                            legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores,tituloLeyenda)
+                        }
+                            this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
+                            controlGlobalCapa.setCapa(this.jsonTotalCapas[capaUnica],capaUnica)  
+                    }
+                    if(legend){
+                        console.log("ERRRROR")
+                    }
+                });
+                //////////////////////////////
+                //console.log(capa.Capa,capa.idcapa,dataGlobalDescripCapaUnique)
+                
+                
+                //capa.geojson = L.geoJson(capa.data);//.addTo(map);
+                //controlGlobalCapa.setCapa(capa.geojson,capa.Capa)             
             }
         )
     }
@@ -171,7 +349,13 @@ class ControlGlobalCapa{
 
     setCapa(capa,name){
         //addOverlay( <ILayer> layer, <String> name )
-        this.controlGlobalCapa.addOverlay(capa,name);
+        try {
+            this.controlGlobalCapa.addOverlay(capa,name);
+        } catch (error) {
+            console.log("Eror")
+            
+        }
+        
     }
 }
 
