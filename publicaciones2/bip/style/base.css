@@ -198,10 +198,34 @@ Custom scrollbar leyenda
   }
 
   .sidebar2 {
+    /*
+    background-color: #e1dede;
     border-style: outset;
     margin-left: auto;
+    */
     display: block;
-    background-color: #e1dede;
+    
+  }
+
+  .principal2{
+    width: 90%;
+  }
+
+  #clickme{
+    /*
+    border-style: outset;
+    */
+    height: 1.9em;
+    width: 1.9em;
+  }
+
+  #clickme2{
+    display: none;
+    /*
+    border-style: outset;
+    */
+    height: 1.9em;
+    width: 1.9em;
   }
 
   br{margin-bottom:3px;}

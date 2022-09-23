@@ -15,6 +15,17 @@ $(window).ready(function() {
     $("#comunaID").parent().parent().parent().parent().parent().parent().css( "background", "black");  
 });
 
+function slideToggleLegend(idLegenda,padre) {
+    //alert( "clicked " +idLegenda);
+    $( "#" + idLegenda ).slideToggle( "slow", function() {
+        // Animation complete.
+    });
+    $($(padre).children()[0]).is(":visible")?$($(padre).children()[0]).css("display", "none"):$($(padre).children()[0]).css("display", "block");
+    $($(padre).children()[1]).is(":visible")?$($(padre).children()[1]).css("display", "none"):$($(padre).children()[1]).css("display", "block");
+}
+
+
+
 const htmlDI = "<span><a href='https://di-nextmile.com' title='The best'>Powered by DataIntelligence</a></span>";
 
 function getLayerMapBox(id){
