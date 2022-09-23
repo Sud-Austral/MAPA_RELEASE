@@ -5,8 +5,19 @@ import datetime
 import sys
 from distutils.dir_util import copy_tree
 import os
+import shutil
 
 def main():
+
+    try:
+        shutil.rmtree("publicaciones2")
+    except:
+        pass
+    try:
+        os.mkdir("publicaciones2")
+    except:
+        pass
+
     df = pd.read_excel("https://github.com/Sud-Austral/MAPA_RELEASE/blob/main/origenes/Origenes%20Mapas.xlsx?raw=true")
     for i,j in df.iterrows():
         print(1,i)
