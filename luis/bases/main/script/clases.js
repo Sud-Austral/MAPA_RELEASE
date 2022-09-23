@@ -93,7 +93,7 @@ class UTIL {
                     let dataGlobalCapas = dataGlobalNivel2.filter(x => x["descripcion_capa"] == capaUnicaName);
                     let tituloLeyenda = dataGlobalCapas[0]["titulo_leyenda"];
                     let legend = null;
-                    
+                    let flag = false;
                     if(tipoGeometria == "Point"){
                         let setIcon;                   
                         if(dataGlobalCapas.length == 1){                        
@@ -108,6 +108,8 @@ class UTIL {
                                 jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom2,null,tituloLeyenda));  
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom2,null,tituloLeyenda);  
+                                flag = true;
+                                legend.setLegenda()
                             }
                             if(dataGlobalCapas[0]["Variable"] == "random"){
                                 let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];
@@ -133,6 +135,8 @@ class UTIL {
                                 }                                
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda))
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda);
+                                flag = true;
+                                legend.setLegenda()
                             }
                         }
                         else{
@@ -156,10 +160,12 @@ class UTIL {
                             }
                             //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda))
                             legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda);
+                            flag = true;
+                            legend.setLegenda()
                         }
                         
-                        this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
-                        controlGlobalCapa.setCapa(this.jsonTotalCapas[capaUnica],capaUnica)       
+                        //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
+                        controlGlobalCapa.setCapa(L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon}),capaUnica)       
                     }
                     else{
                         if(dataGlobalCapas.length == 1){
@@ -179,6 +185,8 @@ class UTIL {
                                 jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda))    
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
+                                flag = true;
+                                legend.setLegenda()
                             }
                             if(dataGlobalCapas[0]["Variable"] == "random"){
                                 let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];
@@ -202,6 +210,8 @@ class UTIL {
                                 }    
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda);
+                                flag = true;
+                                legend.setLegenda()
                             }
                         }
                         else{
@@ -218,20 +228,17 @@ class UTIL {
                             }
                             //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores,tituloLeyenda));
                             legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores,tituloLeyenda)
+                            flag = true;
+                            legend.setLegenda()
                         }
-                            this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
-                            controlGlobalCapa.setCapa(this.jsonTotalCapas[capaUnica],capaUnica)  
+                            //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
+                            
+                            controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
                     }
-                    if(legend){
-                        console.log("ERRRROR")
-                    }
-                });
-                //////////////////////////////
-                //console.log(capa.Capa,capa.idcapa,dataGlobalDescripCapaUnique)
+                    //legend.setLegenda();
+                    setTimeout(() => legend.setLegenda(), 5000);
                 
-                
-                //capa.geojson = L.geoJson(capa.data);//.addTo(map);
-                //controlGlobalCapa.setCapa(capa.geojson,capa.Capa)             
+                });           
             }
         )
     }

@@ -3,22 +3,33 @@ let map = L.map("mapid",{
     minZoom: 0,
     maxZoom: 18,
     zoomSnap: 0,
-    zoomDelta: 0.25
+    zoomDelta: 0.25,
+    
 }).setView([-33.458725187656356, -70.66008634501547],10);
+map.attributionControl.setPrefix("");
 
 $(window).ready(function() {
-    //$(".loader").fadeOut("slow");
+    
+    setTimeout(function(){
+        $(".loader").fadeOut("slow");
+    }, 5000);
     $("#comunaID").parent().parent().parent().parent().parent().parent().css( "background", "black");  
 });
 
+const htmlDI = "<span><a href='https://di-nextmile.com' title='The best'>Powered by DataIntelligence</a></span>";
+
 function getLayerMapBox(id){
     const base = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
-        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
-            'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        //attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
+        //    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        attribution: "Hola",
         id: id,
         tileSize: 512,
-        zoomOffset: -1
+        zoomOffset: -1,
     });
+    //base.setPrefix("Hola");
+    //base.options.attribution = "OLO";
+    //console.log(base.getAttribution())
     return base;
 }
 
@@ -38,6 +49,7 @@ function getMapaBase(){
         "HEREv3_normalDayMobile":   L.tileLayer.provider('HEREv3.normalDayMobile', {apiKey: 'SjU6SSxb2QKvye8tQtgvPnCmX-TbmwtTtJol3gz57iI'}),
         "HEREv3_normalDayGrey":     L.tileLayer.provider('HEREv3.normalDayGrey', {apiKey: 'SjU6SSxb2QKvye8tQtgvPnCmX-TbmwtTtJol3gz57iI'})
     }
+    Object.keys(objetos).forEach(x => objetos[x].options.attribution = htmlDI)
     return objetos;
 }
 
