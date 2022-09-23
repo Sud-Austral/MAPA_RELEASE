@@ -26,7 +26,7 @@ function slideToggleLegend(idLegenda,padre) {
 
 
 
-const htmlDI = "<span><a href='https://di-nextmile.com' title='The best'>Powered by DataIntelligence</a></span>";
+const htmlDI = "<span id='span_mapa'><a target='_blank' id='hyper_map' href='https://di-nextmile.com' title='The best'><img id='imagenLogoMapa' src='Content/img/logo_NextMile2.png'></img> Next-Mile by DataIntelligence </a></span>";
 
 function getLayerMapBox(id){
     const base = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {

@@ -21,6 +21,9 @@ for (let index = 0; index < 999; index++) {
 */
 
 
+//$("#span_mapa").parent().css("width","50%");
+
+
 
 
 

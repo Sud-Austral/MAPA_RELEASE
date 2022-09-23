@@ -299,4 +299,23 @@ Minimizar
     }
 }
 
+#imagenLogoMapa{
+    padding-right: 10px;
+    height: 20% ;
+    width: 20%;
+    padding: 5px;
+}
+
+#span_mapa{
+    width: 50%;
+}
+
+#hyper_map{
+    font-size: 10px;
+}
+
+.leaflet-control-attribution .leaflet-control{
+    width: 20px !important;
+}
+
 
