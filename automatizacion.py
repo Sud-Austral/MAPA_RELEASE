@@ -13,6 +13,8 @@ def main():
         shutil.rmtree("publicaciones2")
     except:
         pass
+
+    """
     try:
         os.mkdir("publicaciones2")
     except:
@@ -41,15 +43,9 @@ def main():
 
         print(j["nombre"])
         print(5,i)
-        """
         
+    """
 
-        
-        
-
-
-        
-        """
     return
 
 if __name__ == '__main__':
