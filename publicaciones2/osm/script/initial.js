@@ -255,6 +255,7 @@ class MAPAGLOBAL{
                         if(dataGlobalCapas[0]["Variable"] == "default"){
                             let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
                             let jsonIconosRandom = {};
+                            //{"Falabella"=icon(falabella,"Ripley":"")}
                             let jsonIconosRandom2 = {}; 
                             jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
                             setIcon = (feature,latlng) => {
