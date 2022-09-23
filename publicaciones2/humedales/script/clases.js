@@ -7,12 +7,7 @@
 ////////////////////////////////////////////
 ////////////////////////////////////////////
 */
-
-
-
-class UTIL {
-
-    
+class UTIL {    
     //static longDescription;
     //static description = 'I square the triple of any number you provide';
     static setCapa(url,name,controlGlobalCapa) {
@@ -236,8 +231,7 @@ class UTIL {
                             controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
                     }
                     //legend.setLegenda();
-                    setTimeout(() => legend.setLegenda(), 5000);
-                
+                    setTimeout(() => legend.setLegenda(), 5000); 
                 });           
             }
         )
@@ -330,10 +324,11 @@ class LEGENDMAP{
                     }                    
                 });
             }
-            let htmlMinimize = `<i id="clickme" class="gg-minimize-alt"> </i>`;
+            //let htmlMinimize = `<i id="clickme" class="gg-minimize-alt"> </i>`; height="40" width="40"
+            let htmlMinimize = '<img id="clickme" src="Content/img/min.png" alt="imagen minimizar"></img><img id="clickme2" src="Content/img/max.png" alt="imagen maximizar"></img>';
             div.innerHTML +=
             '<div class="legendCustom">' + 
-            `<div class="contenedor"><div class="principal2"> <p class="titleLegend principal"><b>${titulo}</b></p></div><div onclick="slideToggleLegend('${idName}_slide')" class="sidebar2">${htmlMinimize}</div></div> `+
+            `<div class="contenedor container"><div class="row"> <div class="principal2 col-10"> <p class="titleLegend principal"><b>${titulo}</b></p></div><div onclick="slideToggleLegend('${idName}_slide',this);" class="sidebar2 col-2">${htmlMinimize}</div></div></div> `+
             //'<span class="desc1" style="background: #e82c2c;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>'+
             `<div id="${idName}_slide"> ${htmlString}</div>` +
             '</div>';
