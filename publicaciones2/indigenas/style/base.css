@@ -149,6 +149,7 @@ Custom scrollbar leyenda
 .legendCustom{
     max-height: 130px;
     overflow: auto;
+    max-width: 300px;
 }
 
 .legendCustom::-webkit-scrollbar {
@@ -197,10 +198,34 @@ Custom scrollbar leyenda
   }
 
   .sidebar2 {
+    /*
+    background-color: #e1dede;
     border-style: outset;
     margin-left: auto;
+    */
     display: block;
-    background-color: #e1dede;
+    
+  }
+
+  .principal2{
+    width: 90%;
+  }
+
+  #clickme{
+    /*
+    border-style: outset;
+    */
+    height: 1.9em;
+    width: 1.9em;
+  }
+
+  #clickme2{
+    display: none;
+    /*
+    border-style: outset;
+    */
+    height: 1.9em;
+    width: 1.9em;
   }
 
   br{margin-bottom:3px;}
@@ -272,6 +297,25 @@ Minimizar
             page-break-before: avoid;
             zoom: 50%;
     }
+}
+
+#imagenLogoMapa{
+    padding-right: 10px;
+    height: 20% ;
+    width: 20%;
+    padding: 5px;
+}
+
+#span_mapa{
+    width: 50%;
+}
+
+#hyper_map{
+    font-size: 10px;
+}
+
+.leaflet-control-attribution .leaflet-control{
+    width: 20px !important;
 }
 
 

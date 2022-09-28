@@ -189,7 +189,12 @@ class MAPAGLOBAL{
         });
         this.dataGlobalNivel1 = dataCapaGlobal.map(capa => {
             capa["urlData"] = `${capa.url.split("?")[0]}${comunaBase.codigo_comuna}.json`;
-            capa["data"] = getData(capa["urlData"]);
+            try {
+                capa["data"] = getData(capa["urlData"]);
+            } catch (error) {
+                console.log("Revisa " + capa["urlData"]);
+                capa["data"] = null;
+            }            
             return capa;
         }).filter( capa =>
             capa["data"] != null
@@ -250,6 +255,7 @@ class MAPAGLOBAL{
                         if(dataGlobalCapas[0]["Variable"] == "default"){
                             let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
                             let jsonIconosRandom = {};
+                            //{"Falabella"=icon(falabella,"Ripley":"")}
                             let jsonIconosRandom2 = {}; 
                             jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
                             setIcon = (feature,latlng) => {

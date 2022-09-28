@@ -7,7 +7,8 @@ function getData(urlData) {
     let rawData;
     $.get({
         url: urlData,
-        success: data => rawData = data,        
+        success: data => rawData = data, 
+        error: () => console.log("No File in " + urlData),       
         async: false
     });
       
@@ -175,7 +176,7 @@ class SHAPE_CAPA2 {
 
 
 $(window).ready(function() {
-    $(".loader").fadeOut("slow");
+    //$(".loader").fadeOut("slow");
     //let capasData = new CAPAS_AGUA(codigo_comuna);
     /*
     var capaRegiones2 = L.control.layers(capas_base, capasData.overlayMaps, {
