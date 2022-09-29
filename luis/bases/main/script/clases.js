@@ -43,7 +43,7 @@ class UTIL {
     static setCapa2(capa,controlGlobalCapa) {
         $.get({
             url: capa.urlData,
-            error: () => console.log("No File in " + url),
+            error: () => console.log("No File in " + capa.urlData),
             success: () => console.log("Conected...")
         })
         .done(
@@ -55,6 +55,8 @@ class UTIL {
                 let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
                     capaGlobal.idcapa == capa.idcapa
                 );
+                
+
                 let dataGlobalDescripCapaUnique = [...new Set(dataGlobalNivel2
                                             .filter(x => x.popup_0_1 != null)
                                             .sort((x,y) => {return x["posición_capa"] - y["posición_capa"]})
@@ -89,6 +91,7 @@ class UTIL {
                     let tituloLeyenda = dataGlobalCapas[0]["titulo_leyenda"];
                     let legend = null;
                     let flag = false;
+                    
                     if(tipoGeometria == "Point"){
                         let setIcon;                   
                         if(dataGlobalCapas.length == 1){                        
@@ -162,8 +165,49 @@ class UTIL {
                         //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
                         controlGlobalCapa.setCapa(L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon}),capaUnica)       
                     }
-                    else{
+                    else{   
+                        if(dataGlobalCapas[0]["Variable"] == "auxiliar"){
+                            //console.log("Entramos bien",dataGlobalCapas)
+                            estiloDinamico = (feature) => {
+                                return {"fillOpacity":0.7,"opacity":0.75,"color":feature["properties"]["Color"]}
+                            }
+                            let jsonIconosRandom2 = {}
+                            let propiedades = capa["data"]["features"].map(x => x["properties"])
+                            let propiedadesColorClase = propiedades.map(x => {
+                                let salida = {};
+                                salida["Color"] = x["Color"];
+                                salida["Clase Final"] = x["Clase Final"]
+                                return salida;}).sort((x,y) => x["Clase Final"] > y["Clase Final"]? 1 : -1);
+                            
+                            
+                            propiedadesColorClase.forEach( x => {
+                                let nombreClaseFinal = x["Clase Final"];
+                                if(!jsonIconosRandom2[nombreClaseFinal]){
+                                    jsonIconosRandom2[nombreClaseFinal] = x["Color"];
+                                }                                
+                            });
+                            
+                            //let propiedadesUnicas = [... new Set(propiedadesColorClase)];
+                            
+                            console.log(capaUnicaName,jsonIconosRandom2,propiedadesColorClase)
+                            
+                            //let propiedadesUnicas = [... new Set([propiedades.map(x => {"Color":x["Color"],"Clase":x["Clase Final"]}]})])]
+                            
+
+                            //console.log("Entramos bien",capa["data"]["features"].map(x => x["properties"]))
+
+
+                            legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
+                            controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)
+                            setTimeout(() => legend.setLegenda(), 5000);
+                            return
+                        }                    
+
                         if(dataGlobalCapas.length == 1){
+                            //console.log("Variable",dataGlobalCapas[0]["Variable"])
+                            //console.log(dataGlobalCapas)
+                        
+
                             if(dataGlobalCapas[0]["Variable"] == "default"){
                                 /* color: "#00008c",
                                 opacity: 0.6,
@@ -228,7 +272,7 @@ class UTIL {
                         }
                             //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
                             
-                            controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
+                        controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
                     }
                     //legend.setLegenda();
                     setTimeout(() => legend.setLegenda(), 5000); 
