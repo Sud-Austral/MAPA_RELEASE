@@ -319,3 +319,13 @@ Minimizar
 }
 
 
+/*Botón casita*/
+.btn{
+    z-index: 998;
+    position: fixed;
+    bottom: 12px; /*Abajo deje un espacio de 0px*/
+    margin-left: 1%;
+    width: 5%;
+    /*background-color: #005580 !important;*/
+}
+

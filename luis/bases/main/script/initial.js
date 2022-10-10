@@ -1,9 +1,9 @@
 //Mapa de Leaflet
 let map = L.map("mapid",{
-    minZoom: 0,
-    maxZoom: 18,
-    zoomSnap: 0,
-    zoomDelta: 0.25
+    min: 0,
+    max: 18,
+    Snap: 0,
+    Delta: 0.25
 }).setView([-33.458725187656356, -70.66008634501547],10);
 
 function slideToggleLegend(idLegenda) {
@@ -53,7 +53,7 @@ function getLayerMapBox(id){
             'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         id: id,
         tileSize: 512,
-        zoomOffset: -1
+        Offset: -1
     });
     return base;
 }
@@ -103,9 +103,9 @@ class COMUNABASE{
             collapsed: false // true
         }).addTo(map);
         map.fitBounds(this.shapeBaseComuna.getBounds());
-        let zoom = map.getZoom();
-        let zoomMin = 10
-        map.setZoom(zoom > zoomMin ? zoomMin : zoom);     
+        let  = map.get();
+        let Min = 10
+        map.set( > Min ? Min : );     
     }
 }
 
@@ -235,7 +235,7 @@ class MAPAGLOBAL{
                 layer.on({
                     mouseover: highlightFeature,
                     mouseout: resetHighlight,
-                    click: zoomToFeature,
+                    click: ToFeature,
                 })
             }
             //console.log(capa["data"])
@@ -437,7 +437,16 @@ class MAPAGLOBAL{
             comunaBase["mapasBases"]["Mapa Satelital"].remove();
             comunaBase["mapasBases"]["Mapa Satelital"].addTo(map);
         });
-        this.legendas.forEach(x => x.setLegenda());      
+        this.legendas.forEach(x => x.setLegenda());  
+        
+        /* Botón de Inicio */
+$('.op4').on('click', function(){
+    console.log("hola");
+    map.fitBounds(chileJS.getBounds());
+});
+
+
+
     }
 }
 
@@ -453,9 +462,6 @@ let base2 = comunaBase["mapasBases"]["Mapa Oscuro"];
 let base3 = comunaBase["mapasBases"]["Mapa Satelital"];
 
 //console.log($(".leaflet-control-layers-toggle").eq(1).css("background-color","#FFA07A"))//.css("background-color","black") //[0]//].css("background-color","black")
-
-
-
 
 
 

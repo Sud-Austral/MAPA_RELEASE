@@ -96,3 +96,8 @@ this.controlTotalCapas2 = L.control.layers(null, this.jsonTotalCapas, {
 
 addOverlay( <ILayer> layer, <String> name )
 */
+
+var HTMLEntero = $("*").clone();
+function clean(){
+    $("*").html(HTMLEntero);
+}

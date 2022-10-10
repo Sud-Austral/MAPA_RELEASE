@@ -158,9 +158,16 @@ class UTIL {
                             flag = true;
                             legend.setLegenda()
                         }
+                         
+                    var markers = L.markerClusterGroup();
+                    let shapeAux = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});
+                    markers.addLayer(shapeAux);                 
+
                         
                         //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
-                        controlGlobalCapa.setCapa(L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon}),capaUnica)       
+                      //  controlGlobalCapa.setCapa(L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon}),capaUnica)       
+                      controlGlobalCapa.setCapa(markers,capaUnica)       
+                   
                     }
                     else{
                         if(dataGlobalCapas.length == 1){
@@ -231,7 +238,7 @@ class UTIL {
                             controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
                     }
                     //legend.setLegenda();
-                    setTimeout(() => legend.setLegenda(), 5000); 
+                    setTimeout(() => {legend.setLegenda(); HTMLEntero = $("*").clone();}, 5000); 
                 });           
             }
         )
