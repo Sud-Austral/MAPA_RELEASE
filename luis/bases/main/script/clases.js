@@ -7,6 +7,7 @@
 ////////////////////////////////////////////
 ////////////////////////////////////////////
 */
+var referenciaAlLayer = {};
 class UTIL {    
     //static longDescription;
     //static description = 'I square the triple of any number you provide';
@@ -264,6 +265,7 @@ class COMUNABASE{
         }).addTo(map);
         let nombreComuna = this.dataBaseComuna["features"][0]["properties"]["COMUNA"];
         nombreComuna = `<span id="comunaID"> ${nombreComuna} </span>`.toString();
+        referenciaAlLayer[nombreComuna]=this.shapeBaseComuna;
         this.jsonComuna = {};
         this.jsonComuna[nombreComuna] = this.shapeBaseComuna;
         this.controlComunaBase = L.control.layers(null, this.jsonComuna, {
@@ -358,6 +360,7 @@ class ControlGlobalCapa{
 
     setCapa(capa,name){
         //addOverlay( <ILayer> layer, <String> name )
+        referenciaAlLayer[name]=capa
         try {
             this.controlGlobalCapa.addOverlay(capa,name);
         } catch (error) {

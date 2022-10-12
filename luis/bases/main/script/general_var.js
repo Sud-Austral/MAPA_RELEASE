@@ -97,7 +97,12 @@ this.controlTotalCapas2 = L.control.layers(null, this.jsonTotalCapas, {
 addOverlay( <ILayer> layer, <String> name )
 */
 
-var HTMLEntero = $("*").clone();
+
 function clean(){
-    $("*").html(HTMLEntero);
+    console.log("Hola")
+    //Limpia el checkbox
+    $(".leaflet-control-layers-selector").each((index,objeto) => $(objeto).prop('checked',false));
+    for(var layer in referenciaAlLayer){
+        referenciaAlLayer[layer].remove();
+    }
 }
