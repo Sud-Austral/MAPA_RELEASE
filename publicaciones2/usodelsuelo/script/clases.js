@@ -11,6 +11,7 @@ class UTIL {
     //static longDescription;
     //static description = 'I square the triple of any number you provide';
     static setCapa(url,name,controlGlobalCapa) {
+        console.log(url)
         $.get({
             url: url,
             error: () => {console.log("No File in " + url);
