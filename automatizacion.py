@@ -9,6 +9,15 @@ import shutil
 
 def main():
 
+    urlVisual = "https://github.com/Sud-Austral/MAPA_RELEASE/blob/main/origenes/Iconos.xlsx?raw=true"
+    iconos = pd.read_excel(urlVisual, sheet_name="BD Iconos", skiprows=7)
+    colores = pd.read_excel(urlVisual, sheet_name="BD Colores", skiprows=5)
+    
+    with open(r'luis/bases/main/data/dataIcono1.json', 'w', encoding='utf-8') as file:
+        iconos.to_json(file,orient="records",force_ascii=False)
+    with open(r'luis/bases/main/data/dataColor1.json', 'w', encoding='utf-8') as file:
+        colores.to_json(file,orient="records",force_ascii=False)
+
     try:
         shutil.rmtree("publicaciones2")
     except:
