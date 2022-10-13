@@ -1,6 +1,6 @@
 let comuna = new COMUNABASE();
-//let controlCapa =  new ControlGlobalCapa();
-//let global = new MAPAGLOBAL(comuna,controlCapa);
+let controlCapa =  new ControlGlobalCapa();
+let global = new MAPAGLOBAL(comuna,controlCapa);
 
 
 
