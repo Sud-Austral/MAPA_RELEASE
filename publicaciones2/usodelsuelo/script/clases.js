@@ -52,6 +52,7 @@ class UTIL {
                     return null;
                 }
                 capa.data = JSON.parse(data);
+                console.log("Data",capa.data)
                 let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
                     capaGlobal.idcapa == capa.idcapa
                 );
@@ -251,7 +252,7 @@ class UTIL {
                                     let descripcionCapa = feature.properties[nameProperties];
                                     return {"fillOpacity":0.5,"color":jsonColoresRandom[descripcionCapa]}
                                 }    
-                                console.log(2,nameProperties,capa["data"]["features"])
+                                //console.log(2,nameProperties,capa["data"]["features"])
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda);
                                 flag = true;
@@ -400,7 +401,7 @@ class ControlGlobalCapa{
 
     setCapa(capa,name){
         //addOverlay( <ILayer> layer, <String> name )
-        console.log("Se agrego",capa)
+        console.log("capa", capa)
         try {
             this.controlGlobalCapa.addOverlay(capa,name);
         } catch (error) {
@@ -427,6 +428,7 @@ class MAPAGLOBAL{
 
         this.dataGlobalNivel1 = dataCapaGlobal.map(capa => {
             capa["urlData"] = `${capa.url.split("?")[0]}${comunaBase.codigo_comuna}.json`;
+            
             try {
                 //capa["data"] = getData(capa["urlData"]);
                 //console.log(capa)
