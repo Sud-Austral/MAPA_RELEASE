@@ -205,7 +205,7 @@ class UTIL {
                         }                    
 
                         if(dataGlobalCapas.length == 1){
-                            console.log(capaUnicaID,dataGlobalCapas)
+                            //console.log(capaUnicaID,dataGlobalCapas)
                             //console.log("Variable",dataGlobalCapas[0]["Variable"])
                             //console.log(dataGlobalCapas)
                         
@@ -400,6 +400,7 @@ class ControlGlobalCapa{
 
     setCapa(capa,name){
         //addOverlay( <ILayer> layer, <String> name )
+        console.log("Se agrego",capa)
         try {
             this.controlGlobalCapa.addOverlay(capa,name);
         } catch (error) {
