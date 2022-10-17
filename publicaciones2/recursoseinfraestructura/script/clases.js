@@ -52,6 +52,7 @@ class UTIL {
                     return null;
                 }
                 capa.data = JSON.parse(data);
+                console.log("Data",capa.data)
                 let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
                     capaGlobal.idcapa == capa.idcapa
                 );
@@ -165,7 +166,8 @@ class UTIL {
                         //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
                         controlGlobalCapa.setCapa(L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon}),capaUnica)       
                     }
-                    else{   
+                    else{ 
+                          
                         if(dataGlobalCapas[0]["Variable"] == "auxiliar"){
                             //console.log("Entramos bien",dataGlobalCapas)
                             estiloDinamico = (feature) => {
@@ -186,10 +188,10 @@ class UTIL {
                                     jsonIconosRandom2[nombreClaseFinal] = x["Color"];
                                 }                                
                             });
-                            
+                            console.log()
                             //let propiedadesUnicas = [... new Set(propiedadesColorClase)];
                             
-                            console.log(capaUnicaName,jsonIconosRandom2,propiedadesColorClase)
+                            //console.log(capaUnicaName,jsonIconosRandom2,propiedadesColorClase)
                             
                             //let propiedadesUnicas = [... new Set([propiedades.map(x => {"Color":x["Color"],"Clase":x["Clase Final"]}]})])]
                             
@@ -204,6 +206,7 @@ class UTIL {
                         }                    
 
                         if(dataGlobalCapas.length == 1){
+                            //console.log(capaUnicaID,dataGlobalCapas)
                             //console.log("Variable",dataGlobalCapas[0]["Variable"])
                             //console.log(dataGlobalCapas)
                         
@@ -222,6 +225,8 @@ class UTIL {
                                     return {"fillOpacity":0.5,"color":jsonIconosRandom[objReferencia["Propiedad"]]}
                                 }
                                 jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
+                                
+                                
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda))    
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
                                 flag = true;
@@ -247,6 +252,7 @@ class UTIL {
                                     let descripcionCapa = feature.properties[nameProperties];
                                     return {"fillOpacity":0.5,"color":jsonColoresRandom[descripcionCapa]}
                                 }    
+                                //console.log(2,nameProperties,capa["data"]["features"])
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda);
                                 flag = true;
@@ -395,6 +401,7 @@ class ControlGlobalCapa{
 
     setCapa(capa,name){
         //addOverlay( <ILayer> layer, <String> name )
+        console.log("capa", capa)
         try {
             this.controlGlobalCapa.addOverlay(capa,name);
         } catch (error) {
@@ -421,6 +428,7 @@ class MAPAGLOBAL{
 
         this.dataGlobalNivel1 = dataCapaGlobal.map(capa => {
             capa["urlData"] = `${capa.url.split("?")[0]}${comunaBase.codigo_comuna}.json`;
+            
             try {
                 //capa["data"] = getData(capa["urlData"]);
                 //console.log(capa)
