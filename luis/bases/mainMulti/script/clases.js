@@ -40,7 +40,12 @@ class UTIL {
     urlData
     url_ícono
     */
-    static setCapa2(capa,controlGlobalCapa,comunaBase) {
+    static setCapa2(capa,controlGlobalCapa, globalComuna, comunaRef) {
+        //console.log(comunaRef)
+        let comunaID = comunaRef.codigo_comuna;
+        let codComuna = comunaRef.codigo_comuna;
+        let nameComuna = comunaRef.comunaName;
+        //console.log(codComuna,nameComuna)
         $.get({
             url: capa.urlData,
             error: () => console.log("No File in " + capa.urlData),
@@ -48,12 +53,11 @@ class UTIL {
         })
         .done(
             data => {
-                var codComuna = comunaBase.codigo_comuna;
-                var nameComuna = comunaBase.comunaName
                 if(!data){
                     return null;
                 }
                 capa.data = JSON.parse(data);
+                //console.log("Data",capa.data)
                 let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
                     capaGlobal.idcapa == capa.idcapa
                 );
@@ -85,17 +89,17 @@ class UTIL {
                 ///////////////////////////////////////////////////
                 ///////////////////////////////////////////////////
                 dataGlobalDescripCapaUnique.sort(x => x["posición_capa"]).forEach(capaUnica =>{
-                    let capaUnicaID = removeAccents(capaUnica + "_" + codComuna );
+                    let capaUnicaID = removeAccents(capaUnica+ "_" + codComuna);
                     let capaUnicaName = capaUnica;
                     capaUnica = `<span id='${capaUnicaID}'>${capaUnica}-${nameComuna}</span>`;
                     let estiloDinamico = null;
                     let dataGlobalCapas = dataGlobalNivel2.filter(x => x["descripcion_capa"] == capaUnicaName);
-                    let tituloLeyenda = dataGlobalCapas[0]["titulo_leyenda"];
+                    let tituloLeyenda = "<b>" + nameComuna + ":</b> " + dataGlobalCapas[0]["titulo_leyenda"];
                     let legend = null;
                     let flag = false;
                     
                     if(tipoGeometria == "Point"){
-                        let setIcon;                   
+                        let setIcon;                 
                         if(dataGlobalCapas.length == 1){                        
                             if(dataGlobalCapas[0]["Variable"] == "default"){
                                 let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
@@ -165,9 +169,13 @@ class UTIL {
                         }
                         
                         //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
-                        controlGlobalCapa.setCapa(L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon}),capaUnica)       
+                        let geojson = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon})
+                        //console.log(capaUnicaName)
+                        globalComuna.arrayGeometrias.push({"mapa":geojson,"data":capa["data"],"comuna":comunaID,"capa":capaUnicaName})
+                        controlGlobalCapa.setCapa(geojson,capaUnica)       
                     }
-                    else{   
+                    else{ 
+                          
                         if(dataGlobalCapas[0]["Variable"] == "auxiliar"){
                             //console.log("Entramos bien",dataGlobalCapas)
                             estiloDinamico = (feature) => {
@@ -188,28 +196,18 @@ class UTIL {
                                     jsonIconosRandom2[nombreClaseFinal] = x["Color"];
                                 }                                
                             });
-                            
-                            //let propiedadesUnicas = [... new Set(propiedadesColorClase)];
-                            
-                            console.log(capaUnicaName,jsonIconosRandom2,propiedadesColorClase)
-                            
-                            //let propiedadesUnicas = [... new Set([propiedades.map(x => {"Color":x["Color"],"Clase":x["Clase Final"]}]})])]
-                            
-
-                            //console.log("Entramos bien",capa["data"]["features"].map(x => x["properties"]))
-
-
                             legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
-                            controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)
+                            let geojson = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom})
+                            //console.log(capaUnicaName)
+                            globalComuna.arrayGeometrias.push({"mapa":geojson,"data":capa["data"],"comuna":comunaID,"capa":capaUnicaName})
+                            controlGlobalCapa.setCapa(geojson,capaUnica)  
+
+                            //controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)
                             setTimeout(() => legend.setLegenda(), 5000);
                             return
                         }                    
 
                         if(dataGlobalCapas.length == 1){
-                            //console.log("Variable",dataGlobalCapas[0]["Variable"])
-                            //console.log(dataGlobalCapas)
-                        
-
                             if(dataGlobalCapas[0]["Variable"] == "default"){
                                 /* color: "#00008c",
                                 opacity: 0.6,
@@ -224,6 +222,8 @@ class UTIL {
                                     return {"fillOpacity":0.5,"color":jsonIconosRandom[objReferencia["Propiedad"]]}
                                 }
                                 jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
+                                
+                                
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda))    
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
                                 flag = true;
@@ -249,6 +249,7 @@ class UTIL {
                                     let descripcionCapa = feature.properties[nameProperties];
                                     return {"fillOpacity":0.5,"color":jsonColoresRandom[descripcionCapa]}
                                 }    
+                                //console.log(2,nameProperties,capa["data"]["features"])
                                 //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
                                 legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda);
                                 flag = true;
@@ -273,10 +274,12 @@ class UTIL {
                             legend.setLegenda()
                         }
                             //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
-                            
-                        controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
+                            let geojson = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
+                            //console.log(capaUnicaName)
+                            globalComuna.arrayGeometrias.push({"mapa":geojson,"data":capa["data"],"comuna":comunaID,"capa":capaUnicaName})
+                            controlGlobalCapa.setCapa(geojson,capaUnica)
+                        //controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
                     }
-                    //legend.setLegenda();
                     setTimeout(() => legend.setLegenda(), 5000); 
                 });           
             }
@@ -298,9 +301,9 @@ class MapBase{
 class COMUNABASE{
     constructor(codComuna,controlComuna){
         //Mapas Bases de Diferentes Fuentes
-        //this.mapasBases = getMapaBase();
+        this.mapasBases = getMapaBase();
         //Set Primer mapas base al mapa Leaflet
-        //this.mapasBases["Mapa claro"].addTo(map);
+        this.mapasBases["Mapa claro"].addTo(map);
         //Obtener Comuna
         //this.codigo_comuna = getComuna();
         this.codigo_comuna = codComuna;
@@ -313,11 +316,14 @@ class COMUNABASE{
             style: style,
             onEachFeature: onEachFeature            
         }).addTo(map);
+        
         let nombreComuna = this.dataBaseComuna["features"][0]["properties"]["COMUNA"];
         this.comunaName = nombreComuna; 
         nombreComuna = `<span class="comunaID"> ${nombreComuna} </span>`.toString();
+        
         this.jsonComuna = {};
         this.jsonComuna[nombreComuna] = this.shapeBaseComuna;
+        
         /*
         this.controlComunaBase = L.control.layers(null, this.jsonComuna, {
             position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
@@ -325,12 +331,12 @@ class COMUNABASE{
         }).addTo(map);
         */
         controlComuna.addOverlay(this.shapeBaseComuna,nombreComuna);
+        
         map.fitBounds(this.shapeBaseComuna.getBounds());
-        let zoom = map.getZoom();
-        let zoomMin = 10
-        //map.setZoom(zoom > zoomMin ? zoomMin : zoom);
+        //let zoom = map.getZoom();
+        //let zoomMin = 10
+        //map.setZoom(zoom > zoomMin ? zoomMin : zoom); 
         map.setZoom(7); 
-
            
     }
 }
@@ -402,6 +408,7 @@ class LEGENDMAP{
 }
 
 class ControlGlobalCapa{
+    
     constructor(){
         this.controlGlobalCapa = L.control.layers(null, null, {
             position: 'topright',
@@ -410,19 +417,19 @@ class ControlGlobalCapa{
     }
 
     setCapa(capa,name){
-        //addOverlay( <ILayer> layer, <String> name )
         try {
             this.controlGlobalCapa.addOverlay(capa,name);
         } catch (error) {
-            console.log("Eror")
-            
+            console.log("Error Capa")            
         }
         
     }
 }
 
 class MAPAGLOBAL{
-    constructor(comunaBase,controlGlobalCapa){          
+    constructor(comunaBase,controlGlobalCapa){ 
+        
+        this.arrayGeometrias = []         
         //let comunaBase = new COMUNABASE();    
         this.jsonTotalCapas = {};
         //https:// github.com                 /Sud-Austral/mapa_insumos/tree/main/comunas_capas/shapes_por_comuna/APR_SSC_COM_CGS/?CUT_COM=00000.json
@@ -434,9 +441,10 @@ class MAPAGLOBAL{
                 .replaceAll("tree","");
             return capa;
         });
-
+        //console.log(comunaBase)
         this.dataGlobalNivel1 = dataCapaGlobal.map(capa => {
             capa["urlData"] = `${capa.url.split("?")[0]}${comunaBase.codigo_comuna}.json`;
+            
             try {
                 //capa["data"] = getData(capa["urlData"]);
                 //console.log(capa)
@@ -448,16 +456,95 @@ class MAPAGLOBAL{
                 urlData
                 url_ícono
                 */
-                UTIL.setCapa2(capa,controlGlobalCapa,comunaBase); 
+                UTIL.setCapa2(capa,controlGlobalCapa,this,comunaBase); 
             } catch (error) {
-                //console.log("Revisa " + capa["urlData"]);
-                //capa["data"] = null;
-                console.log("Error")
+                console.log("Error"+error)
             }            
             return capa;
-        }).filter( capa =>
+        });
+        /*
+        .filter( capa =>
             capa["data"] != null
         );
+        */
+    }
+}
+
+
+class MultiMap{
+    constructor(){
+        let mapaBase = new MapBase();
+        let controlCapa =  new ControlGlobalCapa();
+        //= controlGlobalCapa
+        let controlComuna  = L.control.layers(null, this.jsonComuna, {
+            position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
+            collapsed: true // true
+        }).addTo(map);
+        let comunas = getComuna2();
+        this.multimapas = comunas
+        /*[
+            "13101" //,"13102" //,"13103","13104"//,"13105","13106","13107","13108",
+        //"13109","13110","13111","13112","13113","13114","13115","13116",
+        //"13117","13118","13119","13120","13121","13122","13123","13124"
+           ]*/
+           .map(x => {
+                let comuna = new COMUNABASE(x,controlComuna);   
+                let global = new MAPAGLOBAL(comuna,controlCapa);
+                return {"comuna":comuna,"global":global,"codComuna":x}
+        });
+    }
+
+    getHTMLComuna(comuna,codComuna){
+        return `<div class="form-check">
+                    <label class="form-check-label label-input-sideMenu">
+                        <input type="checkbox"  value="${codComuna}"
+                        onclick="checkComuna(this,'${codComuna}')" class="form-check-input" value="">
+                        ${comuna}
+                    </label>
+                </div>`
+    }
+
+    getHTMLCapa(capa,codigo){
+        return `<div class="form-check">
+                    <label class="form-check-label label-input-sideMenu">
+                        <input type="checkbox" class="form-check-input"
+                        onclick="checkCapa(this,'${codigo}')" 
+                        value="${codigo}">
+                            ${capa}
+                    </label>
+                </div>`
+    }
+
+    renderComuna(){
+        let comunasCodigos = this.multimapas.map(x => {
+            return {"comuna":x["comuna"]["comunaName"],"codComuna":x["codComuna"]};
+        })
+        .map(x => this.getHTMLComuna(x.comuna,x.codComuna))
+        .reduce( (x,y) => x + y);
+        //console.log(comunasCodigos)
+        $("#div-input-comunas").html(comunasCodigos)
+    }
+
+    renderCapa(){
+        let capasNombre = [... new Set(
+            dataGlobal
+            .map(x => x.titulo_leyenda)
+            .filter(x => !!x))]
+            .map( x =>{
+                return {"nombre":x,"id":removeAccents(x)};
+            })
+            .map( x => this.getHTMLCapa(x.nombre,x.id))
+            .reduce((x,y) => x + y);
+        $("#div-input-capas").html(capasNombre)
+    }
+
+    hideControl(){
+        $(".leaflet-control-layers").each((x,y)=> {
+            if(x ==2){
+                let objeto = $(y);
+                x,objeto.hide()
+            }
+        })
     }
 }
 
