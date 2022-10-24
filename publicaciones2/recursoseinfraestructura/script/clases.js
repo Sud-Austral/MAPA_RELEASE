@@ -40,7 +40,7 @@ class UTIL {
     urlData
     url_ícono
     */
-    static setCapa2(capa,controlGlobalCapa) {
+    static setCapa2(capa,controlGlobalCapa, global) {
         $.get({
             url: capa.urlData,
             error: () => console.log("No File in " + capa.urlData),
@@ -164,7 +164,8 @@ class UTIL {
                         }
                         
                         //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
-                        controlGlobalCapa.setCapa(L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon}),capaUnica)       
+                        let geojson = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon})
+                        controlGlobalCapa.setCapa(geojson,capaUnica)       
                     }
                     else{ 
                           
@@ -188,29 +189,16 @@ class UTIL {
                                     jsonIconosRandom2[nombreClaseFinal] = x["Color"];
                                 }                                
                             });
-                            console.log()
-                            //let propiedadesUnicas = [... new Set(propiedadesColorClase)];
-                            
-                            //console.log(capaUnicaName,jsonIconosRandom2,propiedadesColorClase)
-                            
-                            //let propiedadesUnicas = [... new Set([propiedades.map(x => {"Color":x["Color"],"Clase":x["Clase Final"]}]})])]
-                            
-
-                            //console.log("Entramos bien",capa["data"]["features"].map(x => x["properties"]))
-
-
                             legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
-                            controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)
+                            let geojson = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom})
+                            controlGlobalCapa.setCapa(geojson,capaUnica)  
+
+                            //controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)
                             setTimeout(() => legend.setLegenda(), 5000);
                             return
                         }                    
 
                         if(dataGlobalCapas.length == 1){
-                            //console.log(capaUnicaID,dataGlobalCapas)
-                            //console.log("Variable",dataGlobalCapas[0]["Variable"])
-                            //console.log(dataGlobalCapas)
-                        
-
                             if(dataGlobalCapas[0]["Variable"] == "default"){
                                 /* color: "#00008c",
                                 opacity: 0.6,
@@ -277,10 +265,10 @@ class UTIL {
                             legend.setLegenda()
                         }
                             //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
-                            
-                        controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
+                            let geojson = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
+                            controlGlobalCapa.setCapa(geojson,capaUnica)
+                        //controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
                     }
-                    //legend.setLegenda();
                     setTimeout(() => legend.setLegenda(), 5000); 
                 });           
             }
@@ -305,8 +293,10 @@ class COMUNABASE{
             style: style,
             onEachFeature: onEachFeature            
         }).addTo(map);
+        
         let nombreComuna = this.dataBaseComuna["features"][0]["properties"]["COMUNA"];
         nombreComuna = `<span id="comunaID"> ${nombreComuna} </span>`.toString();
+        
         this.jsonComuna = {};
         this.jsonComuna[nombreComuna] = this.shapeBaseComuna;
         this.controlComunaBase = L.control.layers(null, this.jsonComuna, {
@@ -400,20 +390,18 @@ class ControlGlobalCapa{
     }
 
     setCapa(capa,name){
-        //addOverlay( <ILayer> layer, <String> name )
-        console.log("capa", capa)
         try {
             this.controlGlobalCapa.addOverlay(capa,name);
         } catch (error) {
-            console.log("Eror")
-            
+            console.log("Error Capa")            
         }
         
     }
 }
 
 class MAPAGLOBAL{
-    constructor(comunaBase,controlGlobalCapa){          
+    constructor(comunaBase,controlGlobalCapa){ 
+        this.arrayGeometrias = []         
         //let comunaBase = new COMUNABASE();    
         this.jsonTotalCapas = {};
         //https:// github.com                 /Sud-Austral/mapa_insumos/tree/main/comunas_capas/shapes_por_comuna/APR_SSC_COM_CGS/?CUT_COM=00000.json
@@ -440,16 +428,17 @@ class MAPAGLOBAL{
                 urlData
                 url_ícono
                 */
-                UTIL.setCapa2(capa,controlGlobalCapa); 
+                UTIL.setCapa2(capa,controlGlobalCapa,this); 
             } catch (error) {
-                //console.log("Revisa " + capa["urlData"]);
-                //capa["data"] = null;
                 console.log("Error")
             }            
             return capa;
-        }).filter( capa =>
+        });
+        /*
+        .filter( capa =>
             capa["data"] != null
         );
+        */
     }
 }
 
