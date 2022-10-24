@@ -301,9 +301,11 @@ class MapBase{
 class COMUNABASE{
     constructor(codComuna,controlComuna){
         //Mapas Bases de Diferentes Fuentes
-        this.mapasBases = getMapaBase();
+
+        //this.mapasBases = getMapaBase();
+
         //Set Primer mapas base al mapa Leaflet
-        this.mapasBases["Mapa claro"].addTo(map);
+        //this.mapasBases["Mapa claro"].addTo(map);
         //Obtener Comuna
         //this.codigo_comuna = getComuna();
         this.codigo_comuna = codComuna;
@@ -324,6 +326,7 @@ class COMUNABASE{
         this.jsonComuna = {};
         this.jsonComuna[nombreComuna] = this.shapeBaseComuna;
         
+        /////////////////////////////////////////////////////////////////////
         /*
         this.controlComunaBase = L.control.layers(null, this.jsonComuna, {
             position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
@@ -332,11 +335,11 @@ class COMUNABASE{
         */
         controlComuna.addOverlay(this.shapeBaseComuna,nombreComuna);
         
-        map.fitBounds(this.shapeBaseComuna.getBounds());
+        //map.fitBounds(this.shapeBaseComuna.getBounds());
         //let zoom = map.getZoom();
         //let zoomMin = 10
         //map.setZoom(zoom > zoomMin ? zoomMin : zoom); 
-        map.setZoom(7); 
+        //map.setZoom(7); 
            
     }
 }
@@ -496,6 +499,7 @@ class MultiMap{
                 let comuna = new COMUNABASE(x,controlComuna);   
                 let global = null;//new MAPAGLOBAL(comuna,controlCapa);
                 return {"comuna":comuna,"global":global,"codComuna":x}
+                //return null
         });
     }
 

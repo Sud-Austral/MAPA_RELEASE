@@ -24,6 +24,8 @@ let controlComuna = controlGlobalCapa = L.control.layers(null, this.jsonComuna, 
 let general = new MultiMap();
 general.renderComuna();
 general.renderCapa();
+
+
 //general.hideControl()
 
 
