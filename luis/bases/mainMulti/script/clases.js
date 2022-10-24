@@ -400,10 +400,12 @@ class LEGENDMAP{
             '</div>';
             return div;
         };
+        /*
         $(`#${this.idName}`).parent().parent().parent().find("input").change(() => {
             let check = $(`#${this.idName}`).parent().parent().parent().find("input").prop("checked");
             check?this.legend.addTo(map):this.legend.remove();
-        });        
+        });
+        */        
     }
 }
 
@@ -473,8 +475,11 @@ class MAPAGLOBAL{
 
 class MultiMap{
     constructor(){
+        this.diccionarioMaster = {}; 
+        this.leyendMaster = {};
         let mapaBase = new MapBase();
         let controlCapa =  new ControlGlobalCapa();
+        this.controlCapa = controlCapa;
         //= controlGlobalCapa
         let controlComuna  = L.control.layers(null, this.jsonComuna, {
             position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
@@ -489,9 +494,346 @@ class MultiMap{
            ]*/
            .map(x => {
                 let comuna = new COMUNABASE(x,controlComuna);   
-                let global = new MAPAGLOBAL(comuna,controlCapa);
+                let global = null;//new MAPAGLOBAL(comuna,controlCapa);
                 return {"comuna":comuna,"global":global,"codComuna":x}
         });
+    }
+
+    showLegend(idLeyenda){
+        console.log("showleyenda",idLeyenda);
+        //this.leyendMaster[idLeyenda].addTo(map);
+        console.log(this.leyendMaster[idLeyenda])    //.legend.addTo(map));
+        if(this.leyendMaster[idLeyenda].estado){
+            this.leyendMaster[idLeyenda].leyenda.legend.addTo(map);
+            this.leyendMaster[idLeyenda].estado = false;
+        }
+        else{
+            this.leyendMaster[idLeyenda].leyenda.legend.remove();
+            this.leyendMaster[idLeyenda].estado = true;
+        }
+    }
+
+    hideLegend(idLeyenda){
+        console.log("showleyenda",idLeyenda);
+        this.leyendMaster[idLeyenda].remove();
+    }
+
+    setDiccionarioMater(name, capa){
+        this.diccionarioMaster[name] = capa;
+        return true;
+    }
+
+    getArrayReferencia(idNombre){
+        //console.log(idNombre)
+        return dataGlobal.filter(x => removeAccents(x["descripcion_capa"]) == idNombre);
+    }
+
+    getURL(idNombre,comuna){
+        let arrayReferencia = this.getArrayReferencia(idNombre);
+        let referencia = dataCapaGlobal.filter(x => x.idcapa == arrayReferencia[0].idcapa)[0];
+        referencia["url"] = referencia["url"]
+                                .replaceAll("github.com","raw.githubusercontent.com")
+                                .replaceAll("tree","");
+        
+        referencia["urlData"] = `${referencia.url.split("?")[0]}${comuna}.json`;
+        //referencia["IDCAPA"] = idNombre
+        return referencia;
+    }
+
+    activateCapa(idCapa,comuna){
+        
+        //this.controlCapa.remove();
+        //let controlCapa =  new ControlGlobalCapa();
+        //this.controlCapa = controlCapa;
+
+        //return this.getURL(idCapa,comuna)
+        let idCapaComuna = idCapa + comuna;
+
+        
+        if(this.diccionarioMaster[idCapaComuna]){
+            console.log("si");
+            let capaID = "#"+idCapa + comuna;
+            console.log(capaID)
+            $(capaID).trigger("click");
+             
+        }
+        else{
+            console.log("no");
+            let comunaBase = this.multimapas.filter(x => x.codComuna == comuna)[0];
+            this.buildCapa(comunaBase.comuna,this.getURL(idCapa,comuna),idCapa)
+            //console.log(comunaBase.comuna);           
+        }
+        
+       /*
+        let comunaBase = this.multimapas.filter(x => x.codComuna == comuna)[0];
+        this.buildCapa(comunaBase.comuna,this.getURL(idCapa,comuna),idCapa)
+        */
+    }
+
+    buildCapa(comunaRef,referencia,IDCAPA){
+        $(".loader").show();
+        
+        //$(".loader").fadeOut("slow");
+        let comunaID = comunaRef.codigo_comuna;
+        let codComuna = comunaRef.codigo_comuna;
+        let nameComuna = comunaRef.comunaName;
+        $.get({
+            url: referencia.urlData,
+            error: () => console.log("No File in " + referencia.urlData),
+            success: () => console.log("Conected...")
+        }).done(
+            data =>{
+                let capa = referencia;
+                if(!data){
+                    console.log("No data")
+                    return null;
+                }
+                let dataJson = JSON.parse(data);
+                capa["data"] = dataJson;
+                let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
+                    capaGlobal.idcapa == capa.idcapa
+                );
+                let dataGlobalDescripCapaUnique = [...new Set(dataGlobalNivel2
+                    .filter(x => x.popup_0_1 != null)
+                    .sort((x,y) => {return x["posición_capa"] - y["posición_capa"]})
+                    .map(x => x.descripcion_capa)
+                    .filter(x => x)
+                )];
+                let dataGlobalPropiedadesUnique = [... new Set(dataGlobalNivel2.sort( x=> x.posicion_popup).map(x => x.Propiedad))]
+                let diccionarioNombrePropiedadPopup = {}
+                dataGlobalNivel2.forEach(x => diccionarioNombrePropiedadPopup[x.Propiedad] = x["descripcion_pop-up"]);
+                let onEachFeatureCustom = (feature, layer) =>{
+                    let htmlString = dataGlobalPropiedadesUnique.map(element => getStringHTML4(feature, element,diccionarioNombrePropiedadPopup[element])).toString();
+                    htmlString = htmlString.replaceAll(",", "")
+                    htmlString = htmlString + 
+                    "</div><center><img class='banner2' src='https://raw.githubusercontent.com/Sud-Austral/mapa_glaciares/main/img/logo_DataIntelligence_normal.png' alt='Data Intelligence'/></center>";
+                    layer.bindPopup("<div class='parrafo_popup'>" + htmlString + "</div>", customOptions);                
+                    layer.on({
+                        mouseover: highlightFeature,
+                        mouseout: resetHighlight,
+                        click: zoomToFeature,
+                    })
+                }
+                let tipoGeometria = capa["data"]["features"][0]["geometry"]["type"];
+                let arraForEach = dataGlobalDescripCapaUnique
+                                    .sort(x => x["posición_capa"])
+                                    .filter(x => removeAccents(x) == IDCAPA);
+                arraForEach.forEach(capaUnica =>{
+                    let capaUnicaID = removeAccents(capaUnica+ "_" + codComuna);
+                    let capaUnicaName = capaUnica;
+                    capaUnica = `<span onclick="general.showLegend('${capaUnicaID}')" id='${capaUnicaID}'>${capaUnica}-${nameComuna}</span>`;
+                    let estiloDinamico = null;
+                    let dataGlobalCapas = dataGlobalNivel2.filter(x => x["descripcion_capa"] == capaUnicaName);
+                    let tituloLeyenda = "<b>" + nameComuna + ":</b> " + dataGlobalCapas[0]["titulo_leyenda"];
+                    let legend = null;
+                    let flag = false;
+                    
+                    if(tipoGeometria == "Point"){
+                        let setIcon;                 
+                        if(dataGlobalCapas.length == 1){                        
+                            if(dataGlobalCapas[0]["Variable"] == "default"){
+                                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
+                                let jsonIconosRandom = {};
+                                let jsonIconosRandom2 = {}; 
+                                jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
+                                setIcon = (feature,latlng) => {
+                                    return L.marker(latlng, { icon: jsonIconosRandom[objReferencia["Propiedad"]] });
+                                }
+                                jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
+                                //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom2,null,tituloLeyenda));  
+                                legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom2,null,tituloLeyenda);  
+                                this.leyendMaster[IDCAPA+comunaID] = {"leyenda":legend, "estado":true}
+                                flag = true;
+                                legend.setLegenda()
+                            }
+                            if(dataGlobalCapas[0]["Variable"] == "random"){
+                                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];
+                                let nameProperties = objReferencia["Propiedad"];
+                                let paletaReferencia = objReferencia["Color"];                             
+                                let iconoDBReferencia = dataIcono.filter(x => x["Paleta"] == paletaReferencia);
+                                let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
+                                
+                                let jsonIconosRandom = {}; 
+                                let contadorIcono = 0;
+                                propertiesUniques.forEach(x =>{
+                                    try {
+                                        jsonIconosRandom[x] = getIcon(iconoDBReferencia[contadorIcono%iconoDBReferencia.length]["Link"])
+                                        contadorIcono++;
+                                    } catch (error) {
+                                        jsonIconosRandom[x] = getIcon(dataIcono[contadorIcono]["Link"])                                    
+                                    }     
+                                }); 
+                                setIcon = (feature, latlng) => {                                
+                                    let descripcionCapa = feature.properties[nameProperties];
+                                    let myIcon = jsonIconosRandom[descripcionCapa];
+                                    return L.marker(latlng, { icon: myIcon });
+                                }                                
+                                //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda))
+                                legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonIconosRandom,null,tituloLeyenda);
+                                flag = true;
+                                this.leyendMaster[IDCAPA+comunaID] = {"leyenda":legend, "estado":true}
+                                legend.setLegenda()
+                            }
+                        }
+                        else{
+                            let jsonColores = {};
+                            let descripcionCapa;
+                            dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName).forEach( x =>{
+                                descripcionCapa = x["Propiedad"];
+                                x.Variable = x.Variable?x.Variable:"";
+                                jsonColores[x.Variable] = x.url_icono
+                            });   
+                            setIcon = (feature, latlng) =>{
+                                let valorCapa = feature.properties[descripcionCapa];
+                                let myIcon;
+                                try {
+                                    myIcon = getIcon(jsonColores[valorCapa]); 
+                                    return L.marker(latlng, { icon: myIcon });   
+                                } catch (error) {
+                                    myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
+                                    return L.marker(latlng, { icon: myIcon });
+                                }
+                            }
+                            //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda))
+                            legend = new LEGENDMAP(capaUnicaID,capaUnicaName,jsonColores,null,tituloLeyenda);
+                            flag = true;
+                            this.leyendMaster[IDCAPA+comunaID] = {"leyenda":legend, "estado":true}
+                            legend.setLegenda()
+                        }
+                        
+                        //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon});  
+                        let geojson = L.geoJson(capa["data"],{onEachFeature: onEachFeatureCustom,pointToLayer: setIcon})
+                        //console.log(capaUnicaName)
+                        //globalComuna.arrayGeometrias.push({"mapa":geojson,"data":capa["data"],"comuna":comunaID,"capa":capaUnicaName})
+                        //controlGlobalCapa.setCapa(geojson,capaUnica)  
+                        this.diccionarioMaster[IDCAPA+comunaID] = geojson
+                        this.controlCapa.setCapa(geojson,capaUnica) 
+                    }
+                    else{ 
+                          
+                        if(dataGlobalCapas[0]["Variable"] == "auxiliar"){
+                            //console.log("Entramos bien",dataGlobalCapas)
+                            estiloDinamico = (feature) => {
+                                return {"fillOpacity":0.7,"opacity":0.75,"color":feature["properties"]["Color"]}
+                            }
+                            let jsonIconosRandom2 = {}
+                            let propiedades = capa["data"]["features"].map(x => x["properties"])
+                            let propiedadesColorClase = propiedades.map(x => {
+                                let salida = {};
+                                salida["Color"] = x["Color"];
+                                salida["Clase Final"] = x["Clase Final"]
+                                return salida;}).sort((x,y) => x["Clase Final"] > y["Clase Final"]? 1 : -1);
+                            
+                            
+                            propiedadesColorClase.forEach( x => {
+                                let nombreClaseFinal = x["Clase Final"];
+                                if(!jsonIconosRandom2[nombreClaseFinal]){
+                                    jsonIconosRandom2[nombreClaseFinal] = x["Color"];
+                                }                                
+                            });
+                            legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
+                            this.leyendMaster[IDCAPA+comunaID] = {"leyenda":legend, "estado":true}
+                            let geojson = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom})
+                            //console.log(capaUnicaName)
+                            //globalComuna.arrayGeometrias.push({"mapa":geojson,"data":capa["data"],"comuna":comunaID,"capa":capaUnicaName})
+                            //controlGlobalCapa.setCapa(geojson,capaUnica)  
+                            this.diccionarioMaster[IDCAPA+comunaID] = geojson
+                            this.controlCapa.setCapa(geojson,capaUnica)
+                            //controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)
+                            //setTimeout(() => legend.setLegenda(), 5000);
+                            setTimeout(() => this.leyendMaster[IDCAPA+comunaID].leyenda.setLegenda(), 5000);
+                            return
+                        }                    
+
+                        if(dataGlobalCapas.length == 1){
+                            if(dataGlobalCapas[0]["Variable"] == "default"){
+                                /* color: "#00008c",
+                                opacity: 0.6,
+                                fillColor: '#333333',
+                                fillOpacity: 0 */
+                                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];   
+                                let jsonIconosRandom = {}; 
+                                let jsonIconosRandom2 = {}; 
+                                //jsonIconosRandom[objReferencia["Propiedad"]] = getIcon(objReferencia["url_icono"]);
+                                jsonIconosRandom[objReferencia["Propiedad"]] = objReferencia["Color"];
+                                estiloDinamico = () => {
+                                    return {"fillOpacity":0.5,"color":jsonIconosRandom[objReferencia["Propiedad"]]}
+                                }
+                                jsonIconosRandom2[capaUnicaName] = jsonIconosRandom[objReferencia["Propiedad"]]; 
+                                
+                                
+                                //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda))    
+                                legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonIconosRandom2,tituloLeyenda);
+                                this.leyendMaster[IDCAPA+comunaID] = {"leyenda":legend, "estado":true}
+                                flag = true;
+                                legend.setLegenda()
+                            }
+                            if(dataGlobalCapas[0]["Variable"] == "random"){
+                                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName)[0];
+                                let nameProperties = objReferencia["Propiedad"];
+                                let paletaReferencia = objReferencia["Color"];
+                                let colorDBReferencia = dataColor.filter(x => x["Paleta"] == paletaReferencia);
+                                let propertiesUniques = [... new Set(capa["data"]["features"].map(x => x["properties"][nameProperties]))];
+                                let jsonColoresRandom = {}; 
+                                let contadorColor = 0;                           
+                                propertiesUniques.forEach(x =>{
+                                    try {
+                                        jsonColoresRandom[x] = colorDBReferencia[contadorColor%colorDBReferencia.length]["Color"];
+                                        contadorColor++;
+                                    } catch (error) {
+                                        jsonColoresRandom[x] = dataColor[contadorColor]["Color"];
+                                    }                                
+                                });
+                                estiloDinamico = (feature) => {
+                                    let descripcionCapa = feature.properties[nameProperties];
+                                    return {"fillOpacity":0.5,"color":jsonColoresRandom[descripcionCapa]}
+                                }    
+                                //console.log(2,nameProperties,capa["data"]["features"])
+                                //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda))
+                                legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColoresRandom,tituloLeyenda);
+                                this.leyendMaster[IDCAPA+comunaID] = {"leyenda":legend, "estado":true}
+                                flag = true;
+                                legend.setLegenda()
+                            }
+                        }
+                        else{
+                            let jsonColores = {};
+                            let descripcionCapa;
+                            dataGlobal.filter(x => x["descripcion_capa"] == capaUnicaName).forEach( x =>{
+                                descripcionCapa = x["Propiedad"];
+                                x.Variable = x.Variable?x.Variable:""; 
+                                jsonColores[x.Variable] = x.Color
+                            });
+                            estiloDinamico = (feature) =>{
+                                let valuePropertie = feature.properties[descripcionCapa];
+                                return {"fillOpacity":0.5,"color":jsonColores[valuePropertie]}
+                            }
+                            //this.legendas.push(new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores,tituloLeyenda));
+                            legend = new LEGENDMAP(capaUnicaID,capaUnicaName,null,jsonColores,tituloLeyenda)
+                            this.leyendMaster[IDCAPA+comunaID] = {"leyenda":legend, "estado":true}
+                            flag = true;
+                            legend.setLegenda()
+                        }
+                            //this.jsonTotalCapas[capaUnica] = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
+                            let geojson = L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom});
+                            this.diccionarioMaster[IDCAPA+comunaID] = geojson
+                            this.controlCapa.setCapa(geojson,capaUnica)
+                            //console.log(capaUnicaName)
+                            //globalComuna.arrayGeometrias.push({"mapa":geojson,"data":capa["data"],"comuna":comunaID,"capa":capaUnicaName})
+                            //controlGlobalCapa.setCapa(geojson,capaUnica)
+                        //controlGlobalCapa.setCapa(L.geoJson(capa["data"],{style:estiloDinamico,onEachFeature: onEachFeatureCustom}),capaUnica)  
+                    }
+                    setTimeout(() => {
+                        //legend.setLegenda();
+                        
+                        let capaID = "#"+IDCAPA + codComuna;
+                        //this.leyendMaster[IDCAPA+comunaID].setLegenda();
+                        $(capaID).trigger("click");
+                        $(".loader").fadeOut("slow")
+                    }, 5000); 
+                });           
+            }
+        );
     }
 
     getHTMLComuna(comuna,codComuna){

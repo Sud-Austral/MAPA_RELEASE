@@ -24,7 +24,7 @@ let controlComuna = controlGlobalCapa = L.control.layers(null, this.jsonComuna, 
 let general = new MultiMap();
 general.renderComuna();
 general.renderCapa();
-general.hideControl()
+//general.hideControl()
 
 
 //let url = "https://raw.githubusercontent.com/Sud-Austral/mapa_insumos2/main/osm/trafico_aereo_aerodromo/13101.json";

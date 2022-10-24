@@ -12,15 +12,33 @@ function slideToggleSideMenu(contenido) {
     });
 }
 
+function cargar(){
+    $(".loader").show();
+    setTimeout(() => {
+        $(".loader").fadeOut("slow");
+    }, 2000); 
+
+
+}
+
 
 function checkComuna(inputObject, comuna){
+    //cargar();
     let objeto = $(inputObject);
+    
+
+
     if(objeto.is(":checked")){
         $("#div-input-capas input").each((x,y)=> {
             let objeto = $(y);
+            let capaNombre = objeto.attr("value");
             let capaID = "#"+objeto.attr("value") + comuna;
             if(objeto.is(":checked")){
-                $(capaID).trigger("click")
+                //console.log(capaNombre)
+                //$(".loader").show();
+                //console.log(capaNombre,comuna)
+                general.activateCapa(capaNombre,comuna);
+                //$(capaID).trigger("click")
             }
         });
     }
@@ -28,7 +46,9 @@ function checkComuna(inputObject, comuna){
         $("#div-input-capas input").each((x,y)=> {
             let objeto = $(y);
             if(objeto.is(":checked")){
+                //console.log()
                 let capaID = "#"+objeto.attr("value") + comuna;
+                console.log(capaID)
                 $(capaID).trigger("click")
             }
         });
@@ -36,13 +56,15 @@ function checkComuna(inputObject, comuna){
 }
 
 function checkCapa(inputObject, capa){
+    //cargar();
     let objeto = $(inputObject);
     if(objeto.is(":checked")){
         $("#div-input-comunas input").each((x,y)=> {
             let objeto = $(y);
             let capaID = "#"+ capa + objeto.attr("value");
             if(objeto.is(":checked")){
-                $(capaID).trigger("click")
+                general.activateCapa(capa,objeto.attr("value"));
+                //$(capaID).trigger("click")
             }
         })
     }
