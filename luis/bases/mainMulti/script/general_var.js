@@ -8,10 +8,13 @@ let map = L.map("mapid",{
 }).setView([-33.458725187656356, -70.66008634501547],10);
 map.attributionControl.setPrefix("");
 
-$(window).ready(function() {    
+$(window).ready(function() { 
+    $(".loader").fadeOut("slow");
+    /*
     setTimeout(function(){
         $(".loader").fadeOut("slow");
     }, 5000);
+    */
     $(".comunaID").parent().parent().parent().parent().parent().parent().css( "background", "black");  
 });
 
@@ -62,11 +65,15 @@ function getMapaBase(){
 }
 
 const removeAccents = (str) => {
-    return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-    .replaceAll(" ","")
-    .replaceAll(":","")
-    .replace(/[^a-zA-Z0-9 ]/g, "");
-} 
+    try{
+        return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+        .replaceAll(" ","")
+        .replaceAll(":","")
+        .replace(/[^a-zA-Z0-9 ]/g, "");
+    }
+    catch{
+        return "";
+    }} 
 
 iconosDB = iconosDB.map( x =>{
     x.replaceAll("https://github","https://raw.githubusercontent")
@@ -98,3 +105,4 @@ this.controlTotalCapas2 = L.control.layers(null, this.jsonTotalCapas, {
 
 addOverlay( <ILayer> layer, <String> name )
 */
+
