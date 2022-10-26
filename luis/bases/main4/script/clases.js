@@ -292,10 +292,7 @@ class MapBase{
             position: 'topright',
             collapsed:  true
         }).addTo(map); 
-    }
-    
-
-
+    }   
 }
 
 class COMUNABASE{
