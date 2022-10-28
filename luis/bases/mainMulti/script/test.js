@@ -25,6 +25,13 @@ let general = new MultiMap();
 general.renderComuna();
 general.renderCapa();
 
+for (let index = 0; index < 999; index++) {
+    let url = "https://raw.githubusercontent.com/Sud-Austral/mapa_insumos/main/ciudades/CA/1.js";
+    console.log(index)
+    $.get({url: url});
+    
+}
+
 
 //general.hideControl()
 
