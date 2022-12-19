@@ -310,16 +310,19 @@ class COMUNABASE{
         //this.codigo_comuna = getComuna();
         this.codigo_comuna = codComuna;
         //URL de los datos de Comuna
-        this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/chile_comunas/${this.codigo_comuna}.json`;
+        //10010
+        //this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/chile_comunas/${this.codigo_comuna}.json`;
+        this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/mapas_vigilancia/main/subsubcuencas2/${this.codigo_comuna}.json`;
         //Get Data de Comuna
         this.dataBaseComuna = getData(this.urlBaseComuna);
         //Get Shape de Comuna
+        console.log("data",this.dataBaseComuna)
         this.shapeBaseComuna = L.geoJson(this.dataBaseComuna,{
             style: style,
             onEachFeature: onEachFeature            
         }).addTo(map);
         
-        let nombreComuna = this.dataBaseComuna["features"][0]["properties"]["COMUNA"];
+        let nombreComuna = this.dataBaseComuna["features"][0]["properties"]["NOM_SSUBC"];
         this.comunaName = nombreComuna; 
         nombreComuna = `<span class="comunaID"> ${nombreComuna} </span>`.toString();
         
@@ -478,12 +481,28 @@ class MAPAGLOBAL{
 
 class MultiMap{
     constructor(){
-        let urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/mapa_insumos/main/vigilancia/cuenca_biobio.geojson`;
+        //let urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/mapa_insumos/main/vigilancia/cuenca_biobio.geojson`;
+        //let urlBase2 = "https://raw.githubusercontent.com/Sud-Austral/mapa_insumos/main/casem/total_pers.geojson"
+        let urlBase2 = "https://raw.githubusercontent.com/Sud-Austral/mapas_vigilancia/main/jsonOut2/IPT_LosRios/LU/LU_Los_Rios.json";
+        let urlBase3 = "https://raw.githubusercontent.com/Sud-Austral/mapas_vigilancia/main/jsonOut2/IPT_LosRios/PRC/IPT_14_PRC_Valdivia.json";
+        let urlBase4 = "https://raw.githubusercontent.com/Sud-Austral/mapas_vigilancia/main/balance_hidrico/10010.json"
         //Get Data de Comuna
-        let dataBaseComuna = getData(urlBaseComuna);
+        let dataBaseComuna = getData(urlBase2);
+        let dataBaseComuna2 = getData(urlBase3);
+        let dataBaseComuna4 = getData(urlBase4);
         //Get Shape de Comuna
         let shapeBaseComuna = L.geoJson(dataBaseComuna,{
             style: {"color":"blue"},
+            onEachFeature: onEachFeature            
+        }).addTo(map);
+
+        let shapeBaseComuna2 = L.geoJson(dataBaseComuna2,{
+            style: {"color":"green"},
+            onEachFeature: onEachFeature            
+        }).addTo(map);
+
+        let shapeBaseComuna4 = L.geoJson(dataBaseComuna4,{
+            style: {"color":"green"},
             onEachFeature: onEachFeature            
         }).addTo(map);
         //map.fitBounds(shapeBaseComuna.geometry());
@@ -507,7 +526,8 @@ class MultiMap{
         //"13117","13118","13119","13120","13121","13122","13123","13124"
            ]*/
            .map(x => {
-                let comuna = new COMUNABASE(x,controlComuna);   
+                let comuna = new COMUNABASE(x,controlComuna); 
+                  
                 let global = null;//new MAPAGLOBAL(comuna,controlCapa);
                 return {"comuna":comuna,"global":global,"codComuna":x}
                 //return null
@@ -886,9 +906,7 @@ class MultiMap{
     renderCapa(){
         let capasNombre = [... new Set(
             dataGlobal
-            //descripcion_capa
-            //.map(x => x.titulo_leyenda)
-            .map(x => x.descripcion_capa)
+            .map(x => x.titulo_leyenda)
             .filter(x => !!x))]
             .map( x =>{
                 return {"nombre":x,"id":removeAccents(x)};
