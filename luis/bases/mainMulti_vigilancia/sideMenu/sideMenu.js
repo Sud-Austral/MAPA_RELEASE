@@ -133,3 +133,17 @@ function lzw_decode(s) {
     }
     return out.join("");
 }
+
+
+function marcar_comunas(){
+    //alert("Hola")
+    $("#div-input-comunas input").each((x,y)=> {
+        let objeto = $(y);
+        if(!objeto.is(":checked")){
+            //let capaID = "#"+ capa + objeto.attr("value");
+            //$(capaID).trigger("click")
+            $(objeto).trigger("click")
+            console.log(objeto)
+        }
+    });
+}
