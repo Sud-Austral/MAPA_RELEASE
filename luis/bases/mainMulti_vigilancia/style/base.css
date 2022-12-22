@@ -322,3 +322,17 @@ Minimizar
 }
 
 
+#butonComunas{
+    margin: 5%;
+    margin-left: 10%;
+    display:flex;
+    justify-content: right;
+    align-items: right;
+    /*width: 50%;
+    margin-left: auto;*/
+    font-size: 0.8rem !important;
+}
+
+
+
+

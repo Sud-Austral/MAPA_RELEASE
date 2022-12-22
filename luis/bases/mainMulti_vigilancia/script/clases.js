@@ -513,6 +513,22 @@ class MultiMap{
                 //return null
         });
         map.fitBounds(shapeBaseComuna.getBounds());
+
+
+        L.control.layers(null, {"Cuenca":shapeBaseComuna}, {
+            position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
+            collapsed: true // true
+        }).addTo(map);
+
+        /*
+        let controlComunaBaseCuenca = L.control.layers(null, {"Cuenca":this.shapeBaseComuna}, {
+            position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
+            collapsed: false // true
+        }).addTo(map);
+        */
+        //controlComuna.addOverlay(this.shapeBaseComuna,nombreComuna);
+
+
     }
 
     showLegend(idLeyenda){
@@ -905,6 +921,12 @@ class MultiMap{
                 x,objeto.hide()
             }
         })
+    }
+
+    buttonSeleccionarTodo(){
+        let listaComuna = $($(".leaflet-control-layers-list")[0])
+        let boton = '<input type="button" id="butonComunas" onclick="marcarTodoComuna()"  value="Seleccionar todas">'
+        listaComuna.html(boton+listaComuna.html());
     }
 }
 

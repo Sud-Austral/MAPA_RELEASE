@@ -147,3 +147,21 @@ function marcar_comunas(){
         }
     });
 }
+
+/*
+
+$($(".leaflet-control-layers-list")[0])
+*/
+let flagBotonComunas = true;
+
+function marcarTodoComuna(mismoBoton){
+    flagBotonComunas?$(mismoBoton).text("Mostrar comunas"):$(mismoBoton).text("Ocultar comunas");
+    let listaComuna = $($(".leaflet-control-layers-list")[0])
+    listaComuna.find("input").each((x,y) =>{
+        let boton = $(y);
+        if(boton.is(":checked") == flagBotonComunas){
+            boton.trigger("click");
+        }
+    });
+    flagBotonComunas = !flagBotonComunas;
+}
