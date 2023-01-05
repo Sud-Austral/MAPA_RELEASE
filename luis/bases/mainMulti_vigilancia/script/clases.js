@@ -514,8 +514,10 @@ class MultiMap{
         });
         map.fitBounds(shapeBaseComuna.getBounds());
 
-
-        L.control.layers(null, {"Cuenca":shapeBaseComuna}, {
+        let nombre = dataBaseComuna["features"][0]["properties"]["NOMBRE"]
+        let diccionario = {}
+        diccionario[nombre] = shapeBaseComuna;
+        L.control.layers(null, diccionario, {
             position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
             collapsed: true // true
         }).addTo(map);
