@@ -358,6 +358,14 @@ class LEGENDMAP{
     }
 
     setLegenda(){
+        this.legend = L.control({ position: 'bottomright' });
+        this.legend.onAdd = function () {
+            var div = L.DomUtil.create('div', 'legend');
+            div.style = "display:none"
+            return div;
+        };
+    }
+    setLegenda_DEPRECATED(){
         let titulo = this.titulo;
         let nombre = this.Nombre;
         let dicAux = this.dictIcono;
@@ -862,6 +870,7 @@ class MultiMap{
                         
                         let capaID = "#"+IDCAPA + codComuna;
                         //this.leyendMaster[IDCAPA+comunaID].setLegenda();
+                        console.log(capaID)
                         $(capaID).trigger("click");
                         $(".loader").fadeOut("slow")
                     }, 5000); 
