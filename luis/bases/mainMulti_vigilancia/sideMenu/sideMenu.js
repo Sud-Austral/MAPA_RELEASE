@@ -1,3 +1,5 @@
+var leyendasGlobal = []
+
 function openNav() {
     document.getElementById("mySidenav").style.width = "250px";
 }
@@ -77,6 +79,74 @@ function checkCapa(inputObject, capa){
             }
         });
     }
+    console.log(leyendasGlobal)
+    leyendasGlobal.forEach(x => {
+        x.remove();
+        console.log(x);
+    });
+    leyendasGlobal = [];
+    setTimeout(() => {
+        //console.log("acumulador",acumuladorGlobal);
+        let acumuladoSimple = acumuladorGlobal.map(
+            x => x["data"]["features"].map(
+                y => y["properties"]
+            )
+        ).reduce( (x,y)=> x.concat(y));
+        let variable = acumuladorGlobal.map(
+            x => x["propiedad"]
+        )
+        variable = [...new Set(variable)]
+        console.log("variables",variable)
+        variable.forEach(
+            variableUnica =>{
+                let unicos = acumuladoSimple.map(
+                    x => x[variableUnica]
+                )
+                unicos = [...new Set(unicos)]
+                let findDescripcion = acumuladorGlobal.filter(x => x["propiedad"] == variableUnica)[0]["descripcion"];
+                
+                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == findDescripcion)[0];
+                
+                let nameProperties = objReferencia["Propiedad"];
+                let paletaReferencia = objReferencia["Color"];
+                let colorDBReferencia = dataColor.filter(x => x["Paleta"] == paletaReferencia);
+
+                //console.log(variableUnica)
+                
+                let jsonColoresRandom = {}; 
+                let contadorColor = 0; 
+                var legend = L.control({position: 'bottomright'});
+                let htmlString = ""
+                unicos.forEach(
+                    x =>{
+                        jsonColoresRandom[x] = colorDBReferencia[contadorColor%colorDBReferencia.length]["Color"];
+                        contadorColor++;
+                        htmlString = htmlString + `<span> Color: ${jsonColoresRandom[x]} - Valor: ${x}</span>`
+                    });
+                //console.log("Simple",unicos)
+                //console.log(jsonColoresRandom,variableUnica);
+                
+                legend.onAdd = function (map) {
+                    var div = L.DomUtil.create('div', 'info legend');
+                    div.innerHTML = htmlString;
+                    return div;
+                };
+                
+                leyendasGlobal.push(legend)
+                legend.addTo(map);
+                console.log("Deberia haber leyenda")
+            }
+        )
+        //console.log("Simple",variable,acumuladoSimple[0][variable])
+        /*
+        let unicos = acumuladoSimple.map(
+            x => x[variable]
+        )
+        print(unicos)
+        unicos = [...new Set(unicos)]
+        console.log("Simple",unicos)
+        */
+    }, 5000);
 }
 
 

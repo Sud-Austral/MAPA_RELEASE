@@ -7,6 +7,7 @@
 ////////////////////////////////////////////
 ////////////////////////////////////////////
 */
+let acumuladorGlobal = []
 class UTIL {    
     //static longDescription;
     //static description = 'I square the triple of any number you provide';
@@ -358,6 +359,10 @@ class LEGENDMAP{
     }
 
     setLegenda(){
+        //console.log("ErrorBueno");
+    }
+    setLegenda2(){
+        //return 
         let titulo = this.titulo;
         let nombre = this.Nombre;
         let dicAux = this.dictIcono;
@@ -594,7 +599,10 @@ class MultiMap{
         else{
             console.log("no");
             let comunaBase = this.multimapas.filter(x => x.codComuna == comuna)[0];
-            this.buildCapa(comunaBase.comuna,this.getURL(idCapa,comuna),idCapa)
+            this.buildCapa(comunaBase.comuna,this.getURL(idCapa,comuna),idCapa);
+            //let acumulador = this.buildCapa(comunaBase.comuna,this.getURL(idCapa,comuna),idCapa);
+            //setTimeout(() => console.log("acumulador",acumuladorGlobal), 10000);
+
             //console.log(comunaBase.comuna);           
         }
         
@@ -611,6 +619,7 @@ class MultiMap{
         let comunaID = comunaRef.codigo_comuna;
         let codComuna = comunaRef.codigo_comuna;
         let nameComuna = comunaRef.comunaName;
+        let dataComunas = [];
         $.get({
             url: referencia.urlData,
             error: () => console.log("No File in " + referencia.urlData),
@@ -634,6 +643,7 @@ class MultiMap{
                     .filter(x => x)
                 )];
                 let dataGlobalPropiedadesUnique = [... new Set(dataGlobalNivel2.sort( x=> x.posicion_popup).map(x => x.Propiedad))]
+                
                 let diccionarioNombrePropiedadPopup = {}
                 dataGlobalNivel2.forEach(x => diccionarioNombrePropiedadPopup[x.Propiedad] = x["descripcion_pop-up"]);
                 let onEachFeatureCustom = (feature, layer) =>{
@@ -652,6 +662,10 @@ class MultiMap{
                 let arraForEach = dataGlobalDescripCapaUnique
                                     .sort(x => x["posición_capa"])
                                     .filter(x => removeAccents(x) == IDCAPA);
+                //console.log("unicos",dataGlobal.filter(x => x["descripcion_capa"] == arraForEach[0])[0]["Propiedad"])
+                acumuladorGlobal.push({"data":capa["data"],
+                    "propiedad":dataGlobal.filter(x => x["descripcion_capa"] == arraForEach[0])[0]["Propiedad"],
+                    "descripcion":arraForEach[0]});
                 arraForEach.forEach(capaUnica =>{
                     let capaUnicaID = removeAccents(capaUnica+ "_" + codComuna);
                     let capaUnicaName = capaUnica;
@@ -867,7 +881,8 @@ class MultiMap{
                     }, 5000); 
                 });           
             }
-        );
+        )
+        ;
     }
 
     getHTMLComuna(comuna,codComuna){
