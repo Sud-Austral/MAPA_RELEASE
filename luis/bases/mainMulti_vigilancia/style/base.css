@@ -339,24 +339,28 @@ Minimizar
 
 
 .variableLeyenda{
-    cursor: pointer;
+    cursor: pointer !important;
     /*
     font-size: xx-large;
-    */
+    */ 
 }
 
 .variableLeyenda .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
+    visibility: hidden !important;
+    width: 120px !important;
+    background-color: black !important;
+    color: #fff !important;
+    text-align: center !important;
+    border-radius: 6px !important;
+    padding: 5px 0 !important;
   
     /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
+    position: absolute !important;
+    z-index: 1 !important;
+  }
+
+  .variableLeyenda:hover .tooltiptext {
+    visibility: visible !important;
   }
 /*
  .leaflet-control-layers-list {
