@@ -39,9 +39,11 @@
   
     <div id="mySidenav" class="sidenav" style="z-index: 999999999999999999999999;">
         <a  style="margin-bottom: 50px;"
-        href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-        <label id="ComunasLabelSideMenu" onclick="slideToggleSideMenu('div-input-comunas')">
-            Comunas <p id="marcar_todo" onclick="marcar_comunas()">
+        href="javascript:void(0)" class="closebtn" onclick="closeNav();closeNav2()">&times;</a>
+        <label id="ComunasLabelSideMenu" >
+            <p onclick="slideToggleSideMenu('div-input-comunas')">  Comunas </p>
+                
+            <p id="marcar_todo" onclick="marcar_comunas()">
                 Marcar todas las comunas</p>
         </label>
 
@@ -49,11 +51,19 @@
           <h1>Nada</h1>
         </div>
 
-        <label id="ComunasLabelSideMenu" onclick="slideToggleSideMenu('div-input-capas')">
-            Capas
+            
+      </div>
+
+      <div id="mySidenav2" class="sidenav2" style="z-index: 999999999999999999999999;">
+        <a  style="margin-bottom: 50px;"
+        href="javascript:void(0)" class="closebtn" onclick="closeNav();closeNav2()">&times;</a>
+        <label id="ComunasLabelSideMenu" onclick="slideToggleSideMenu('div-input-capas')"
+        style="margin-top: 0;">
+        <p>Capas</p>
+            
         </label>
         
-        <div id="div-input-capas"></div>      
+        <div id="div-input-capas"></div>    
       </div>
     
     <!--
@@ -63,16 +73,26 @@
     <div id="mapid" class="landscape">
         <div id="menu">
             <ul>
-                <li onclick="openNav()" style="font-size:30px;cursor:pointer">&#9776; Abrir </li>
+                <!--openNav()
+                style="font-size:30px;cursor:pointer"
+                -->
+                
+                
+                <li onclick="openNav();openNav2();" style="cursor:pointer;background-color: red;">&#9776; Abrir </li>
+                
                 <li onclick="marcarTodoComuna(this);">Ocultar comunas</li>
                 <li onclick="print(window);">Imprimir</li>
                 <li onclick="Download();">Descargar</li>
-                <li onclick="Download();">Home</li>
-                <li onclick="mostrarLegenda();">Test</li>
+                
+                <!--
+                <li onclick="general2.cleanMap();">Home</li>
+                -->
+                <li onclick="desmarcar_ckeck();">Home</li>
             </ul>
             
         </div>
     </div>
+    
     <script>
         //print(window);
         function Download(){
@@ -116,7 +136,13 @@
 <script src="script/initial.js?103"></script>
 
 <script src="script/map_render.js"></script>
+<script src="script/layer.js?22020923"></script>
 -->
+
+<script src="layers/layerUtil.js?22020923"></script>
+<script src="layers/allLayers.js?22020923"></script>
+<script src="layers/layer.js?22020923"></script>
+
 <script src="script/library_map.js?22020923"></script>
 <!-- Funciones para armar los mapas-->
 <script src="script/library_map2.js?22020923"></script>
@@ -127,6 +153,7 @@
 
 <script src="script/test.js?22020923"></script>
 <script src="script/legend.js?22020923"></script>
+<script src="script/showLayer.js?22020923"></script>
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
 <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
@@ -137,3 +164,5 @@
 
 </body>
 </html>
+
+

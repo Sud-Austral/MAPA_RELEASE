@@ -72,6 +72,7 @@ html, body, #mapid {
 /**/
 
 #menu {
+    top:2vh;
     font-family: Arial;
     font-size: 12.5px;
     text-align: center;
@@ -80,7 +81,7 @@ html, body, #mapid {
     width: 100%;
     left: 0px; /*A la derecha deje un espacio de 0px*/
     right: 0px; /*A la izquierda deje un espacio de 0px*/
-    bottom: 0px; /*Abajo deje un espacio de 0px*/
+    /*bottom: 0px; Abajo deje un espacio de 0px*/
 }
 
 #menu ul li {
@@ -94,6 +95,7 @@ html, body, #mapid {
     width: 11%;
     border-radius: 5px;
     cursor: pointer;
+    
 }
 
 #menu ul li:hover {
@@ -111,22 +113,24 @@ html, body, #mapid {
 }
 */
 
-#comunaID{
-    color: #FFF;
-    background-color: black;
+
+/*
+.comunaID{
+    color: white;
+    background-color: #03a7ab;
     margin: 10px;
     font-weight: bold;
     font-size: 1rem !important;
-    
-    
+}*/
+
+.leaflet-top{
+    color: white !important;
+    font-weight: 100;
+    font-size: 1rem !important;
 }
 
-.comunaID{
-    color: #FFF;
-    background-color: black;
-    margin: 10px;
-    font-weight: bold;
-    font-size: 1rem !important;
+.leaflet-right span{
+    color: white ;
 }
 
 .test > .leaflet-control-layers-selector{
@@ -332,6 +336,32 @@ Minimizar
     margin-left: auto;*/
     font-size: 0.8rem !important;
 }
+
+
+.variableLeyenda{
+    cursor: pointer;
+    /*
+    font-size: xx-large;
+    */
+}
+
+.variableLeyenda .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+  
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+  }
+/*
+ .leaflet-control-layers-list {
+    background-color: white !important;
+  }*/
 
 
 

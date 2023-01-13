@@ -8,6 +8,14 @@ function closeNav() {
     document.getElementById("mySidenav").style.width = "0";
 }
 
+function openNav2() {
+    document.getElementById("mySidenav2").style.width = "250px";
+}
+
+function closeNav2() {
+    document.getElementById("mySidenav2").style.width = "0";
+}
+
 function slideToggleSideMenu(contenido) {
     $("#" + contenido).slideToggle( "slow", function() {
         // Animation complete.
@@ -24,27 +32,213 @@ function cargar(){
 }
 
 
+
+let capaActivas = []
+
+function disableAllLayer(){
+    leyendasGlobal.forEach(x => {
+        x.remove();
+        console.log(x);
+    });
+    leyendasGlobal = [];
+    return true;
+}
+
+function getAllData(){
+    let acumuladoSimple = acumuladorGlobal.map(
+        x => x["data"]["features"].map(
+            y => y["properties"]
+        )
+    ).reduce( (x,y)=> x.concat(y));
+    return acumuladoSimple;   
+}
+
+function getVariableUnique(){
+    let variable = acumuladorGlobal
+        .filter(x => capaActivas
+            .indexOf(removeAccents(x["descripcion"])) > -1)
+        .map(
+            x => x["propiedad"]
+        )
+    variable = [...new Set(variable)]
+    return variable;
+}
+
+function getReference(variableUnica){
+    let findDescripcion = acumuladorGlobal.filter(x => x["propiedad"] == variableUnica)[0]["descripcion"];
+    let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == findDescripcion)[0];
+    return objReferencia;
+}
+
+function getPallette(objReferencia){
+    let pallette = objReferencia["Color"];
+    let colorDBReferencia = dataColor.filter(x => x["Paleta"] == pallette);
+    return colorDBReferencia;
+}
+
+function getPalletteIcon(objReferencia){
+    let pallette = objReferencia["Color"];
+    let refIcono = dataIcono.filter(y => y["Paleta"] == pallette);
+    return refIcono;
+}
+
+function getValuesUniqueFromData(variableUnica,acumuladoSimple){
+    let unicos = acumuladoSimple.map(
+        x => x[variableUnica]
+    )
+    unicos = [...new Set(unicos)];
+    return unicos;
+}
+
+function getHtmlFromPoligonRandom(unicos,colorDBReferencia,objReferencia,variableUnica){
+    let htmlString = "";
+    let contadorColor = 0; 
+    let jsonColoresRandom = {};
+    unicos.forEach(
+        x =>{
+            jsonColoresRandom[x] = colorDBReferencia[contadorColor % colorDBReferencia.length]["Color"];
+            contadorColor++;
+            let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${jsonColoresRandom[x]};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span onclick="mostarLayer('${x}','${variableUnica}')">  ${x} </span></div></div>`;
+            htmlString = htmlString + htmlAux;  
+    });
+    let htmlMinimize = '<img id="clickme" src="Content/img/min.png" alt="imagen minimizar"></img><img id="clickme2" src="Content/img/max.png" alt="imagen maximizar"></img>';
+    let titulo = objReferencia["titulo_leyenda"];
+    let idName = removeAccents(objReferencia["descripcion_capa"]);
+    let innerHTML = '<div class="legendCustom">' + 
+                    `<div class="contenedor container"><div class="row"><div class="principal2 col-10"> <p class="titleLegend principal"><b>${titulo}</b></p></div><div onclick="slideToggleLegend('${idName}_slide',this);" class="sidebar2 col-2">${htmlMinimize}</div></div></div> `+
+                    `<div id="${idName}_slide"> ${htmlString}</div>` +
+                    '</div>';
+    return innerHTML;
+}
+
+function getHtmlFromPointRandom(unicos,colorDBReferencia,objReferencia,variableUnica){
+    console.log(objReferencia)
+    let htmlString = "";
+    let contadorColor = 0; 
+    let jsonColoresRandom = {};
+    unicos.forEach(
+        x =>{
+            jsonColoresRandom[x] = colorDBReferencia[contadorColor % colorDBReferencia.length]["Link"];
+            let url = jsonColoresRandom[x] ;
+            contadorColor++;
+            let htmlAux = `<span onclick="mostarLayerPoint('${x}','${variableUnica}')"><img src="${url}" alt="Girl in a jacket" width="20" height="20"> ${x}</span><br>`
+            //onclick="mostarLayer('${variable}','${variableUnica}',${idCapa})"
+            htmlString = htmlString + htmlAux; 
+    });
+    let htmlMinimize = '<img id="clickme" src="Content/img/min.png" alt="imagen minimizar"></img><img id="clickme2" src="Content/img/max.png" alt="imagen maximizar"></img>';
+    let titulo = objReferencia["titulo_leyenda"];
+    let idName = removeAccents(objReferencia["descripcion_capa"]);
+    let innerHTML = '<div class="legendCustom">' + 
+                    `<div class="contenedor container"><div class="row"><div class="principal2 col-10"> <p class="titleLegend principal"><b>${titulo}</b></p></div><div onclick="slideToggleLegend('${idName}_slide',this);" class="sidebar2 col-2">${htmlMinimize}</div></div></div> `+
+                    `<div id="${idName}_slide"> ${htmlString}</div>` +
+                    '</div>';
+    return innerHTML;
+}
+
+function getHtmlFromPoligonDefinidos(variableUnica,objReferencia){
+    console.log(objReferencia)
+    let htmlString = "";
+    let acumulador = [];
+    if(objReferencia["Variable"] == "default"){
+        let variable = objReferencia["titulo_leyenda"];
+        let color = objReferencia["Color"];
+        let idCapa = objReferencia["idcapa"];
+        let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${color};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span onclick="mostarLayer2('default','${variableUnica}',${idCapa})">  ${variable} </span></div></div>`;
+        htmlString = htmlString + htmlAux;
+    }
+    else{
+        dataGlobal.filter(x => x["Propiedad"] == variableUnica).forEach(
+            x =>{
+                console.log(x)
+                let variable = x["Variable"];
+                let idCapa = x["idcapa"];
+                if(acumulador.indexOf(variable) == -1){
+                    //console.log(variableUnica,objReferencia)
+                    let color = x["Color"];
+                    let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${color};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span onclick="mostarLayer('${variable}','${variableUnica}',${idCapa})">  ${variable} </span></div></div>`;
+                    htmlString = htmlString + htmlAux;
+                    acumulador.push(variable);
+                }
+        });
+    }
+    let htmlMinimize = '<img id="clickme" src="Content/img/min.png" alt="imagen minimizar"></img><img id="clickme2" src="Content/img/max.png" alt="imagen maximizar"></img>';
+    //console.log(objReferencia)
+    let titulo = objReferencia["descripcion_capa"];
+    let idName = removeAccents(objReferencia["descripcion_capa"]);
+    let innerHTML = '<div class="legendCustom">' + 
+                    `<div class="contenedor container"><div class="row"><div class="principal2 col-10"> <p class="titleLegend principal"><b>${titulo}</b></p></div><div onclick="slideToggleLegend('${idName}_slide',this);" class="sidebar2 col-2">${htmlMinimize}</div></div></div> `+
+                    `<div id="${idName}_slide"> ${htmlString}</div>` +
+                    '</div>';
+    return innerHTML;
+}
+
+function getHtmlFromPointDefinidos(variableUnica,objReferencia){
+    let htmlString = "";
+    let acumulador = [];
+    if(objReferencia["Variable"] == "default"){
+        let variable = objReferencia["titulo_leyenda"];
+        let url = objReferencia["url_icono"];
+        let htmlAux = `<span><img src="${url}" alt="Girl in a jacket" width="20" height="20"> ${variable}</span><br>`
+        htmlString = htmlString + htmlAux;
+    }
+    else{
+        dataGlobal.filter(x => x["Propiedad"] == variableUnica).forEach(
+            x =>{
+                let variable = x["Variable"];
+                let idCapa = x["idcapa"];
+                if(acumulador.indexOf(variable) == -1){
+                    let url = x["url_icono"];
+                    let htmlAux = `<span onclick="mostarLayerPoint('${variable}','${variableUnica}',${idCapa})"><img src="${url}" alt="Girl in a jacket" width="20" height="20"> ${variable}</span><br>`
+                    htmlString = htmlString + htmlAux;
+                    acumulador.push(variable);
+                }
+        });
+    }
+    let htmlMinimize = '<img id="clickme" src="Content/img/min.png" alt="imagen minimizar"></img><img id="clickme2" src="Content/img/max.png" alt="imagen maximizar"></img>';
+    
+    let titulo = objReferencia["titulo_leyenda"];
+    let idName = removeAccents(objReferencia["descripcion_capa"]);
+    let innerHTML = '<div class="legendCustom">' + 
+                    `<div class="contenedor container"><div class="row"><div class="principal2 col-10"> <p class="titleLegend principal"><b>${titulo}</b></p></div><div onclick="slideToggleLegend('${idName}_slide',this);" class="sidebar2 col-2">${htmlMinimize}</div></div></div> `+
+                    `<div id="${idName}_slide"> ${htmlString}</div>` +
+                    '</div>';
+    return innerHTML;
+}
+
+function getLegendLeaflet(stringHtml){
+    var legend = L.control({position: 'bottomleft'});
+    legend.onAdd = function (map) {
+        var div = L.DomUtil.create('div', 'info legend');
+        div.innerHTML += stringHtml;
+        return div;
+    };                
+    leyendasGlobal.push(legend)
+    legend.addTo(map);
+    return legend;
+}
+
 function checkComuna(inputObject, comuna){
+    general2.getCleanMap()
+    removeMarker()
+    let countSeconds = 0;
+
     //cargar();
     let objeto = $(inputObject);
     
-
-
     if(objeto.is(":checked")){
+        general2.activateComuna(comuna);
         $("#div-input-capas input").each((x,y)=> {
             let objeto = $(y);
             let capaNombre = objeto.attr("value");
             let capaID = "#"+objeto.attr("value") + comuna;
             if(objeto.is(":checked")){
-                //console.log(capaNombre)
-                //$(".loader").show();
-                //console.log(capaNombre,comuna)
                 general.activateCapa(capaNombre,comuna);
-                //$(capaID).trigger("click")
+                countSeconds++;
             }
         });
     }
     else{
+        general2.desactiveComuna(comuna);
         $("#div-input-capas input").each((x,y)=> {
             let objeto = $(y);
             if(objeto.is(":checked")){
@@ -55,22 +249,72 @@ function checkComuna(inputObject, comuna){
             }
         });
     }
+    disableAllLayer();
+    setTimeout(() => {
+        general2.getAllLegend()
+        return 
+        let acumuladoSimple = getAllData();
+        let variable = getVariableUnique();
+        variable.forEach(
+            variableUnica =>{
+                let objReferencia = getReference(variableUnica);
+                let unicos = getValuesUniqueFromData(variableUnica,acumuladoSimple);
+                let jsonColoresRandom = {}; 
+                if(objReferencia["Tipo"] == "Puntos"){
+                    //Esto es un punto
+                    if(objReferencia["Variable"] == "random"){
+                        //Esto es un punto random
+                        let paleta = getPalletteIcon(objReferencia);
+                        let htmlString = getHtmlFromPointRandom(unicos,paleta,objReferencia,variableUnica);
+                        getLegendLeaflet(htmlString);
+                    }
+                    else{
+                        //Esto es un punto Definido
+                        let htmlString = getHtmlFromPointDefinidos(variableUnica,objReferencia)
+                        getLegendLeaflet(htmlString);                        
+                    }
+                }
+                else{
+                    //Esto es un poligono
+                    if(objReferencia["Variable"] == "random"){
+                        //Esto es un poligono random
+                        let paleta = getPallette(objReferencia);
+                        let htmlString = getHtmlFromPoligonRandom(unicos,paleta,objReferencia,variableUnica);
+                        getLegendLeaflet(htmlString);
+                    }
+                    else{
+                        //"Esto es un poligono con colores definidos"
+                        let htmlString = getHtmlFromPoligonDefinidos(variableUnica,objReferencia)
+                        getLegendLeaflet(htmlString);                        
+                    }
+                }
+                return                 
+        });
+    }, 500 * countSeconds);   
 }
 
 function checkCapa(inputObject, capa){
-    //cargar();
+    general2.getCleanMap()
+    removeMarker()
     let objeto = $(inputObject);
+    let countSeconds = 0;
+    
+    
     if(objeto.is(":checked")){
+        general2.activateLayer(capa)
+        capaActivas.push(capa)
         $("#div-input-comunas input").each((x,y)=> {
             let objeto = $(y);
             let capaID = "#"+ capa + objeto.attr("value");
             if(objeto.is(":checked")){
                 general.activateCapa(capa,objeto.attr("value"));
-                //$(capaID).trigger("click")
+                countSeconds++;
             }
         })
     }
     else{
+        general2.desactiveLayer(capa)
+        capaActivas = capaActivas.filter(x => x != capa)
         $("#div-input-comunas input").each((x,y)=> {
             let objeto = $(y);
             if(objeto.is(":checked")){
@@ -79,74 +323,50 @@ function checkCapa(inputObject, capa){
             }
         });
     }
-    console.log(leyendasGlobal)
-    leyendasGlobal.forEach(x => {
-        x.remove();
-        console.log(x);
-    });
-    leyendasGlobal = [];
+    disableAllLayer();
+    
+    let tiempoEspera = 500 * countSeconds < 1000?1000:500 * countSeconds;
     setTimeout(() => {
-        //console.log("acumulador",acumuladorGlobal);
-        let acumuladoSimple = acumuladorGlobal.map(
-            x => x["data"]["features"].map(
-                y => y["properties"]
-            )
-        ).reduce( (x,y)=> x.concat(y));
-        let variable = acumuladorGlobal.map(
-            x => x["propiedad"]
-        )
-        variable = [...new Set(variable)]
-        console.log("variables",variable)
+        general2.getAllLegend()
+        return 
+        let acumuladoSimple = getAllData();
+        let variable = getVariableUnique();
         variable.forEach(
             variableUnica =>{
-                let unicos = acumuladoSimple.map(
-                    x => x[variableUnica]
-                )
-                unicos = [...new Set(unicos)]
-                let findDescripcion = acumuladorGlobal.filter(x => x["propiedad"] == variableUnica)[0]["descripcion"];
-                
-                let objReferencia = dataGlobal.filter(x => x["descripcion_capa"] == findDescripcion)[0];
-                
-                let nameProperties = objReferencia["Propiedad"];
-                let paletaReferencia = objReferencia["Color"];
-                let colorDBReferencia = dataColor.filter(x => x["Paleta"] == paletaReferencia);
-
-                //console.log(variableUnica)
-                
+                let objReferencia = getReference(variableUnica);
+                let unicos = getValuesUniqueFromData(variableUnica,acumuladoSimple);
                 let jsonColoresRandom = {}; 
-                let contadorColor = 0; 
-                var legend = L.control({position: 'bottomright'});
-                let htmlString = ""
-                unicos.forEach(
-                    x =>{
-                        jsonColoresRandom[x] = colorDBReferencia[contadorColor%colorDBReferencia.length]["Color"];
-                        contadorColor++;
-                        htmlString = htmlString + `<span> Color: ${jsonColoresRandom[x]} - Valor: ${x}</span>`
-                    });
-                //console.log("Simple",unicos)
-                //console.log(jsonColoresRandom,variableUnica);
-                
-                legend.onAdd = function (map) {
-                    var div = L.DomUtil.create('div', 'info legend');
-                    div.innerHTML = htmlString;
-                    return div;
-                };
-                
-                leyendasGlobal.push(legend)
-                legend.addTo(map);
-                console.log("Deberia haber leyenda")
-            }
-        )
-        //console.log("Simple",variable,acumuladoSimple[0][variable])
-        /*
-        let unicos = acumuladoSimple.map(
-            x => x[variable]
-        )
-        print(unicos)
-        unicos = [...new Set(unicos)]
-        console.log("Simple",unicos)
-        */
-    }, 5000);
+                if(objReferencia["Tipo"] == "Puntos"){
+                    //Esto es un punto
+                    if(objReferencia["Variable"] == "random"){
+                        //Esto es un punto random
+                        let paleta = getPalletteIcon(objReferencia);
+                        let htmlString = getHtmlFromPointRandom(unicos,paleta,objReferencia,variableUnica);
+                        getLegendLeaflet(htmlString);
+                    }
+                    else{
+                        //Esto es un punto Definido
+                        let htmlString = getHtmlFromPointDefinidos(variableUnica,objReferencia)
+                        getLegendLeaflet(htmlString);                        
+                    }
+                }
+                else{
+                    //Esto es un poligono
+                    if(objReferencia["Variable"] == "random"){
+                        //Esto es un poligono random
+                        let paleta = getPallette(objReferencia);
+                        let htmlString = getHtmlFromPoligonRandom(unicos,paleta,objReferencia,variableUnica);
+                        getLegendLeaflet(htmlString);
+                    }
+                    else{
+                        //"Esto es un poligono con colores definidos"
+                        let htmlString = getHtmlFromPoligonDefinidos(variableUnica,objReferencia)
+                        getLegendLeaflet(htmlString);                        
+                    }
+                }
+                return                 
+        });
+    }, 10000);
 }
 
 
@@ -213,7 +433,23 @@ function marcar_comunas(){
             //let capaID = "#"+ capa + objeto.attr("value");
             //$(capaID).trigger("click")
             $(objeto).trigger("click")
-            console.log(objeto)
+            //console.log(objeto)
+        }
+    });
+}
+
+function desmarcar_ckeck(){
+    //alert("Hola")
+    $("#div-input-comunas input").each((x,y)=> {
+        let objeto = $(y);
+        if(objeto.is(":checked")){
+            $(objeto).trigger("click")
+        }
+    });
+    $("#div-input-capas input").each((x,y)=> {
+        let objeto = $(y);
+        if(objeto.is(":checked")){
+            $(objeto).trigger("click")
         }
     });
 }

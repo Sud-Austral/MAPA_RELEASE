@@ -15,7 +15,33 @@ $(window).ready(function() {
         $(".loader").fadeOut("slow");
     }, 5000);
     */
-    $(".comunaID").parent().parent().parent().parent().parent().parent().css( "background", "black");  
+    //$(".comunaID").parent().parent().parent().parent().parent().parent().css( "background", "black"); 
+    /*
+    $($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
+        .children()[0]).css( "background", "#049fec");
+    console.log($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
+    .html())
+    $(".comunaID").parent().parent().parent().parent().parent().parent().css( "background", "#03a7ab")
+    $($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
+        .children()[2]).css( "background", "#A5CD00");
+
+    */
+   console.log($($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
+   .children()[0]).html())
+
+
+        $($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
+        .children()[0]).css( "background", "#B3CCFF");
+        $($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
+        .children()[0]).css( "accent-color", "#4784FF");
+
+        $($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
+        .children()[2]).css( "background", "#A5CD00");
+        $($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
+        .children()[2]).css( "accent-color", "#A3FFA3");
+        
+        $(".comunaID").parent().parent().parent().parent().parent().parent().css( "background", "#03a7ab");
+        $(".comunaID").parent().parent().parent().parent().parent().parent().css( "accent-color", "#ceeefe");
 });
 
 function slideToggleLegend(idLegenda,padre) {
@@ -46,7 +72,9 @@ function getLayerMapBox(id){
 
 function getMapaBase(){
     const objetos = {
-        "Mapa claro":               getLayerMapBox("mapbox/streets-v11"),
+        // `<span class="comunaID"> ${nombreComuna} </span>`.toString();
+        //"<span class='BaseID'>Mapa claro</span>": getLayerMapBox("mapbox/streets-v11"),
+        "Mapa claro": getLayerMapBox("mapbox/streets-v11"),
         "Mapa Oscuro":              getLayerMapBox("mapbox/dark-v9"),
         "Mapa Satelital":           getLayerMapBox("mapbox/satellite-streets-v9"),
         "Mapa Gris":                getLayerMapBox("mapbox/light-v10"),
