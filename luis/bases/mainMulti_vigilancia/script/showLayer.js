@@ -6,9 +6,10 @@ function removeMarker(){
         mapMarker.remove(map);
     } catch (error) {
         console.log("No hay marker definido aun")
-    }
-    
+    }    
 }
+
+
 
 function mostarLayer2(variable,NomProp,descripcion_capa){
     removeMarker();  

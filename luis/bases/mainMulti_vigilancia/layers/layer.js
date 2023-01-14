@@ -24,11 +24,13 @@ class layerSingle {
             } catch (error) {
                 console.log("Revisar ",x,this.objReferencia)
             }      
-        })
+        });
+        
         let objReferencia = this.objReferencia;
         let variableUnica =  objReferencia["Propiedad"]; 
         let unicos = dataAcumulada.map(x => x[variableUnica]);
         unicos = [...new Set(unicos)];
+        console.log("unicos",unicos)
         if(objReferencia["Tipo"] == "Puntos"){
             //Esto es un punto
             if(objReferencia["Variable"] == "random"){
@@ -39,7 +41,7 @@ class layerSingle {
                 this.jsonColoresRandom = result[1]
                 this.legend = getLegendLeaflet2(htmlString);
             }
-            else{
+            else{                
                 //Esto es un punto Definido
                 let result = getHtmlFromPointDefinidos2(variableUnica,objReferencia)
                 let htmlString = result[0]
@@ -52,6 +54,7 @@ class layerSingle {
             //Esto es un poligono
             if(objReferencia["Variable"] == "random"){
                 //Esto es un poligono random
+                
                 let paleta = getPallette(objReferencia);
                 let result = getHtmlFromPoligonRandom2(unicos,paleta,objReferencia,variableUnica);
                 let htmlString = result[0]
@@ -59,8 +62,9 @@ class layerSingle {
                 this.legend = getLegendLeaflet2(htmlString);
             }
             else{
+                
                 //"Esto es un poligono con colores definidos"
-                let result = getHtmlFromPoligonDefinidos2(variableUnica,objReferencia)
+                let result = getHtmlFromPoligonDefinidos2(variableUnica,objReferencia,unicos)
                 let htmlString = result[0]
                 this.jsonColoresRandom = result[1]
                 this.legend = getLegendLeaflet2(htmlString);                        
@@ -100,8 +104,10 @@ class layerSingle {
         }
         let propiedad = this.objReferencia["Propiedad"]
         let setIcon = (feature, latlng) =>{
-            let valorPropiedad =feature["properties"][propiedad]?feature["properties"][propiedad]:"Sin Información"          
+            //let valorPropiedad =feature["properties"][propiedad]?feature["properties"][propiedad]:"Sin Información" 
+            let valorPropiedad =feature["properties"][propiedad];         
             let color = this.jsonColoresRandom[valorPropiedad];
+            //console.log(valorPropiedad,color)
             //let myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
             let myIcon = getIcon(color);
             return L.marker(latlng, { icon: myIcon });

@@ -52,7 +52,7 @@ class AllLayers {
     }
 
     getAllLegend(){
-        //this.getCleanMap();
+        this.getCleanMap();
         this.disableMark();
         this.layerCollection.filter(x => x.legend != null)
         .forEach(x => x.legend.remove(map));
