@@ -36,10 +36,15 @@ function getHtmlFromPoligonDefinidos2(variableUnica,objReferencia,unicos){
                 //x = x? x: "Sin Información";
                 //let variable = x["Variable"];
                 let variable = x;
+                if(x == ""){
+                   x = null; 
+                }
                 variable= variable? variable: "Sin Información";
                 let idCapa = objReferencia["idcapa"];
                 if(acumulador.indexOf(variable) == -1){
                     //console.log(variableUnica,objReferencia)
+                    console.log(dataGlobal,objReferencia,x)
+                    console.log("Vacio?", dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x))
                     let color = dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x)[0]["Color"];
                     //console.log(objReferencia,dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x))
                     //let color = "FFF";
