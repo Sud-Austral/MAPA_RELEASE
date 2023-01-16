@@ -154,6 +154,7 @@ html, body, #mapid {
 Custom scrollbar leyenda
 */
 .legendCustom{
+    overflow-x: hidden !important;
     max-height: 130px;
     overflow: auto;
     max-width: 300px;
