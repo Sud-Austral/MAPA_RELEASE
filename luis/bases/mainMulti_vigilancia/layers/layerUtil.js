@@ -124,7 +124,7 @@ function getHtmlFromPointDefinidos2(variableUnica,objReferencia){
         let variable = objReferencia["titulo_leyenda"];
         let url = objReferencia["url_icono"];
         jsonColoresRandom[variable] = url;
-        let htmlAux = `<span class="variableLeyenda" onclick="general2.markPoint('${descripcion}','${variable}')"><img src="${url}" alt="Girl in a jacket" width="20" height="20"> ${variable} ${getHtmlToolTip(variable)} </span><br>`
+        let htmlAux = `<span class="variableLeyenda" onclick="general2.markPoint2('${descripcion}','${variable}')"><img src="${url}" alt="Girl in a jacket" width="20" height="20"> ${variable} ${getHtmlToolTip(variable)} </span><br>`
         htmlString = htmlString + htmlAux;
     }
     else{

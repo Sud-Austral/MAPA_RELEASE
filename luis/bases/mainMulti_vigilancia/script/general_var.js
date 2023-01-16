@@ -25,10 +25,10 @@ $(window).ready(function() {
     $($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
         .children()[2]).css( "background", "#A5CD00");
 
-    */
+    
    console.log($($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
    .children()[0]).html())
-
+*/
 
         $($($(".comunaID")  .parent().parent().parent().parent().parent().parent().parent())
         .children()[0]).css( "background", "#B3CCFF");

@@ -63,6 +63,7 @@ class AllLayers {
     getCleanMap(){
         this.disableMark();
         this.layerCollection
+        .filter(x => x.geojson != null)
         .forEach(
             x =>{
                 try {
@@ -205,6 +206,59 @@ class AllLayers {
             }      
         })
         let markData = dataAcumuladoFull.filter(x => x.properties[property] == variable);
+        let setIcon = (feature, latlng) =>{
+            let myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
+            return L.marker(latlng, { icon: myIcon });
+        }        
+    
+        let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
+            capaGlobal.idcapa == this.geometryMark.objReferencia.idcapa
+        );
+        let dataGlobalDescripCapaUnique = [...new Set(dataGlobalNivel2
+            .filter(x => x.popup_0_1 != null)
+            .sort((x,y) => {return x["posición_capa"] - y["posición_capa"]})
+            .map(x => x.descripcion_capa)
+            .filter(x => x)
+            )];
+
+        let dataGlobalPropiedadesUnique = [... new Set(dataGlobalNivel2.sort( x=> x.posicion_popup).map(x => x.Propiedad))]
+        let diccionarioNombrePropiedadPopup = {}
+        dataGlobalNivel2.forEach(x => diccionarioNombrePropiedadPopup[x.Propiedad] = x["descripcion_pop-up"]);
+                    
+        let onEachFeatureCustom = (feature, layer) =>{
+            let htmlString = dataGlobalPropiedadesUnique.map(element => getStringHTML4(feature, element,diccionarioNombrePropiedadPopup[element])).toString();
+            htmlString = htmlString.replaceAll(",", "")
+            htmlString = htmlString + 
+            "</div><center><img class='banner2' src='https://raw.githubusercontent.com/Sud-Austral/mapa_glaciares/main/img/logo_DataIntelligence_normal.png' alt='Data Intelligence'/></center>";
+            layer.bindPopup("<div class='parrafo_popup'>" + htmlString + "</div>", customOptions);                
+            layer.on({
+                mouseover: highlightFeature,
+                mouseout: resetHighlight,
+                click: zoomToFeature,
+            })
+        }
+        let geojson = L.geoJson({"type": 'FeatureCollection',
+        "features":markData},//
+        {pointToLayer: setIcon,onEachFeature: onEachFeatureCustom}).addTo(map);
+        this.geometryMark = geojson;
+    }
+
+    markPoint2(descripcion,variable){
+        this.disableMark();
+        let marca = this.layerCollection
+        .filter(x => x["objReferencia"]["descripcion_capa"] == descripcion);
+        this.geometryMark = marca[0];
+        let property = this.geometryMark.objReferencia["Propiedad"];
+        let comunas = this.comunaCollection.filter(x => x.activa);
+        let dataAcumuladoFull = []
+        comunas.forEach(x =>{
+            try {             
+                dataAcumuladoFull = dataAcumuladoFull.concat(this.geometryMark.data[x.codComuna].data.features);   
+            } catch (error) {
+                console.log("Revisar2 ",x,this.objReferencia)
+            }      
+        })
+        let markData = dataAcumuladoFull //.filter(x => x.properties[property] == variable);
         let setIcon = (feature, latlng) =>{
             let myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
             return L.marker(latlng, { icon: myIcon });

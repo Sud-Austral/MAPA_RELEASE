@@ -38,7 +38,6 @@ let capaActivas = []
 function disableAllLayer(){
     leyendasGlobal.forEach(x => {
         x.remove();
-        console.log(x);
     });
     leyendasGlobal = [];
     return true;

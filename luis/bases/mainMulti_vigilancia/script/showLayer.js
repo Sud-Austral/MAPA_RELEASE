@@ -3,7 +3,10 @@ let mapMarker;
 
 function removeMarker(){
     try {
-        mapMarker.remove(map);
+        if(mapMarker){
+            mapMarker.remove(map);
+        }
+        
     } catch (error) {
         console.log("No hay marker definido aun")
     }    

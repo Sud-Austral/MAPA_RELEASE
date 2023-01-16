@@ -8,7 +8,6 @@ class layerSingle {
       this.jsonColoresRandom = null;
       this.legend = null;
       this.geojson = null;
-      console.log(this.objReferencia)
     }
 
     
@@ -103,14 +102,20 @@ class layerSingle {
             })
         }
         let propiedad = this.objReferencia["Propiedad"]
+
         let setIcon = (feature, latlng) =>{
-            //let valorPropiedad =feature["properties"][propiedad]?feature["properties"][propiedad]:"Sin Información" 
             let valorPropiedad =feature["properties"][propiedad];         
             let color = this.jsonColoresRandom[valorPropiedad];
-            //console.log(valorPropiedad,color)
-            //let myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
             let myIcon = getIcon(color);
             return L.marker(latlng, { icon: myIcon });
+        }
+
+        if(this.objReferencia["Variable"] == "default"){
+            setIcon = (feature, latlng) =>{
+                let url = this.objReferencia["url_icono"];
+                let myIcon = getIcon(url);
+                return L.marker(latlng, { icon: myIcon });
+            }
         }
         let geojson = L.geoJson({"type": 'FeatureCollection',
         "features":dataAcumuladoFull},//{style:estiloDinamico}).addTo(map);
