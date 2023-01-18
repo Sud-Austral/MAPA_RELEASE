@@ -15,6 +15,7 @@ function getLegendLeaflet2(stringHtml){
 }
 
 function getHtmlFromPoligonDefinidos2(variableUnica,objReferencia,unicos){
+    
     let descripcion = objReferencia["descripcion_capa"];
     
     let htmlString = "";
@@ -63,19 +64,25 @@ function getHtmlFromPoligonDefinidos2(variableUnica,objReferencia,unicos){
 }
 
 function getHtmlFromPoligonRandom2(unicos,colorDBReferencia,objReferencia,variableUnica){
-    let descripcion = objReferencia["descripcion_capa"];
-
+    console.log("Poligono random")
     let htmlString = "";
     let contadorColor = 0; 
     let jsonColoresRandom = {};
-    unicos.forEach(
-        x =>{
-            x = x? x: "Sin Información";
-            jsonColoresRandom[x] = colorDBReferencia[contadorColor % colorDBReferencia.length]["Color"];
-            contadorColor++;
-            let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${jsonColoresRandom[x]};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span class="variableLeyenda" onclick="general2.markPolygon('${descripcion}','${x}')">  ${x} ${getHtmlToolTip(x)} </span></div></div>`;
-            htmlString = htmlString + htmlAux;  
-    });
+    let descripcion = objReferencia["descripcion_capa"];
+    if(unicos.length == 0){
+        htmlString = "Sin información";
+    }
+    else{
+        unicos.forEach(
+            x =>{
+                x = x? x: "Sin Información";
+                jsonColoresRandom[x] = colorDBReferencia[contadorColor % colorDBReferencia.length]["Color"];
+                contadorColor++;
+                let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${jsonColoresRandom[x]};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span class="variableLeyenda" onclick="general2.markPolygon('${descripcion}','${x}')">  ${x} ${getHtmlToolTip(x)} </span></div></div>`;
+                htmlString = htmlString + htmlAux;  
+        });
+
+    }
     let htmlMinimize = '<img id="clickme" src="Content/img/min.png" alt="imagen minimizar"></img><img id="clickme2" src="Content/img/max.png" alt="imagen maximizar"></img>';
     let titulo = objReferencia["titulo_leyenda"];
     let idName = removeAccents(objReferencia["descripcion_capa"]);

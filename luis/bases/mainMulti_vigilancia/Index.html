@@ -96,17 +96,26 @@
     <script>
         //print(window);
         function Download(){
-            var data = dataCapaGlobal
+            let data =  general2.layerCollection.filter(x => Object.keys(x.data).length > 0);
+            let dataAcumulador = []
+            data.forEach(x =>{
+                Object.keys(x.data).forEach(y =>{
+                    //console.log(x.data[y])
+                    dataAcumulador = dataAcumulador.concat(x.data[y].data.features);
+                })
+            })
+            //var data = dataCapaGlobal
             data.forEach(element => {
                 delete element.idcapa;
                 delete element["url_ícono"];
                 delete element["url"];    
                 delete element["urlData"];
             });;
-            var fileName = 'test.json';
-
+            var fileName = 'Mapa.json';
+            console.log(dataAcumulador)
+            let final = {"type": 'FeatureCollection',"features":dataAcumulador}
             // Create a blob of the data
-            var fileToSave = new Blob([JSON.stringify(data)], {
+            var fileToSave = new Blob([JSON.stringify(final)], {
                 type: 'application/json'
             });
 

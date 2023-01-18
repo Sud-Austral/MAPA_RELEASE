@@ -3,6 +3,10 @@ class AllLayers {
       this.layerCollection = [];
       this.comunaCollection = [];
       this.geometryMark = null;
+      let opcion = "C";
+      this.urlImageMark = 
+        `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/ICONS_MARKS/globo_opcion_${opcion}.png`;
+      this.sizeImageMark = [27,33];
     }
 
     cleanMap(){
@@ -206,8 +210,14 @@ class AllLayers {
             }      
         })
         let markData = dataAcumuladoFull.filter(x => x.properties[property] == variable);
+        //Contruye el icono de la marca
         let setIcon = (feature, latlng) =>{
-            let myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
+            let myIcon = L.icon({
+                //iconUrl: "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png",
+                iconUrl: this.urlImageMark,
+                iconSize:  this.sizeImageMark  //[25, 25] // width and height of the image in pixels
+                });
+            //let myIcon = getIcon();
             return L.marker(latlng, { icon: myIcon });
         }        
     
@@ -260,7 +270,11 @@ class AllLayers {
         })
         let markData = dataAcumuladoFull //.filter(x => x.properties[property] == variable);
         let setIcon = (feature, latlng) =>{
-            let myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
+            let myIcon = L.icon({
+                iconUrl: this.urlImageMark,
+                iconSize:  this.sizeImageMark   //[25, 25] // width and height of the image in pixels
+                });
+            //let myIcon = getIcon("https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/AGUAS/Iconos/Solido1.png");
             return L.marker(latlng, { icon: myIcon });
         }        
     

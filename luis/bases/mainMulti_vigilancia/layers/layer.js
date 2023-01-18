@@ -27,9 +27,9 @@ class layerSingle {
         
         let objReferencia = this.objReferencia;
         let variableUnica =  objReferencia["Propiedad"]; 
+
         let unicos = dataAcumulada.map(x => x[variableUnica]);
         unicos = [...new Set(unicos)];
-        console.log("unicos",unicos)
         if(objReferencia["Tipo"] == "Puntos"){
             //Esto es un punto
             if(objReferencia["Variable"] == "random"){
@@ -69,8 +69,7 @@ class layerSingle {
                 this.legend = getLegendLeaflet2(htmlString);                        
             }
             this.getMapaPoligono(dataAcumuladoFull);
-        }
-        
+        }    
     }
 
     getMapaPoint(dataAcumuladoFull){
@@ -169,8 +168,6 @@ class layerSingle {
                 click: zoomToFeature,
             })
         }
-
-        console.log("aki 2",dataAcumuladoFull,dataGlobalNivel2) 
         let geojson = L.geoJson({"type": 'FeatureCollection',
         "features":dataAcumuladoFull},
         {style:estiloDinamico,onEachFeature: onEachFeatureCustom}).addTo(map);

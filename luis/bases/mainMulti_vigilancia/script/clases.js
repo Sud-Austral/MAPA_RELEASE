@@ -583,47 +583,25 @@ class MultiMap{
 
     getURL(idNombre,comuna){
         let arrayReferencia = this.getArrayReferencia(idNombre);
+        
         let referencia = dataCapaGlobal.filter(x => x.idcapa == arrayReferencia[0].idcapa)[0];
         referencia["url"] = referencia["url"]
                                 .replaceAll("github.com","raw.githubusercontent.com")
                                 .replaceAll("tree","");
-        
         referencia["urlData"] = `${referencia.url.split("?")[0]}${comuna}.json`;
-        //referencia["IDCAPA"] = idNombre
         return referencia;
     }
 
     activateCapa(idCapa,comuna){
-        
-        //this.controlCapa.remove();
-        //let controlCapa =  new ControlGlobalCapa();
-        //this.controlCapa = controlCapa;
-
-        //return this.getURL(idCapa,comuna)
         let idCapaComuna = idCapa + comuna;
-
-        
         if(this.diccionarioMaster[idCapaComuna]){
-            //console.log("si");
             let capaID = "#"+idCapa + comuna;
-            //console.log(capaID)
-            $(capaID).trigger("click");
-             
+            $(capaID).trigger("click");   
         }
         else{
-            //console.log("no");
             let comunaBase = this.multimapas.filter(x => x.codComuna == comuna)[0];
             this.buildCapa(comunaBase.comuna,this.getURL(idCapa,comuna),idCapa);
-            //let acumulador = this.buildCapa(comunaBase.comuna,this.getURL(idCapa,comuna),idCapa);
-            //setTimeout(() => console.log("acumulador",acumuladorGlobal), 10000);
-
-            //console.log(comunaBase.comuna);           
         }
-        
-       /*
-        let comunaBase = this.multimapas.filter(x => x.codComuna == comuna)[0];
-        this.buildCapa(comunaBase.comuna,this.getURL(idCapa,comuna),idCapa)
-        */
     }
 
     buildCapa(comunaRef,referencia,IDCAPA){
@@ -637,7 +615,8 @@ class MultiMap{
         $.get({
             url: referencia.urlData,
             error: () => console.log("No File in " + referencia.urlData),
-            success: () => console.log("Conected..."+referencia.urlData)
+            //success: () => console.log("Conected..."+referencia.urlData)
+            success: () => console.log("Conected...")
         }).done(
             data =>{
                 let capa = referencia;
@@ -954,6 +933,7 @@ class MultiMap{
         let comunasCodigos = this.multimapas.map(x => {
             return {"comuna":x["comuna"]["comunaName"],"codComuna":x["codComuna"]};
         })
+        .sort((a,b) => (a.comuna > b.comuna)?1:-1)
         .map(x => 
             {
                 general2.addComuna(x);
@@ -975,10 +955,10 @@ class MultiMap{
             .map( x =>{
                 return {"nombre":x,"id":removeAccents(x)};
             })
+            .sort((a,b) => (a.nombre > b.nombre)?1:-1)
             .map( x => {
                 let capa = new layerSingle(x)
                 general2.addLayer(capa)
-                //console.log(x)
                 return this.getHTMLCapa(x.nombre,x.id)})
             .reduce((x,y) => x + y);
         $("#div-input-capas").html(capasNombre)
