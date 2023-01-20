@@ -41,6 +41,7 @@ function getHtmlFromPoligonDefinidos2(variableUnica,objReferencia,unicos){
                 let idCapa = objReferencia["idcapa"];
                 if(acumulador.indexOf(variable) == -1){
                     //console.log(variableUnica,objReferencia)
+                    console.log(unicos,objReferencia["Capa"],x,"falta",dataGlobal)
                     try {
                         //console.log(objReferencia["Capa"],x,"falta",dataGlobal)
                         //console.log(dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x))
@@ -53,9 +54,8 @@ function getHtmlFromPoligonDefinidos2(variableUnica,objReferencia,unicos){
                         htmlString = htmlString + htmlAux;
                         acumulador.push(variable);                        
                     } catch (error) {
-                        console.log("Error en la leyenda",objReferencia["Capa"],x,"falta");
-                    }
-                    
+                        console.log("Error en la leyenda",objReferencia["Capa"],x);
+                    }                    
                 }
         });
     }
@@ -109,6 +109,9 @@ function getHtmlFromPointRandom2(unicos,colorDBReferencia,objReferencia,variable
     
     unicos.forEach(
         x =>{
+            if(x == "" && x === null){
+                x="Sin Información"
+            }
             jsonColoresRandom[x] = colorDBReferencia[contadorColor % colorDBReferencia.length]["Link"];
             let url = colorDBReferencia[contadorColor % colorDBReferencia.length]["Link"] ;
 
@@ -117,6 +120,9 @@ function getHtmlFromPointRandom2(unicos,colorDBReferencia,objReferencia,variable
             //onclick="mostarLayer('${variable}','${variableUnica}',${idCapa})"
             htmlString = htmlString + htmlAux; 
     });
+    if(unicos.length == 0){
+        htmlString = "Sin información";
+    }
     let htmlMinimize = '<img id="clickme" src="Content/img/min.png" alt="imagen minimizar"></img><img id="clickme2" src="Content/img/max.png" alt="imagen maximizar"></img>';
     let titulo = objReferencia["titulo_leyenda"];
     let idName = removeAccents(objReferencia["descripcion_capa"]);
@@ -128,8 +134,8 @@ function getHtmlFromPointRandom2(unicos,colorDBReferencia,objReferencia,variable
     return [innerHTML,jsonColoresRandom];
 }
 
-function getHtmlFromPointDefinidos2(variableUnica,objReferencia){
-    console.log("Point definido")
+function getHtmlFromPointDefinidos2(variableUnica,objReferencia,unicos){
+    console.log(variableUnica)
     let descripcion = objReferencia["descripcion_capa"];
     let htmlString = "";
     let acumulador = [];
@@ -142,18 +148,32 @@ function getHtmlFromPointDefinidos2(variableUnica,objReferencia){
         htmlString = htmlString + htmlAux;
     }
     else{
-        dataGlobal.filter(x => x["Propiedad"] == variableUnica).forEach(
+        //dataGlobal.filter(x => x["Propiedad"] == variableUnica).forEach(
+        unicos.forEach(
             x =>{
-                let variable = x["Variable"];
-                let idCapa = x["idcapa"];
+                //let variable = x["Variable"];
+                let variable = x
+                if( variable === "" ||  variable === null){
+                    variable="Sin Información"
+                    //console.log(variable,variable===null)
+                };
+                var variable2 = variable
+                variable = variable.toString();
+                //let idCapa = x["idcapa"];
+                let idCapa = objReferencia["idcapa"];
+                let color = dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] === variable && y["Propiedad"] == variableUnica)[0]["url_icono"];               
+                
                 if(acumulador.indexOf(variable) == -1){
-                    let url = x["url_icono"];
+                    let url = color;
                     jsonColoresRandom[variable] = url;
                     let htmlAux = `<span class="variableLeyenda" onclick="general2.markPoint('${descripcion}','${x}')"><img src="${url}" alt="Girl in a jacket" width="20" height="20"> ${variable} ${getHtmlToolTip(variable)}</span><br>`
                     htmlString = htmlString + htmlAux;
                     acumulador.push(variable);
                 }
         });
+    }
+    if(unicos.length == 0){
+        htmlString = "Sin información";
     }
     let htmlMinimize = '<img id="clickme" src="Content/img/min.png" alt="imagen minimizar"></img><img id="clickme2" src="Content/img/max.png" alt="imagen maximizar"></img>';
     

@@ -13,7 +13,7 @@ class layerSingle {
     
 
     getLegend(Comunas){
-        console.log("Leyendas")
+        console.log("Buscar titulo_leyenda  ",this.objReferencia)
         let dataAcumulada = []
         let dataAcumuladoFull = []
         Comunas.forEach(x =>{
@@ -43,18 +43,19 @@ class layerSingle {
             }
             else{                
                 //Esto es un punto Definido
-                let result = getHtmlFromPointDefinidos2(variableUnica,objReferencia)
+                console.log("Definido")
+                let result = getHtmlFromPointDefinidos2(variableUnica,objReferencia,unicos)
                 let htmlString = result[0]
                 this.jsonColoresRandom = result[1]
                 this.legend = getLegendLeaflet2(htmlString);                        
             }
+            //console.log(this.jsonColoresRandom,objReferencia["Variable"])
             this.getMapaPoint(dataAcumuladoFull)
         }
         else{
             //Esto es un poligono
             if(objReferencia["Variable"] == "random"){
-                //Esto es un poligono random
-                
+                //Esto es un poligono random                
                 let paleta = getPallette(objReferencia);
                 let result = getHtmlFromPoligonRandom2(unicos,paleta,objReferencia,variableUnica);
                 let htmlString = result[0]
@@ -102,9 +103,13 @@ class layerSingle {
             })
         }
         let propiedad = this.objReferencia["Propiedad"]
-
-        let setIcon = (feature, latlng) =>{
-            let valorPropiedad =feature["properties"][propiedad];         
+        let setIcon = (feature, latlng) =>{            
+            let valorPropiedad =feature["properties"][propiedad].toString();
+            
+            if( valorPropiedad == "" ||  valorPropiedad === null){
+                valorPropiedad="Sin Información"
+                //console.log(variable,variable===null)
+            };
             let color = this.jsonColoresRandom[valorPropiedad];
             let myIcon = getIcon(color);
             return L.marker(latlng, { icon: myIcon });
