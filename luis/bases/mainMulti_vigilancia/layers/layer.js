@@ -36,6 +36,7 @@ class layerSingle {
             if(objReferencia["Variable"] == "random"){
                 //Esto es un punto random
                 let paleta = getPalletteIcon(objReferencia);
+                console.log(paleta)
                 let result = getHtmlFromPointRandom2(unicos,paleta,objReferencia,variableUnica);
                 let htmlString = result[0];
                 this.jsonColoresRandom = result[1]

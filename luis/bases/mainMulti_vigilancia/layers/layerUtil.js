@@ -112,6 +112,7 @@ function getHtmlFromPointRandom2(unicos,colorDBReferencia,objReferencia,variable
             if(x == "" && x === null){
                 x="Sin Información"
             }
+            console.log(colorDBReferencia)
             jsonColoresRandom[x] = colorDBReferencia[contadorColor % colorDBReferencia.length]["Link"];
             let url = colorDBReferencia[contadorColor % colorDBReferencia.length]["Link"] ;
 

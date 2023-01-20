@@ -77,6 +77,7 @@ function getPallette(objReferencia){
 
 function getPalletteIcon(objReferencia){
     let pallette = objReferencia["Color"];
+    console.log(objReferencia)
     let refIcono = dataIcono.filter(y => y["Paleta"] == pallette);
     return refIcono;
 }
