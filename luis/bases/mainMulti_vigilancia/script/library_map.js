@@ -23,6 +23,7 @@ dataGlobal.forEach(element => {
         element["Variable"] = "Sin Información"
     }
 });
+
 console.log(dataGlobal)
 //dataCapaGlobal = dataCapaGlobal.slice(0,2)
 
