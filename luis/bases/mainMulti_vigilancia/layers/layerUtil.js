@@ -41,14 +41,21 @@ function getHtmlFromPoligonDefinidos2(variableUnica,objReferencia,unicos){
                 let idCapa = objReferencia["idcapa"];
                 if(acumulador.indexOf(variable) == -1){
                     //console.log(variableUnica,objReferencia)
-                    let color = dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x)[0]["Color"];
-                    //console.log(objReferencia,dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x))
-                    //let color = "FFF";
-                    dictColor[variable] = color
-                    //let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${color};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span onclick="mostarLayer('${variable}','${variableUnica}',${idCapa})">  ${variable} </span></div></div>`;
-                    let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${color};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span class="variableLeyenda" onclick="general2.markPolygon('${descripcion}','${variable}')">  ${variable} ${getHtmlToolTip(variable)} </span></div></div>`;
-                    htmlString = htmlString + htmlAux;
-                    acumulador.push(variable);
+                    try {
+                        console.log(objReferencia["Capa"],x,"falta",dataGlobal)
+                        //console.log(dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x))
+                        let color = dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x)[0]["Color"];
+                        //console.log(objReferencia,dataGlobal.filter(y => objReferencia["Capa"] == y["Capa"] && y["Variable"] == x))
+                        //let color = "FFF";
+                        dictColor[variable] = color
+                        //let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${color};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span onclick="mostarLayer('${variable}','${variableUnica}',${idCapa})">  ${variable} </span></div></div>`;
+                        let htmlAux = `<div class="contenedor"><div class="sidebar"><span class="desc1" style='background: ${color};'>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></div><div class="principal"><span class="variableLeyenda" onclick="general2.markPolygon('${descripcion}','${variable}')">  ${variable} ${getHtmlToolTip(variable)} </span></div></div>`;
+                        htmlString = htmlString + htmlAux;
+                        acumulador.push(variable);                        
+                    } catch (error) {
+                        console.log("Error en la leyenda",objReferencia["Capa"],x,"falta");
+                    }
+                    
                 }
         });
     }

@@ -13,6 +13,7 @@ class layerSingle {
     
 
     getLegend(Comunas){
+        console.log("Leyendas")
         let dataAcumulada = []
         let dataAcumuladoFull = []
         Comunas.forEach(x =>{
