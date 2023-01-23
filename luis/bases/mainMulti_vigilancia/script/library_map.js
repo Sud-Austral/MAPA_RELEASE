@@ -24,7 +24,7 @@ dataGlobal.forEach(element => {
     }
 });
 
-console.log(dataGlobal)
+//console.log(dataGlobal)
 //dataCapaGlobal = dataCapaGlobal.slice(0,2)
 
 let dataColor   = getDB("data/dataColor1.json");

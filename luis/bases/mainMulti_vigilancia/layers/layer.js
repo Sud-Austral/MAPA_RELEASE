@@ -13,11 +13,14 @@ class layerSingle {
     
 
     getLegend(Comunas){
-        console.log("Buscar titulo_leyenda  ",this.objReferencia)
         let dataAcumulada = []
         let dataAcumuladoFull = []
         Comunas.forEach(x =>{
-            try {
+            try {               
+
+                this.data[x.codComuna].data.features.
+                    forEach(x => x["properties"]["NOM_ACUIF"] = x["properties"]["NOM_ACUIF"]
+                        .replaceAll("Biobio","BioBio"));
                 let auxArray = this.data[x.codComuna].data.features.map(x => x["properties"]);                
                 dataAcumuladoFull = dataAcumuladoFull.concat(this.data[x.codComuna].data.features);
                 dataAcumulada = dataAcumulada.concat(auxArray);    

@@ -372,6 +372,13 @@ Minimizar
     z-index: 999999999 !important;
   }
 
+  #ModalContent{
+    width: 130%;
+  }
+
+  
+
+
 
 
 
