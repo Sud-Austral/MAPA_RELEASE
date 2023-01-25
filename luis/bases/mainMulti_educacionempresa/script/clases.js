@@ -314,30 +314,92 @@ class COMUNABASE{
         this.codigo_comuna = codComuna;
         //URL de los datos de Comuna
         this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/chile_comunas/${this.codigo_comuna}.json`;
-        //Get Data de Comuna
+        //this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/establecimientorect/${this.codigo_comuna}.json`;
+        //this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/poblacion_hex/01101.json`;
         this.dataBaseComuna = getData(this.urlBaseComuna);
+        //let nombreComuna = "Comuna"
         let nombreComuna = this.dataBaseComuna["features"][0]["properties"]["COMUNA"];
+        this.shapeBaseComuna = L.geoJson(this.dataBaseComuna,{
+            style: style,
+            //style:estiloDinamico,
+            onEachFeature: onEachFeature            
+        }).addTo(map);
+       
+        /*
+        //
+        
+        //Get Data de Comuna
+        
         //Get Shape de Comuna
         var dictColor = {0:"red",1:"blue",2:"yellow",3:"green",4:"black"}
         var estiloDinamico = (feature) =>{
             let color = feature["properties"]["Pob_0_5"];
             return {"fillOpacity":0.7,"opacity":0.75,"color":dictColor[color]}
         }
-        this.shapeBaseComuna = L.geoJson(this.dataBaseComuna,{
+        
+
+        this.urlBaseComuna2 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/poblacion_hex/01101.json`;
+        this.dataBaseComuna2 = getData(this.urlBaseComuna2);
+        this.shapeBaseComuna2 = L.geoJson(this.dataBaseComuna2,{
             style: style,
             //style:estiloDinamico,
             onEachFeature: onEachFeature            
         }).addTo(map);
+        //EDUCACION
+        var setIcon = (feature,latlng) => {
+            let url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/ICONS/ICONS/0%20universal-colorful-flat-icons/Education/1.png"
+            return L.marker(latlng, { icon: getIcon(url) });
+        }
+        
+        this.urlBaseComuna3 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/educacion/Instituciones_EdSuperior_2020.json`;
+        this.dataBaseComuna3 = getData(this.urlBaseComuna3);
+        this.shapeBaseComuna3 = L.geoJson(this.dataBaseComuna3,{
+            pointToLayer: setIcon,
+            //style:estiloDinamico,
+            onEachFeature: onEachFeature            
+        }).addTo(map);
+
+        setIcon = (feature,latlng) => {
+            let url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/ICONS/ICONS/0%20universal-colorful-flat-icons/Education/11.png"
+            return L.marker(latlng, { icon: getIcon(url) });
+        }
+
+        this.urlBaseComuna4 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/educacion/Establecimientos_Educacionales_2021.json`;
+        this.dataBaseComuna4 = getData(this.urlBaseComuna4);
+        this.shapeBaseComuna4 = L.geoJson(this.dataBaseComuna4,{
+            //filter: x => x.properties.COD_COM_RB == 1101,
+            filter: x => (x.properties.MAT_MHC_RE > 0 || x.properties.MAT_MTP_RE > 0) && x.properties.COD_COM_RB == 1101,
+            pointToLayer: setIcon,
+            //style:estiloDinamico,
+            onEachFeature: onEachFeature            
+        }).addTo(map);
+        //EDUCACION
+        */
+        let diccionarMapas = getMapasAuxiliar()
         this.comunaName = nombreComuna; 
         nombreComuna = `<span class="comunaID"> ${nombreComuna} </span>`.toString();
+        
         this.jsonComuna = {};
+        
         this.jsonComuna[nombreComuna] = this.shapeBaseComuna;
+        
+        
+        /////////////////////////////////////////////////////////////////////
+        /*
+        this.controlComunaBase = L.control.layers(null, this.jsonComuna, {
+            position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
+            collapsed: false // true
+        }).addTo(map);
+        */
         controlComuna.addOverlay(this.shapeBaseComuna,nombreComuna);
+        Object.keys(diccionarMapas).forEach(x => controlComuna.addOverlay(diccionarMapas[x],x))
+        map.fitBounds(this.shapeBaseComuna.getBounds());
         //map.fitBounds(this.shapeBaseComuna.getBounds());
         //let zoom = map.getZoom();
         //let zoomMin = 10
         //map.setZoom(zoom > zoomMin ? zoomMin : zoom); 
-        //map.setZoom(7);  
+        //map.setZoom(7); 
+           
     }
 }
 
@@ -484,14 +546,16 @@ class MAPAGLOBAL{
 
 class MultiMap{
     constructor(){
-        let urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/mapa_insumos/main/vigilancia/cuenca_biobio.geojson`;
+        //let urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/mapa_insumos/main/vigilancia/cuenca_biobio.geojson`;
         //Get Data de Comuna
-        let dataBaseComuna = getData(urlBaseComuna);
+        //let dataBaseComuna = getData(urlBaseComuna);
         //Get Shape de Comuna
+        /*
         let shapeBaseComuna = L.geoJson(dataBaseComuna,{
             style: {"color":"blue"},
             onEachFeature: onEachFeature            
         }).addTo(map);
+        */
         //map.fitBounds(shapeBaseComuna.geometry());
 
 
@@ -500,14 +564,16 @@ class MultiMap{
         let mapaBase = new MapBase();
         
         //let controlCapa =  new ControlGlobalCapa();
+        /*
         let controlCapa = this.controlGlobalCapa = L.control.layers(null, null, {
             position: 'topright',
             collapsed:  true
         });
         this.controlCapa = controlCapa;
-
+        */
 
         //= controlGlobalCapa
+        
         let controlComuna  = L.control.layers(null, this.jsonComuna, {
             position: 'topright', // 'topleft', 'bottomleft', 'bottomright'
             collapsed: true // true
@@ -525,15 +591,17 @@ class MultiMap{
                 return {"comuna":comuna,"global":global,"codComuna":x}
                 //return null
         });
-        map.fitBounds(shapeBaseComuna.getBounds());
-
+        //map.fitBounds(shapeBaseComuna.getBounds());
+        /*
         let nombre = dataBaseComuna["features"][0]["properties"]["NOMBRE"]
+        
         let diccionario = {}
         diccionario[nombre] = shapeBaseComuna;
         L.control.layers(null, diccionario, {
             position: 'topright', // 'topleft', 'bottomleft', 'bottomright'
             collapsed: true // true
         }).addTo(map);
+        */
 
         /*
         let controlComunaBaseCuenca = L.control.layers(null, {"Cuenca":this.shapeBaseComuna}, {
