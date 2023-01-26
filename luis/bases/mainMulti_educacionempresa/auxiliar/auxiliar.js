@@ -75,11 +75,41 @@ function getMapasAuxiliar(){
         //style:estiloDinamico,
         onEachFeature: onEachFeature            
     }).addTo(map);
-    diccionarioSalida["RECT Aire C02"] = shapeBaseComuna6;
+    diccionarioSalida["RECT Aire"] = shapeBaseComuna6;
+
+    let url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_emisiones/01101.json"
+    diccionarioSalida["Agua Emisiones"] = getMapa(url);
     
+    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_lodos_pta/01101.json"
+    diccionarioSalida["Agua Lodos PTA"] = getMapa(url);
     
-    
+    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_riles_alcantarillado/01101.json"
+    diccionarioSalida["Agua Riles Alcantarillado"] = getMapa(url);
+
+    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/puntual_aire/01101.json"
+    diccionarioSalida["Puntual Aire"] = getMapa(url);
+
+    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rnp_destinatarios/01101.json"
+    diccionarioSalida["RNP Destinatarios"] = getMapa(url);
+
+    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rnp_generacion_industrial/01101.json"
+    diccionarioSalida["RNP Generacion Industrial"] = getMapa(url);
+
+    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rp_destinatario/01101.json"
+    diccionarioSalida["RP Destinatario"] = getMapa(url);
+
+    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rp_generacion/01101.json"
+    diccionarioSalida["RP Generación"] = getMapa(url);
     
     return diccionarioSalida;
 
+}
+
+function getMapa(url){
+    let dataBase = getData(url);
+    let shapeBase = L.geoJson(dataBase,{
+        //style:estiloDinamico,
+        onEachFeature: onEachFeature            
+    }).addTo(map);
+    return shapeBase;
 }
