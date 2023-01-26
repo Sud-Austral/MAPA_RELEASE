@@ -10,6 +10,16 @@ class layerSingle {
       this.geojson = null;
     }
 
+    fixParche_NOM_ACUIF(valor){
+        try {
+            valor["properties"]["NOM_ACUIF"] = valor["properties"]["NOM_ACUIF"]
+                                                .replaceAll("Biobio","BioBio");
+            return true;
+        } catch (error) {
+            return false;
+        }
+    }
+
     
 
     getLegend(Comunas){
@@ -17,18 +27,16 @@ class layerSingle {
         let dataAcumuladoFull = []
         Comunas.forEach(x =>{
             try {               
-
                 this.data[x.codComuna].data.features.
-                    forEach(x => x["properties"]["NOM_ACUIF"] = x["properties"]["NOM_ACUIF"]
-                        .replaceAll("Biobio","BioBio"));
+                    forEach(x => this.fixParche_NOM_ACUIF(x));
                 let auxArray = this.data[x.codComuna].data.features.map(x => x["properties"]);                
                 dataAcumuladoFull = dataAcumuladoFull.concat(this.data[x.codComuna].data.features);
                 dataAcumulada = dataAcumulada.concat(auxArray);    
             } catch (error) {
-                console.log("Revisar ",x,this.objReferencia)
+                console.error(error.name + ': ' + error.message,x,this.objReferencia);
             }      
         });
-        
+        console.log(dataAcumuladoFull) 
         let objReferencia = this.objReferencia;
         let variableUnica =  objReferencia["Propiedad"]; 
 
@@ -75,7 +83,8 @@ class layerSingle {
                 this.legend = getLegendLeaflet2(htmlString);                        
             }
             this.getMapaPoligono(dataAcumuladoFull);
-        }    
+        }  
+         
     }
 
     getMapaPoint(dataAcumuladoFull){
