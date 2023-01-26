@@ -1,6 +1,7 @@
-function getMapasAuxiliar(){
+function getMapasAuxiliar(codcom){
+    let codcomInt = parseInt(codcom);
     let diccionarioSalida = {};
-    let urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/establecimientorect/01101.json`;
+    let urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/establecimientorect/${codcom}.json`;
     //this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/poblacion_hex/01101.json`;
     let dataBaseComuna = getData(urlBaseComuna);
     let shapeBaseComuna = L.geoJson(dataBaseComuna,{
@@ -18,7 +19,7 @@ function getMapasAuxiliar(){
     }
     ////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////
-    let urlBaseComuna2 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/poblacion_hex/01101.json`;
+    let urlBaseComuna2 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/poblacion_hex/${codcom}.json`;
     let dataBaseComuna2 = getData(urlBaseComuna2);
     let shapeBaseComuna2 = L.geoJson(dataBaseComuna2,{
         style: style,
@@ -36,7 +37,7 @@ function getMapasAuxiliar(){
     let urlBaseComuna3 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/educacion/Instituciones_EdSuperior_2020.json`;
     let dataBaseComuna3 = getData(urlBaseComuna3);
     let shapeBaseComuna3 = L.geoJson(dataBaseComuna3,{
-        filter:x=>x.properties.COD_COMUNA == 1101 ,
+        filter:x=>x.properties.COD_COMUNA == codcomInt ,
         pointToLayer: setIcon,
         //style:estiloDinamico,
         onEachFeature: onEachFeature            
@@ -53,7 +54,7 @@ function getMapasAuxiliar(){
     let dataBaseComuna4 = getData(urlBaseComuna4);
     let shapeBaseComuna4 = L.geoJson(dataBaseComuna4,{
         //filter: x => x.properties.COD_COM_RB == 1101,
-        filter: x => (x.properties.MAT_MHC_RE > 0 || x.properties.MAT_MTP_RE > 0) && x.properties.COD_COM_RB == 1101,
+        filter: x => (x.properties.MAT_MHC_RE > 0 || x.properties.MAT_MTP_RE > 0) && x.properties.COD_COM_RB == codcomInt,
         pointToLayer: setIcon,
         //style:estiloDinamico,
         onEachFeature: onEachFeature            
@@ -61,7 +62,7 @@ function getMapasAuxiliar(){
     diccionarioSalida["Educación Secundaria"] = shapeBaseComuna4;
 
 
-    let urlBaseComuna5 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/comuna_zonas/01101.json`;
+    let urlBaseComuna5 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/comuna_zonas/${codcom}.json`;
     let dataBaseComuna5 = getData(urlBaseComuna5);
     let shapeBaseComuna5 = L.geoJson(dataBaseComuna5,{
         //style:estiloDinamico,
@@ -69,7 +70,7 @@ function getMapasAuxiliar(){
     }).addTo(map);
     diccionarioSalida["Zonas"] = shapeBaseComuna5;
 
-    let urlBaseComuna6 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/puntual_aire/01101.json`;
+    let urlBaseComuna6 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/puntual_aire/${codcom}.json`;
     let dataBaseComuna6 = getData(urlBaseComuna6);
     let shapeBaseComuna6 = L.geoJson(dataBaseComuna6,{
         //style:estiloDinamico,
@@ -77,28 +78,28 @@ function getMapasAuxiliar(){
     }).addTo(map);
     diccionarioSalida["RECT Aire"] = shapeBaseComuna6;
 
-    let url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_emisiones/01101.json"
+    let url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_emisiones/${codcom}.json`
     diccionarioSalida["Agua Emisiones"] = getMapa(url);
     
-    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_lodos_pta/01101.json"
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_lodos_pta/${codcom}.json`
     diccionarioSalida["Agua Lodos PTA"] = getMapa(url);
     
-    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_riles_alcantarillado/01101.json"
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_riles_alcantarillado/${codcom}.json`
     diccionarioSalida["Agua Riles Alcantarillado"] = getMapa(url);
 
-    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/puntual_aire/01101.json"
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/puntual_aire/${codcom}.json`
     diccionarioSalida["Puntual Aire"] = getMapa(url);
 
-    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rnp_destinatarios/01101.json"
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rnp_destinatarios/${codcom}.json`
     diccionarioSalida["RNP Destinatarios"] = getMapa(url);
 
-    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rnp_generacion_industrial/01101.json"
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rnp_generacion_industrial/${codcom}.json`
     diccionarioSalida["RNP Generacion Industrial"] = getMapa(url);
 
-    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rp_destinatario/01101.json"
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rp_destinatario/${codcom}.json`
     diccionarioSalida["RP Destinatario"] = getMapa(url);
 
-    url = "https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rp_generacion/01101.json"
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/rp_generacion/01101.json`
     diccionarioSalida["RP Generación"] = getMapa(url);
     
     return diccionarioSalida;

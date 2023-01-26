@@ -375,7 +375,7 @@ class COMUNABASE{
         }).addTo(map);
         //EDUCACION
         */
-        let diccionarMapas = getMapasAuxiliar()
+        let diccionarMapas = getMapasAuxiliar(this.codigo_comuna)
         this.comunaName = nombreComuna; 
         nombreComuna = `<span class="comunaID"> ${nombreComuna} </span>`.toString();
         
