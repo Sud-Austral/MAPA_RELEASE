@@ -87,6 +87,8 @@ class COMUNABASE{
         this.codigo_comuna = getComuna();
         //URL de los datos de Comuna
         this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/chile_comunas/${this.codigo_comuna}.json`;
+        //this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/chile_comunas_test/${this.codigo_comuna}.json`;
+        console.log(this.urlBaseComuna)
         //Get Data de Comuna
         this.dataBaseComuna = getData(this.urlBaseComuna);
         //Get Shape de Comuna

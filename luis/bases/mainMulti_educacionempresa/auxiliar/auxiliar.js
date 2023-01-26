@@ -68,6 +68,14 @@ function getMapasAuxiliar(){
         onEachFeature: onEachFeature            
     }).addTo(map);
     diccionarioSalida["Zonas"] = shapeBaseComuna5;
+
+    let urlBaseComuna6 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/puntual_aire/01101.json`;
+    let dataBaseComuna6 = getData(urlBaseComuna6);
+    let shapeBaseComuna6 = L.geoJson(dataBaseComuna6,{
+        //style:estiloDinamico,
+        onEachFeature: onEachFeature            
+    }).addTo(map);
+    diccionarioSalida["RECT Aire C02"] = shapeBaseComuna6;
     
     
     
