@@ -65,7 +65,7 @@ function getMapasAuxiliar(codcom){
     let urlBaseComuna5 = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/comuna_zonas/${codcom}.json`;
     let dataBaseComuna5 = getData(urlBaseComuna5);
     let shapeBaseComuna5 = L.geoJson(dataBaseComuna5,{
-        //style:estiloDinamico,
+        //style: style,
         onEachFeature: onEachFeature            
     }).addTo(map);
     diccionarioSalida["Zonas"] = shapeBaseComuna5;

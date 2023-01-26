@@ -11,7 +11,7 @@ function getData(urlData) {
         error: () => console.log("No File in " + urlData),       
         async: false
     });
-      
+    //console.log(rawData)
     let dataJson = rawData? JSON.parse(rawData): null;
     return dataJson?dataJson["features"].length > 0?dataJson:null:null;
 }

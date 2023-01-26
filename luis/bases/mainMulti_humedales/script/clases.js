@@ -316,34 +316,28 @@ class COMUNABASE{
         this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/chile_comunas/${this.codigo_comuna}.json`;
         //Get Data de Comuna
         this.dataBaseComuna = getData(this.urlBaseComuna);
+        let nombreComuna = this.dataBaseComuna["features"][0]["properties"]["COMUNA"];
         //Get Shape de Comuna
+        var dictColor = {0:"red",1:"blue",2:"yellow",3:"green",4:"black"}
+        var estiloDinamico = (feature) =>{
+            let color = feature["properties"]["Pob_0_5"];
+            return {"fillOpacity":0.7,"opacity":0.75,"color":dictColor[color]}
+        }
         this.shapeBaseComuna = L.geoJson(this.dataBaseComuna,{
             style: style,
+            //style:estiloDinamico,
             onEachFeature: onEachFeature            
         }).addTo(map);
-        
-        let nombreComuna = this.dataBaseComuna["features"][0]["properties"]["COMUNA"];
         this.comunaName = nombreComuna; 
         nombreComuna = `<span class="comunaID"> ${nombreComuna} </span>`.toString();
-        
         this.jsonComuna = {};
         this.jsonComuna[nombreComuna] = this.shapeBaseComuna;
-        
-        /////////////////////////////////////////////////////////////////////
-        /*
-        this.controlComunaBase = L.control.layers(null, this.jsonComuna, {
-            position: 'topleft', // 'topleft', 'bottomleft', 'bottomright'
-            collapsed: false // true
-        }).addTo(map);
-        */
         controlComuna.addOverlay(this.shapeBaseComuna,nombreComuna);
-        
         //map.fitBounds(this.shapeBaseComuna.getBounds());
         //let zoom = map.getZoom();
         //let zoomMin = 10
         //map.setZoom(zoom > zoomMin ? zoomMin : zoom); 
-        //map.setZoom(7); 
-           
+        //map.setZoom(7);  
     }
 }
 
