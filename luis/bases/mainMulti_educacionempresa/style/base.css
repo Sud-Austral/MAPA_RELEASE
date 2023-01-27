@@ -375,6 +375,40 @@ Minimizar
   #ModalContent{
     width: 130%;
   }
+/*
+  .leaflet-popup{
+    overflow-y: scroll !important;
+  }
+  background-color: #fd0000 !important;
+  */
+  .leaflet-popup-content-wrapper{
+    max-height: 55vh !important;
+    overflow-y: scroll !important;
+  }
+
+  .leaflet-popup-content-wrapper::-webkit-scrollbar {
+    width: 20px;
+  }
+
+    /* Track */
+.leaflet-popup-content-wrapper::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+  }
+   
+  /* Handle */
+.leaflet-popup-content-wrapper::-webkit-scrollbar-thumb {
+    background: #888; 
+  }
+  
+  /* Handle on hover */
+.leaflet-popup-content-wrapper::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+  }
+hr{
+    border: 1px solid black !important;
+    margin: 0 !important;
+}
+
 
   
 
