@@ -85,8 +85,46 @@ function getMapasAuxiliar(codcom){
 
     let url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/rect/agua_emisiones/${codcom}.json`
     diccionarioSalida["Agua Emisiones"] = getMapa(url);
-    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/1/${codcom}.json`
-    diccionarioSalida["Proyección Edad"] = getMapa2(url);
+
+    let diccionarioEstilo = {
+                                "Clase 1":"blue",
+                                "Clase 2":"#04f0f6",
+                                "Clase 3":"green",
+                                "Clase 4":"#FFD881",
+                                "Clase 5":"#FD8D3C",
+                                "Clase 6":"red",
+                                }
+    let customEstilo = (feature) => {
+        let valorPropiedad =feature["properties"]["Clasificación"]
+        let color = diccionarioEstilo[valorPropiedad];
+        return {"fillOpacity":0.7,"opacity":0.75,"color":color}
+    }
+
+
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/01/${codcom}.json`
+    diccionarioSalida["Proyección Edad 1 Custom"] = getMapaCustomStyle(url,customEstilo);
+
+
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/02/${codcom}.json`
+    diccionarioSalida["Proyección Edad 2"] = getMapaCustomStyle(url,customEstilo);
+
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/03/${codcom}.json`
+    diccionarioSalida["Proyección Edad 3"] = getMapaCustomStyle(url,customEstilo);
+
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/04/${codcom}.json`
+    diccionarioSalida["Proyección Edad 4"] = getMapaCustomStyle(url,customEstilo);
+
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/05/${codcom}.json`
+    diccionarioSalida["Proyección Edad 5"] = getMapaCustomStyle(url,customEstilo);
+
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/06/${codcom}.json`
+    diccionarioSalida["Proyección Edad 6"] = getMapaCustomStyle(url,customEstilo);
+
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/07/${codcom}.json`
+    diccionarioSalida["Proyección Edad 7"] = getMapaCustomStyle(url,customEstilo);
+
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/proyeccion_poblacion/08/${codcom}.json`
+    diccionarioSalida["Proyección Edad 8"] = getMapaCustomStyle(url,customEstilo);
     
 
     
@@ -238,7 +276,316 @@ function getMapasAuxiliar(codcom){
 
     url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii3/informacinycomunicaciones/${codcom}.json` 
     diccionarioSalida["SII 3 Información y Comunicaciones"] = getMapa2(url);
-    
+
+
+
+
+
+    //Parte 4
+
+        //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdealojamientoyserviciodecomidas/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Actividades de Alojamiento y Servicio de Comidas "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdealojamientoyserviciodecomidas/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Actividades de Alojamiento y Servicio de Comidas "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdealojamientoyserviciodecomidas/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Actividades de Alojamiento y Servicio de Comidas "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdealojamientoyserviciodecomidas/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Actividades de Alojamiento y Servicio de Comidas "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdeatenciondelasaludyasistenciasocial/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Actividades de Atencion de la Salud y Asistencia Social "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdeatenciondelasaludyasistenciasocial/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Actividades de Atencion de la Salud y Asistencia Social "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdeatenciondelasaludyasistenciasocial/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Actividades de Atencion de la Salud y Asistencia Social "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdeatenciondelasaludyasistenciasocial/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Actividades de Atencion de la Salud y Asistencia Social "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdeserviciosadministrativosydeapoyo/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Actividades de Servicios Administrativos y de Apoyo "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdeserviciosadministrativosydeapoyo/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Actividades de Servicios Administrativos y de Apoyo "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdeserviciosadministrativosydeapoyo/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Actividades de Servicios Administrativos y de Apoyo "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesdeserviciosadministrativosydeapoyo/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Actividades de Servicios Administrativos y de Apoyo "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesfinancierasydeseguros/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Actividades Financieras y de Seguros "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesfinancierasydeseguros/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Actividades Financieras y de Seguros "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesfinancierasydeseguros/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Actividades Financieras y de Seguros "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesfinancierasydeseguros/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Actividades Financieras y de Seguros "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesinmobiliarias/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Actividades Inmobiliarias "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesinmobiliarias/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Actividades Inmobiliarias "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesinmobiliarias/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Actividades Inmobiliarias "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesinmobiliarias/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Actividades Inmobiliarias "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesprofesionalescientficasytcnicas/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Actividades Profesionales, Científicas y Técnicas "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesprofesionalescientficasytcnicas/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Actividades Profesionales, Científicas y Técnicas "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesprofesionalescientficasytcnicas/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Actividades Profesionales, Científicas y Técnicas "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesprofesionalescientficasytcnicas/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Actividades Profesionales, Científicas y Técnicas "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/agriculturaganaderasilviculturaypesca/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Agricultura, Ganadería, Silvicultura y Pesca "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/agriculturaganaderasilviculturaypesca/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Agricultura, Ganadería, Silvicultura y Pesca "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/agriculturaganaderasilviculturaypesca/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Agricultura, Ganadería, Silvicultura y Pesca "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/agriculturaganaderasilviculturaypesca/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Agricultura, Ganadería, Silvicultura y Pesca "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/comercioalpormayorymenorreparaciondevehculos/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Comercio al por Mayor y Menor; Reparacion de Vehículos "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/comercioalpormayorymenorreparaciondevehculos/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Comercio al por Mayor y Menor; Reparacion de Vehículos "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/comercioalpormayorymenorreparaciondevehculos/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Comercio al por Mayor y Menor; Reparacion de Vehículos "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/comercioalpormayorymenorreparaciondevehculos/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Comercio al por Mayor y Menor; Reparacion de Vehículos "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/construccin/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Construcción "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/construccin/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Construcción "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/construccin/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Construcción "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/construccin/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Construcción "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/enseanza/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Enseñanza "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/enseanza/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Enseñanza "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/enseanza/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Enseñanza "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/enseanza/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Enseñanza "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/explotacindeminasycanteras/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Explotación de Minas y Canteras "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/explotacindeminasycanteras/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Explotación de Minas y Canteras "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/explotacindeminasycanteras/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Explotación de Minas y Canteras "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/explotacindeminasycanteras/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Explotación de Minas y Canteras "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/industriamanufacturera/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Industria Manufacturera "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/industriamanufacturera/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Industria Manufacturera "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/industriamanufacturera/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Industria Manufacturera "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/industriamanufacturera/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Industria Manufacturera "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/otrasactividadesdeservicios/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Otras Actividades de Servicios "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/otrasactividadesdeservicios/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Otras Actividades de Servicios "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/otrasactividadesdeservicios/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Otras Actividades de Servicios "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/otrasactividadesdeservicios/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Otras Actividades de Servicios "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/transporteyalmacenamiento/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Transporte y Almacenamiento "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/transporteyalmacenamiento/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Transporte y Almacenamiento "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/transporteyalmacenamiento/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Transporte y Almacenamiento "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/transporteyalmacenamiento/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Transporte y Almacenamiento "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/suministrodeelectricidadgasvaporyaireacondicionado/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Suministro de Electricidad, Gas, Vapor y Aire Acondicionado "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/suministrodeelectricidadgasvaporyaireacondicionado/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Suministro de Electricidad, Gas, Vapor y Aire Acondicionado "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/suministrodeelectricidadgasvaporyaireacondicionado/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Suministro de Electricidad, Gas, Vapor y Aire Acondicionado "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/suministrodeelectricidadgasvaporyaireacondicionado/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Suministro de Electricidad, Gas, Vapor y Aire Acondicionado "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesartsticasentretenimientoyrecreativas/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Actividades Artísticas, Entretenimiento y Recreativas "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesartsticasentretenimientoyrecreativas/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Actividades Artísticas, Entretenimiento y Recreativas "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesartsticasentretenimientoyrecreativas/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Actividades Artísticas, Entretenimiento y Recreativas "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/actividadesartsticasentretenimientoyrecreativas/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Actividades Artísticas, Entretenimiento y Recreativas "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/informacinycomunicaciones/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Información y Comunicaciones "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/informacinycomunicaciones/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Información y Comunicaciones "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/informacinycomunicaciones/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Información y Comunicaciones "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/informacinycomunicaciones/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Información y Comunicaciones "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/suministrodeaguaaguasresidualesdesechosydescontaminacin/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Suministro de Agua; Aguas Residuales, Desechos y Descontaminación "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/suministrodeaguaaguasresidualesdesechosydescontaminacin/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Suministro de Agua; Aguas Residuales, Desechos y Descontaminación "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/suministrodeaguaaguasresidualesdesechosydescontaminacin/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Suministro de Agua; Aguas Residuales, Desechos y Descontaminación "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/suministrodeaguaaguasresidualesdesechosydescontaminacin/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Suministro de Agua; Aguas Residuales, Desechos y Descontaminación "] = getMapa2(url);
+
+    //1 10
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/administracionpblicaydefensaseguridadsocial/10/${codcom}.json` 
+    diccionarioSalida["SII 4-10-Administracion Pública y Defensa; Seguridad Social "] = getMapa2(url);
+
+    //2 11
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/administracionpblicaydefensaseguridadsocial/11/${codcom}.json` 
+    diccionarioSalida["SII 4-11-Administracion Pública y Defensa; Seguridad Social "] = getMapa2(url);
+
+    //3 12
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/administracionpblicaydefensaseguridadsocial/12/${codcom}.json` 
+    diccionarioSalida["SII 4-12-Administracion Pública y Defensa; Seguridad Social "] = getMapa2(url);
+
+    //4 13
+    url = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/sii/sii4/administracionpblicaydefensaseguridadsocial/13/${codcom}.json` 
+    diccionarioSalida["SII 4-13-Administracion Pública y Defensa; Seguridad Social "] = getMapa2(url);
     return diccionarioSalida;
 
 }
@@ -258,6 +605,16 @@ function getMapa2(url){
     let shapeBase = L.geoJson(dataBase,{
         //style:estiloDinamico,
         onEachFeature: onEachFeature,           
+    }) //.addTo(map);
+    return shapeBase;
+}
+
+function getMapaCustomStyle(url, estiloDinamico){
+    let dataBase = getData(url);
+    let shapeBase = L.geoJson(dataBase,{
+        style:estiloDinamico,
+        onEachFeature: onEachFeature,
+        pointToLayer: getIconoAuxiliar            
     }) //.addTo(map);
     return shapeBase;
 }
