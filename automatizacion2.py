@@ -32,7 +32,7 @@ def main():
     for i,j in df.iterrows():
         print(1,i)
         #copy_tree(fr"{os.getcwd()}/luis/bases/main", fr"{os.getcwd()}/publicaciones2/{j['nombre']}")
-        copy_tree("luis/bases/mainMulti_Master",f"publicaciones2/{j['nombre']}")
+        copy_tree("luis/bases/mainMulti_Master",f"publicaciones3/{j['nombre']}")
         ref1 = pd.read_excel(j["excel"], sheet_name="BASE Global")
         ref2 = pd.read_excel(j["excel"], sheet_name="Capas")
         print(2,i)
