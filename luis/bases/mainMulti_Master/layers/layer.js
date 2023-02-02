@@ -44,7 +44,7 @@ class layerSingle {
 
         let unicos = dataAcumulada.map(x => x[variableUnica]);
         unicos = [...new Set(unicos)];
-        if(objReferencia["Tipo"] == "Puntos"){
+        if(objReferencia["Tipo"] == "Puntos" || objReferencia["Tipo"] == "Punto"){
             //Esto es un punto
             if(objReferencia["Variable"] == "random"){
                 //Esto es un punto random
