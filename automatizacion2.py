@@ -13,9 +13,9 @@ def main():
     iconos = pd.read_excel(urlVisual, sheet_name="BD Iconos", skiprows=7)
     colores = pd.read_excel(urlVisual, sheet_name="BD Colores", skiprows=5)
     
-    with open(r'luis/bases/bases/mainMulti_Master/data/dataIcono1.json', 'w', encoding='utf-8') as file:
+    with open(r'luis/bases/mainMulti_Master/data/dataIcono1.json', 'w', encoding='utf-8') as file:
         iconos.to_json(file,orient="records",force_ascii=False)
-    with open(r'luis/bases/bases/mainMulti_Master/data/dataColor1.json', 'w', encoding='utf-8') as file:
+    with open(r'luis/bases/mainMulti_Master/data/dataColor1.json', 'w', encoding='utf-8') as file:
         colores.to_json(file,orient="records",force_ascii=False)
 
     try:
