@@ -76,6 +76,7 @@ function getHtmlFromPoligonRandom2(unicos,colorDBReferencia,objReferencia,variab
     let contadorColor = 0; 
     let jsonColoresRandom = {};
     let descripcion = objReferencia["descripcion_capa"];
+    
     if(unicos.length == 0){
         htmlString = "Sin información";
     }

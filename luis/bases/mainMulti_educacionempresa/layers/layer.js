@@ -15,12 +15,15 @@ class layerSingle {
     getLegend(Comunas){
         let dataAcumulada = []
         let dataAcumuladoFull = []
+        
         Comunas.forEach(x =>{
             try {               
-
+                //console.log("Comunas",Comunas)
+                /*
                 this.data[x.codComuna].data.features.
                     forEach(x => x["properties"]["NOM_ACUIF"] = x["properties"]["NOM_ACUIF"]
                         .replaceAll("Biobio","BioBio"));
+                */
                 let auxArray = this.data[x.codComuna].data.features.map(x => x["properties"]);                
                 dataAcumuladoFull = dataAcumuladoFull.concat(this.data[x.codComuna].data.features);
                 dataAcumulada = dataAcumulada.concat(auxArray);    
@@ -34,6 +37,9 @@ class layerSingle {
 
         let unicos = dataAcumulada.map(x => x[variableUnica]);
         unicos = [...new Set(unicos)];
+        console.log("Tipo",objReferencia["Tipo"],"Variable",objReferencia["Variable"])
+
+
         if(objReferencia["Tipo"] == "Puntos"){
             //Esto es un punto
             if(objReferencia["Variable"] == "random"){

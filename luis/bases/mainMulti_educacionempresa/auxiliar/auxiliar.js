@@ -1,6 +1,8 @@
 function getMapasAuxiliar(codcom){
+
     let codcomInt = parseInt(codcom);
     let diccionarioSalida = {};
+    return diccionarioSalida
     let urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/establecimientorect/${codcom}.json`;
     //this.urlBaseComuna = `https://raw.githubusercontent.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/main/poblacion_hex/01101.json`;
     let dataBaseComuna = getData(urlBaseComuna);
