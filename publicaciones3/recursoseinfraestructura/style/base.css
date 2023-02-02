@@ -213,31 +213,30 @@ Custom scrollbar leyenda
     margin-left: auto;
     */
     display: block;
-    
   }
 
-  .principal2{
+.principal2{
     width: 90%;
-  }
+}
 
-  #clickme{
-    /*
-    border-style: outset;
-    */
-    height: 1.9em;
-    width: 1.9em;
-  }
+#clickme{
+/*
+border-style: outset;
+*/
+height: 1.9em;
+width: 1.9em;
+}
 
-  #clickme2{
-    display: none;
-    /*
-    border-style: outset;
-    */
-    height: 1.9em;
-    width: 1.9em;
-  }
+#clickme2{
+display: none;
+/*
+border-style: outset;
+*/
+height: 1.9em;
+width: 1.9em;
+}
 
-  br{margin-bottom:3px;}
+br{margin-bottom:3px;}
 
 
 /*
@@ -246,7 +245,7 @@ Minimizar
      
     
 */
-  .gg-minimize-alt {
+.gg-minimize-alt {
     box-sizing: border-box;
     position: relative;
     display: block;
@@ -342,9 +341,6 @@ Minimizar
 
 .variableLeyenda{
     cursor: pointer !important;
-    /*
-    font-size: xx-large;
-    */ 
 }
 
 .variableLeyenda .tooltiptext {
@@ -368,13 +364,17 @@ Minimizar
  .leaflet-control-layers-list {
     background-color: white !important;
   }*/
-  .leaflet-marker-icon{
+.leaflet-marker-icon{
     z-index: 999999999 !important;
-  }
+}
 
-  #ModalContent{
+#ModalContent{
     width: 130%;
-  }
+}
+hr{
+    border: 1px solid black !important;
+    margin: 0 !important;
+}
 
   
 
