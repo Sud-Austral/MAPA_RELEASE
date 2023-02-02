@@ -12,12 +12,7 @@ function slideToggleLegend(idLegenda) {
         // Animation complete.
     });
   }
-//"Capa":"datos_de_pozos"
-//"idcapa":26
-//dataGlobal = dataGlobal.filter(x => x["idcapa"] == 10);
-//https://github                .com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/AGUAS/Iconos/solido1.png
-//https://raw.githubusercontent .com/Sud-Austral/DATA_MAPA_PUBLIC_V2    /main/AGUAS/Iconos/Solido1.png
-
+  
 iconosDB = iconosDB.map( x =>{
     x.replaceAll("https://github","https://raw.githubusercontent")
     .replaceAll("/DATA_MAPA_PUBLIC_V2/raw","/DATA_MAPA_PUBLIC_V2")});
