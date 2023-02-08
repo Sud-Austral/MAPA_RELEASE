@@ -119,8 +119,7 @@ class layerSingle {
             })
         }
         let propiedad = this.objReferencia["Propiedad"]
-        let setIcon = (feature, latlng) =>{  
-            console.log("FeatureIcon",propiedad+"-", feature)          
+        let setIcon = (feature, latlng) =>{            
             let valorPropiedad =feature["properties"][propiedad].toString();
             
             if( valorPropiedad == "" ||  valorPropiedad === null){
