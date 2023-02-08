@@ -652,7 +652,6 @@ class MultiMap{
                         click: zoomToFeature,
                     })
                 }
-                console.log("Geometria",capa["data"])
                 let tipoGeometria = capa["data"]["features"][0]["geometry"]["type"];
                 let arraForEach = dataGlobalDescripCapaUnique
                                     .sort(x => x["posición_capa"])
