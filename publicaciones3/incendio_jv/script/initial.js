@@ -41,7 +41,7 @@ function getIcon(url){
     else{
         myIcon = L.icon({
             iconUrl: url,
-            iconSize:  [25,25]   //[25, 25] // width and height of the image in pixels
+            iconSize:  [15,215]   //[25, 25] // width and height of the image in pixels
             });
     }
     return myIcon;
