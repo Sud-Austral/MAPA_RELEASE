@@ -78,10 +78,14 @@ class AllLayers {
     getAllLegend(){
         this.getCleanMap();
         this.disableMark();
-        this.layerCollection.filter(x => x.legend != null)
+        this.layerCollection
+        .filter(x => x.legend != null)
         .forEach(x => x.legend.remove(map));
         let caparActivas = this.layerCollection.filter(x => x.activa);
-        caparActivas.forEach(x => x.getLegend(this.comunaCollection.filter(x => x.activa)))  
+        //caparActivas.forEach(x => x.getLegend(this.comunaCollection.filter(x => x.activa)))  
+        for (let index = caparActivas.length -  1; index >= 0; index--) {
+            caparActivas[index].getLegend(this.comunaCollection.filter(x => x.activa));
+        }
     }
 
     getCleanMap(){
