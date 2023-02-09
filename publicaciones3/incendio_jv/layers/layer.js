@@ -38,13 +38,12 @@ class layerSingle {
                 console.error(error.name + ': ' + error.message,x,this.objReferencia);
             }      
         });
-        console.log(dataAcumuladoFull) 
         let objReferencia = this.objReferencia;
         let variableUnica =  objReferencia["Propiedad"]; 
 
         let unicos = dataAcumulada.map(x => x[variableUnica]);
         unicos = [...new Set(unicos)];
-        console.log("Tipo",objReferencia["Tipo"])
+        console.log("Tipo",objReferencia["Tipo"],objReferencia["Variable"])
         if(objReferencia["Tipo"] == "Puntos" || objReferencia["Tipo"] == "Punto"){
             //Esto es un punto
             if(objReferencia["Variable"] == "random"){
@@ -58,11 +57,11 @@ class layerSingle {
             }
             else{                
                 //Esto es un punto Definido
-                console.log("Definido")
                 let result = getHtmlFromPointDefinidos2(variableUnica,objReferencia,unicos)
                 let htmlString = result[0]
                 this.jsonColoresRandom = result[1]
-                this.legend = getLegendLeaflet2(htmlString);                        
+                this.legend = getLegendLeaflet2(htmlString);
+                console.log(dataAcumuladoFull)                        
             }
             //console.log(this.jsonColoresRandom,objReferencia["Variable"])
             this.getMapaPoint(dataAcumuladoFull)
@@ -91,6 +90,7 @@ class layerSingle {
     }
 
     getMapaPoint(dataAcumuladoFull){
+        console.log("GetMapaPoint")
         let dataGlobalNivel2 = dataGlobal.filter( capaGlobal =>
             capaGlobal.idcapa == this.objReferencia["idcapa"]
         );
