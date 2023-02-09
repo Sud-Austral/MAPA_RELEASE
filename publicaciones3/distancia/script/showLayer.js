@@ -1,16 +1,16 @@
 let geoGlobal = "";
 let mapMarker;
-
+/*
 function removeMarker(){
     try {
         if(mapMarker){
             mapMarker.remove(map);
         }
-        
     } catch (error) {
         console.log("No hay marker definido aun")
     }    
 }
+*/
 
 
 

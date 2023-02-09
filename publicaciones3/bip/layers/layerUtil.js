@@ -1,3 +1,13 @@
+function removeMarker(){
+    try {
+        if(mapMarker){
+            mapMarker.remove(map);
+        }
+    } catch (error) {
+        console.log("No hay marker definido aun")
+    }    
+}
+
 let getHtmlToolTip = (variable) => `<span class="tooltiptext">Haz click para marcar ${variable}</span>` 
 
 

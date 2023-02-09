@@ -9,6 +9,26 @@ class AllLayers {
       this.sizeImageMark = [27,33];
     }
 
+    getCapasInicial(){
+        return [
+            "AlertasdeIncendiosJ1VIIRS",
+            "AlertasdeIncendiosMODIS",
+            "AlertasdeIncendiosSUOMI"
+        ];
+    }
+
+    markInitial(){
+        console.log("Iniciamos");
+        let capaInicial = this.getCapasInicial();
+        $("#div-input-comunas input").each((x,y)=> $(y).click());
+        $("#div-input-capas input").each((x,y)=> {
+            let objeto = $(y);
+            if(capaInicial.indexOf(objeto.attr("value")) > -1){
+                objeto.click()
+            }
+        });
+    }
+
     cleanMap(){
         this.disableMark();
         this.getCleanMap();
