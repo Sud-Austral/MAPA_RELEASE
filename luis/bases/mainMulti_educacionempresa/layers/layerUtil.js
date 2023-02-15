@@ -1,3 +1,23 @@
+function getIcon(url){
+    console.log("getIcon")
+    url = url?url:"https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/default.png";
+    let myIcon;
+    if(url.split(".")[1] == "svg"){
+        myIcon = L.icon({
+            iconUrl: url,
+            iconSize:  [50,50]   //[25, 25] // width and height of the image in pixels
+            });
+    }
+    else{
+        myIcon = L.icon({
+            iconUrl: url,
+            iconSize:  [15,15]   //[25, 25] // width and height of the image in pixels
+            });
+    }
+    return myIcon;
+}
+
+
 let getHtmlToolTip = (variable) => `<span class="tooltiptext">Haz click para marcar ${variable}</span>` 
 
 

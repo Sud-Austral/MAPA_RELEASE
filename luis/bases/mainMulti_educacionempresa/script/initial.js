@@ -23,7 +23,7 @@ const removeAccents = (str) => {
     .replaceAll(":","")
     .replace(/[^a-zA-Z0-9 ]/g, "");
     } 
-
+/*
 function getIcon(url){
     url = url?url:"https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/default.png";
     let myIcon;
@@ -40,7 +40,7 @@ function getIcon(url){
             });
     }
     return myIcon;
-}
+}*/
 
 function getLayerMapBox(id){
     const base = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {

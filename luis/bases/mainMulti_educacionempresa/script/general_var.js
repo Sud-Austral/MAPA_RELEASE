@@ -106,7 +106,7 @@ const removeAccents = (str) => {
 iconosDB = iconosDB.map( x =>{
     x.replaceAll("https://github","https://raw.githubusercontent")
     .replaceAll("/DATA_MAPA_PUBLIC_V2/raw","/DATA_MAPA_PUBLIC_V2")});
-
+/*
 function getIcon(url){
     url = url?url:"https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/default.png";
     let myIcon;
@@ -124,7 +124,7 @@ function getIcon(url){
     }
     return myIcon;
 }
-
+*/
 /*
 this.controlTotalCapas2 = L.control.layers(null, this.jsonTotalCapas, {
     position: 'topright',
