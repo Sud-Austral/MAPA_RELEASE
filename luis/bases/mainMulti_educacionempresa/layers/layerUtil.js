@@ -1,5 +1,5 @@
 function getIcon(url){
-    console.log("getIcon")
+    //console.log("getIcon")
     url = url?url:"https://github.com/Sud-Austral/DATA_MAPA_PUBLIC_V2/raw/main/svg/default.png";
     let myIcon;
     if(url.split(".")[1] == "svg"){
