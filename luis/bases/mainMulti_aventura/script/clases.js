@@ -325,11 +325,8 @@ class COMUNABASE{
             onEachFeature: onEachFeature            
         }).addTo(map);
        
-        /*
-        //
-        
-        //Get Data de Comuna
-        
+        /*        
+        //Get Data de Comuna        
         //Get Shape de Comuna
         var dictColor = {0:"red",1:"blue",2:"yellow",3:"green",4:"black"}
         var estiloDinamico = (feature) =>{
@@ -394,6 +391,7 @@ class COMUNABASE{
         controlComuna.addOverlay(this.shapeBaseComuna,nombreComuna);
         Object.keys(diccionarMapas).forEach(x => controlComuna.addOverlay(diccionarMapas[x],x))
         map.fitBounds(this.shapeBaseComuna.getBounds());
+        map.setZoom(7);
         //map.fitBounds(this.shapeBaseComuna.getBounds());
         //let zoom = map.getZoom();
         //let zoomMin = 10

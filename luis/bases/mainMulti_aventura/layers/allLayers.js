@@ -136,6 +136,7 @@ class AllLayers {
                 click: zoomToFeature,
             })
         }
+        
         let geojson = L.geoJson({"type": 'FeatureCollection',
         "features":markData},//
         {style:estiloDinamico,onEachFeature: onEachFeatureCustom}).addTo(map);
