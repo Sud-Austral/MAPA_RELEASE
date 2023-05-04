@@ -29,7 +29,8 @@ function slideToggleLegend(idLegenda,padre) {
 const htmlDI = "<span id='span_mapa'><a target='_blank' id='hyper_map' href='https://di-nextmile.com' title='The best'><img id='imagenLogoMapa' src='Content/img/logo_NextMile2.png'></img> Next-Mile by DataIntelligence </a></span>";
 
 function getLayerMapBox(id){
-    const base = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+    //const base = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibHVpc21vbnNhbHZlIiwiYSI6ImNrZjVsOG5rdjA5ZWwycHE3YWF0cjkzc2sifQ.JQKqG4SO2_AYSnkgQ8PxrQ', {
+    const base = L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibHVpc21vbnNhbHZlIiwiYSI6ImNrZjVsOG5rdjA5ZWwycHE3YWF0cjkzc2sifQ.JQKqG4SO2_AYSnkgQ8PxrQ', {
         //attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, ' +
         //    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         id: id,
