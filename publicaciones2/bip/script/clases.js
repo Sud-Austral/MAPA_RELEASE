@@ -411,6 +411,7 @@ class MAPAGLOBAL{
             capa["url"] = capa["url"]
                 .replaceAll("github.com","raw.githubusercontent.com")
                 .replaceAll("tree","");
+            console.log("capa",capa)
             return capa;
         });
 
